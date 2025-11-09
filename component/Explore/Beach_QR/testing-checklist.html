@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beach QR Guide - Testing Checklist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .checklist-item {
+        transition: all 0.3s ease;
+      }
+      .checklist-item.checked {
+        background-color: #d1fae5;
+        border-color: #10b981;
+      }
+      .checklist-item input[type="checkbox"]:checked ~ label {
+        text-decoration: line-through;
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 to-cyan-50 min-h-screen py-12 px-4"
+  >
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="text-6xl">✅</div>
+          <div>
+            <h1 class="text-4xl font-bold text-gray-800">Beach QR Guide</h1>
+            <p class="text-gray-600 mt-1">
+              Testing & Quality Assurance Checklist
+            </p>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mt-6">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-700">Progress</span>
+            <span id="progressText" class="text-sm font-bold text-blue-600"
+              >0 / 24</span
+            >
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+            <div
+              id="progressBar"
+              class="bg-gradient-to-r from-green-500 to-emerald-600 h-full transition-all duration-500"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 1: Visual & Layout -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>🎨</span>
+          <span>1. Visual & Layout</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check1"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check1" class="flex-1 cursor-pointer text-gray-700">
+                Coco mascot muncul dengan benar di hero section
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check2"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check2" class="flex-1 cursor-pointer text-gray-700">
+                Speech bubble muncul dengan tail/panah pointing ke Coco
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check3"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check3" class="flex-1 cursor-pointer text-gray-700">
+                6 QR location cards ter-render dengan icon yang benar
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check4"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check4" class="flex-1 cursor-pointer text-gray-700">
+                QR cards hover effect (translateY) bekerja smooth
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Functionality -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>⚙️</span>
+          <span>2. Core Functionality</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check5"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check5" class="flex-1 cursor-pointer text-gray-700">
+                Klik QR card membuka overlay dengan smooth animation
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check6"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check6" class="flex-1 cursor-pointer text-gray-700">
+                Overlay menampilkan konten yang sesuai dengan card yang diklik
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check7"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check7" class="flex-1 cursor-pointer text-gray-700">
+                Konten overlay ter-load dari JSON (cek semua 6 lokasi)
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check8"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check8" class="flex-1 cursor-pointer text-gray-700">
+                Mascot image di overlay sesuai dengan konten (coco/tuka/cora)
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check9"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check9" class="flex-1 cursor-pointer text-gray-700">
+                Section "Mengapa Penting" muncul dengan paragraf lengkap
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check10"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check10" class="flex-1 cursor-pointer text-gray-700">
+                Section "Aksi" muncul dengan 3 bullet points
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check11"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check11" class="flex-1 cursor-pointer text-gray-700">
+                Section "Fakta Lokal" muncul dengan background gradient
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Close Mechanisms -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>❌</span>
+          <span>3. Close Overlay Mechanisms</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check12"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check12" class="flex-1 cursor-pointer text-gray-700">
+                Klik tombol X (close button) menutup overlay
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check13"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check13" class="flex-1 cursor-pointer text-gray-700">
+                Tekan tombol ESC keyboard menutup overlay
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check14"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check14" class="flex-1 cursor-pointer text-gray-700">
+                Klik backdrop (area gelap di luar overlay) menutup overlay
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check15"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check15" class="flex-1 cursor-pointer text-gray-700">
+                Body scroll ter-disable saat overlay terbuka
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check16"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check16" class="flex-1 cursor-pointer text-gray-700">
+                Body scroll ter-enable kembali setelah overlay ditutup
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: URL Parameter -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>🔗</span>
+          <span>4. QR Parameter & Deep Link</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check17"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check17" class="flex-1 cursor-pointer text-gray-700">
+                URL
+                <code class="bg-gray-100 px-2 py-1 rounded">?qr=sampah</code>
+                otomatis buka overlay "Tempat Sampah"
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check18"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check18" class="flex-1 cursor-pointer text-gray-700">
+                Test semua 6 parameter: sampah, penyu, terumbu, bleaching,
+                rambu, jajan
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check19"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check19" class="flex-1 cursor-pointer text-gray-700">
+                URL parameter ter-remove setelah overlay ditutup
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: localStorage Tracking -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>💾</span>
+          <span>5. Scan Tracking (localStorage)</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check20"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check20" class="flex-1 cursor-pointer text-gray-700">
+                Setelah buka 1 overlay, cek localStorage ada key
+                <code class="bg-gray-100 px-2 py-1 rounded">qr_scanned</code>
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check21"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check21" class="flex-1 cursor-pointer text-gray-700">
+                Counter badge "Kamu sudah scan X lokasi" muncul setelah scan 1+
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check22"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check22" class="flex-1 cursor-pointer text-gray-700">
+                Counter increment dengan benar (scan 3 lokasi → counter shows 3)
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check23"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check23" class="flex-1 cursor-pointer text-gray-700">
+                Test:
+                <code class="bg-gray-100 px-2 py-1 rounded"
+                  >window.qrDebug.resetTracking()</code
+                >
+                reset counter ke 0
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Responsive -->
+      <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2"
+        >
+          <span>📱</span>
+          <span>6. Responsive Design</span>
+        </h2>
+
+        <div class="space-y-3">
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check24"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check24" class="flex-1 cursor-pointer text-gray-700">
+                Mobile (< 640px): QR cards stack dalam 1 kolom
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check25"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check25" class="flex-1 cursor-pointer text-gray-700">
+                Mobile: Overlay full-screen dan scrollable
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check26"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check26" class="flex-1 cursor-pointer text-gray-700">
+                Tablet (768px): QR cards dalam 2 kolom
+              </label>
+            </div>
+          </div>
+
+          <div class="checklist-item border-2 border-gray-200 rounded-lg p-4">
+            <div class="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="check27"
+                class="mt-1 w-5 h-5 text-blue-600"
+                onchange="updateProgress()"
+              />
+              <label for="check27" class="flex-1 cursor-pointer text-gray-700">
+                Desktop (> 1024px): QR cards dalam 3 kolom
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Debug Tools Section -->
+      <div
+        class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white mb-6"
+      >
+        <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+          <span>🛠️</span>
+          <span>Debug Tools</span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white/20 backdrop-blur rounded-lg p-4">
+            <p class="font-semibold mb-2">Console Commands:</p>
+            <code class="block text-sm bg-black/30 p-2 rounded mb-1"
+              >window.qrDebug.viewData()</code
+            >
+            <code class="block text-sm bg-black/30 p-2 rounded mb-1"
+              >window.qrDebug.getTotalScans()</code
+            >
+            <code class="block text-sm bg-black/30 p-2 rounded"
+              >window.qrDebug.resetTracking()</code
+            >
+          </div>
+
+          <div class="bg-white/20 backdrop-blur rounded-lg p-4">
+            <p class="font-semibold mb-2">Test URLs:</p>
+            <code class="block text-xs bg-black/30 p-2 rounded mb-1 break-all"
+              >?qr=sampah</code
+            >
+            <code class="block text-xs bg-black/30 p-2 rounded mb-1 break-all"
+              >?qr=penyu</code
+            >
+            <code class="block text-xs bg-black/30 p-2 rounded break-all"
+              >?qr=terumbu</code
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div id="summary" class="bg-white rounded-2xl shadow-lg p-6 hidden">
+        <div class="text-center">
+          <div class="text-6xl mb-4">🎉</div>
+          <h2 class="text-3xl font-bold text-gray-800 mb-2">
+            Testing Complete!
+          </h2>
+          <p class="text-gray-600 mb-4">
+            Semua checklist telah selesai. Beach QR Guide siap launch!
+          </p>
+          <button
+            onclick="resetChecklist()"
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+          >
+            Reset Checklist
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const totalItems = 27;
+
+      function updateProgress() {
+        const checked = document.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        ).length;
+        const percentage = (checked / totalItems) * 100;
+
+        document.getElementById("progressBar").style.width = percentage + "%";
+        document.getElementById("progressText").textContent =
+          checked + " / " + totalItems;
+
+        // Update checklist item styling
+        document.querySelectorAll(".checklist-item").forEach((item) => {
+          const checkbox = item.querySelector('input[type="checkbox"]');
+          if (checkbox.checked) {
+            item.classList.add("checked");
+          } else {
+            item.classList.remove("checked");
+          }
+        });
+
+        // Show summary if all checked
+        if (checked === totalItems) {
+          document.getElementById("summary").classList.remove("hidden");
+          confetti();
+        } else {
+          document.getElementById("summary").classList.add("hidden");
+        }
+      }
+
+      function resetChecklist() {
+        document.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+          cb.checked = false;
+        });
+        updateProgress();
+      }
+
+      // Simple confetti effect
+      function confetti() {
+        for (let i = 0; i < 50; i++) {
+          const confetti = document.createElement("div");
+          confetti.style.position = "fixed";
+          confetti.style.width = "10px";
+          confetti.style.height = "10px";
+          confetti.style.background = [
+            "#10b981",
+            "#3b82f6",
+            "#f59e0b",
+            "#ef4444",
+          ][Math.floor(Math.random() * 4)];
+          confetti.style.left = Math.random() * 100 + "%";
+          confetti.style.top = "-10px";
+          confetti.style.zIndex = "9999";
+          confetti.style.borderRadius = "50%";
+          document.body.appendChild(confetti);
+
+          const animation = confetti.animate(
+            [
+              { transform: "translateY(0) rotate(0deg)", opacity: 1 },
+              { transform: "translateY(100vh) rotate(360deg)", opacity: 0 },
+            ],
+            {
+              duration: 3000,
+              easing: "cubic-bezier(0, 0.5, 0.5, 1)",
+            }
+          );
+
+          animation.onfinish = () => confetti.remove();
+        }
+      }
+    </script>
+  </body>
+</html>

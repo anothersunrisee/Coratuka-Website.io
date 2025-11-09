@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Emergency Reporting – CoraTuka</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              btn: "#FFD166",
+              "btn-hover": "#d8b052",
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              info: { DEFAULT: "#3b82f6" },
+              danger: { DEFAULT: "#f64c4c" },
+              warning: { DEFAULT: "#ffad0d" },
+              success: { DEFAULT: "#47b881" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-slate-50 font-inter text-ink">
+    <!-- Navbar -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="window.location.href='../Features/emergency-rescue.html'"
+              class="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn-hover rounded-lg transition-all"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span class="font-medium">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <img src="../../img/index/logo coratuka.png" class="h-12" alt="" />
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              class="relative p-2 hover:bg-gray-100 rounded-lg transition-all"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </button>
+            <div
+              class="w-8 h-8 bg-primary-200 rounded-full flex items-center justify-center"
+            >
+              <span class="text-primary-700 font-bold text-sm">W</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <!-- Header with Button -->
+        <div class="mb-8">
+          <div
+            class="mb-2 inline-flex items-center gap-2 rounded-full bg-danger/10 px-3 py-1 text-xs font-bold text-danger"
+          >
+            <span class="h-2 w-2 rounded-full bg-danger animate-pulse"></span>
+            <span>Emergency Response Active</span>
+          </div>
+
+          <!-- Desktop: Header dengan Button Sejajar -->
+          <div class="hidden lg:flex lg:items-center lg:justify-between">
+            <div>
+              <h1 class="text-3xl font-extrabold text-slate-900 lg:text-4xl">
+                Emergency Report
+              </h1>
+              <p class="mt-2 text-sm text-slate-600">
+                Kelola dan pantau status laporan penyelamatan satwa laut Anda
+              </p>
+            </div>
+            <!-- Button Buat Laporan - Desktop -->
+            <button
+              id="createReportBtnDesktop"
+              onclick="openReportForm()"
+              class="flex items-center gap-2 rounded-xl bg-danger px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-105 hover:shadow-danger/50"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2.5"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              <span>Add Report</span>
+            </button>
+          </div>
+
+          <!-- Mobile: Header biasa -->
+          <div class="lg:hidden">
+            <h1 class="text-3xl font-extrabold text-slate-900">
+              Emergency Reports
+            </h1>
+            <p class="mt-2 text-sm text-slate-600">
+              Kelola dan pantau status laporan penyelamatan satwa laut Anda
+            </p>
+          </div>
+        </div>
+
+        <!-- Button Buat Laporan - Mobile (di bawah header) -->
+        <div class="mb-6 lg:hidden">
+          <button
+            id="createReportBtnMobile"
+            onclick="openReportForm()"
+            class="flex w-full items-center justify-center gap-2 rounded-xl bg-danger px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-105"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            <span>Add Report</span>
+          </button>
+        </div>
+
+        <!-- Section: Laporan Anda -->
+        <section id="myReportsSection" class="mb-8">
+          <!-- Tambahkan wrapper dengan border -->
+          <div
+            class="rounded-2xl border border-slate-200 bg-white shadow-sm p-6"
+          >
+            <div class="mb-4 flex items-center justify-between border-b pb-5">
+              <h2 class="text-xl font-bold text-slate-900">Your Reports</h2>
+              <span
+                id="reportCount"
+                class="rounded-full bg-primary px-3 py-1 text-xs font-bold text-white"
+                >0</span
+              >
+            </div>
+
+            <!-- Empty State -->
+            <div
+              id="emptyState"
+              class="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 p-12 text-center"
+            >
+              <div
+                class="mx-auto mb-4 h-24 w-24 rounded-full bg-slate-100 flex items-center justify-center"
+              >
+                <svg
+                  class="h-12 w-12 text-slate-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <h3 class="mb-2 text-lg font-bold text-slate-900">
+                No Reports Yet
+              </h3>
+              <p class="mb-6 text-sm text-slate-600">
+                Anda belum memiliki laporan darurat. Buat laporan pertama Anda
+                sekarang untuk membantu penyelamatan satwa laut.
+              </p>
+            </div>
+
+            <!-- Reports Grid -->
+            <div
+              id="reportsGrid"
+              class="hidden grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            ></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- MODAL: Form Laporan (Halaman 3) -->
+    <div
+      id="reportFormModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    >
+      <div
+        class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
+      >
+        <!-- Modal Header -->
+        <div
+          class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4"
+        >
+          <div>
+            <h2 class="text-xl font-extrabold text-slate-900">
+              Create an Emergency Report
+            </h2>
+            <p class="text-xs text-slate-600 mt-1">
+              Isi form dengan lengkap untuk respon cepat
+            </p>
+          </div>
+          <button
+            onclick="closeReportForm()"
+            class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 transition hover:bg-slate-200"
+          >
+            <svg
+              class="h-5 w-5 text-slate-800"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Modal Body: Form -->
+        <form id="emergencyReportForm" class="p-6 space-y-6">
+          <!-- Input: Judul Laporan -->
+          <div class="space-y-2">
+            <label
+              for="reportTitle"
+              class="block text-xs font-semibold text-slate-700"
+            >
+              Report Header<span class="text-danger">*</span>
+            </label>
+            <input
+              id="reportTitle"
+              type="text"
+              required
+              maxlength="100"
+              placeholder="Contoh: Penyu Hijau Terdampar di Pantai Samas"
+              class="w-full rounded-lg border-2 border-slate-300 bg-white px-4 py-4 text-base text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
+            />
+            <div class="flex items-center justify-between">
+              <small class="text-xs text-slate-500"
+                >Jelaskan kondisi yang Anda temukan</small
+              >
+              <small id="titleCharCount" class="text-xs text-slate-400"
+                >0/100</small
+              >
+            </div>
+          </div>
+
+          <!-- Input: Lokasi -->
+          <div class="space-y-2">
+            <label
+              for="locationText"
+              class="block text-xs font-semibold text-slate-700"
+            >
+              Location <span class="text-danger">*</span>
+            </label>
+            <div class="space-y-3">
+              <input
+                id="locationText"
+                type="text"
+                required
+                placeholder="Nama pantai atau alamat lengkap"
+                class="w-full rounded-lg border-2 border-slate-300 bg-white px-4 py-4 text-base text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-100"
+              />
+              <button
+                type="button"
+                id="detectLocationBtn"
+                onclick="detectLocation()"
+                class="w-full rounded-lg border-2 border-primary bg-primary-50 px-4 py-3 text-sm font-bold text-primary transition hover:bg-primary-100"
+              >
+                <span id="detectBtnText">📍 Automatic Location Detection</span>
+              </button>
+            </div>
+            <input type="hidden" id="locationLat" />
+            <input type="hidden" id="locationLng" />
+          </div>
+
+          <!-- Input: Upload Foto/Video -->
+          <div class="space-y-2">
+            <label
+              for="photoInput"
+              class="block text-xs font-semibold text-slate-700"
+            >
+              Foto/Video <span class="text-danger">*</span>
+            </label>
+            <div
+              onclick="document.getElementById('photoInput').click()"
+              class="group relative cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 transition hover:border-primary hover:bg-primary-50/30"
+            >
+              <!-- Upload Placeholder -->
+              <div
+                id="uploadPlaceholder"
+                class="flex flex-col items-center justify-center py-12"
+              >
+                <svg
+                  class="mb-3 h-12 w-12 text-slate-400 transition group-hover:text-primary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <p class="mb-1 text-sm font-bold text-slate-700">
+                  Klik untuk unggah foto/video
+                </p>
+                <p class="text-xs text-slate-500">
+                  JPG, PNG, atau MP4 (Maks. 5MB)
+                </p>
+              </div>
+
+              <!-- Photo Preview -->
+              <div id="photoPreview" class="hidden relative">
+                <img
+                  id="previewImage"
+                  src=""
+                  alt="Preview"
+                  class="h-64 w-full object-cover"
+                />
+                <button
+                  type="button"
+                  onclick="removePhoto(event)"
+                  class="absolute top-3 right-3 flex h-10 w-10 items-center justify-center rounded-full bg-danger text-white shadow-lg transition hover:scale-110"
+                >
+                  <svg
+                    class="h-5 w-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Hidden File Input -->
+              <input
+                id="photoInput"
+                type="file"
+                accept="image/*,video/mp4"
+                onchange="handlePhotoUpload(event)"
+                class="hidden"
+              />
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div
+            id="formErrors"
+            class="hidden rounded-lg border-2 border-danger bg-danger/10 px-4 py-3"
+          >
+            <div class="flex items-start gap-2">
+              <svg
+                class="h-5 w-5 flex-shrink-0 text-danger"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              <div class="flex-1">
+                <h4 class="font-bold text-danger text-sm mb-1">Error!</h4>
+                <p id="errorMessage" class="text-sm text-danger"></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="flex gap-3 pt-2">
+            <button
+              type="button"
+              onclick="closeReportForm()"
+              class="flex-1 rounded-lg border-2 border-slate-300 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+            >
+              cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 rounded-lg bg-danger px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-105 hover:bg-red-600"
+            >
+              Send Report
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: Success (Halaman 4) -->
+    <div
+      id="successModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    >
+      <div
+        class="relative w-full max-w-md rounded-2xl bg-white p-8 shadow-2xl text-center"
+      >
+        <!-- Success Icon -->
+        <div
+          class="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-success/10"
+        >
+          <svg
+            class="h-10 w-10 text-success"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <h3 class="mb-2 text-2xl font-extrabold text-slate-900">
+          Report Submitted!
+        </h3>
+        <p class="mb-6 text-sm text-slate-600">
+          Terima kasih! Tim konservasi sedang meninjau laporan Anda dan akan
+          segera menuju lokasi.
+        </p>
+
+        <!-- Edu Fact -->
+        <div class="mb-6 rounded-xl bg-primary-50 p-4 text-left">
+          <div class="flex gap-3">
+            <span class="text-2xl">🐢</span>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm mb-1">
+                Did you know?
+              </h4>
+              <p class="text-xs text-slate-700">
+                Penyu telah ada sejak 110 juta tahun yang lalu, bahkan lebih tua
+                dari dinosaurus!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onclick="closeSuccessModal()"
+          class="w-full rounded-lg bg-primary px-6 py-3 text-sm font-bold text-white transition hover:bg-primary-700"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL: Tracking Detail (Halaman 5) -->
+    <div
+      id="trackingModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+    >
+      <div
+        class="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-2xl"
+      >
+        <!-- Header -->
+        <div
+          class="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4"
+        >
+          <h2 class="text-xl font-extrabold text-slate-900">Detail Report</h2>
+          <button
+            onclick="closeTracking()"
+            class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 transition hover:bg-slate-200"
+          >
+            <svg
+              class="h-5 w-5 text-slate-800"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-6">
+          <div class="grid gap-6 lg:grid-cols-2">
+            <!-- Left: Report Info -->
+            <div class="space-y-4">
+              <img
+                id="trackingPhoto"
+                src=""
+                alt="Report"
+                class="w-full rounded-xl object-cover max-h-80"
+              />
+              <div class="space-y-3">
+                <div>
+                  <h3
+                    id="trackingTitle"
+                    class="text-2xl font-extrabold text-slate-900"
+                  ></h3>
+                  <p
+                    id="trackingId"
+                    class="text-sm text-slate-500 font-mono"
+                  ></p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <svg
+                    class="h-5 w-5 text-slate-400 flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <p id="trackingLocation" class="text-sm text-slate-700"></p>
+                </div>
+                <div class="flex items-start gap-2">
+                  <svg
+                    class="h-5 w-5 text-slate-400 flex-shrink-0 mt-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p id="trackingTime" class="text-sm text-slate-700"></p>
+                </div>
+                <div
+                  id="trackingStatus"
+                  class="inline-flex items-center gap-2 rounded-full px-4 py-2"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Right: Timeline -->
+            <div>
+              <h4 class="mb-4 text-lg font-bold text-slate-900">
+                Handling Timeline
+              </h4>
+              <div id="timeline" class="space-y-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="emergency-rescue.js"></script>
+
+    <script>
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", () => {
+        // Load user data
+        const userDataStr =
+          sessionStorage.getItem("coratuka_user") ||
+          sessionStorage.getItem("new_user") ||
+          localStorage.getItem("coratuka_user");
+
+        if (userDataStr) {
+          try {
+            const userData = JSON.parse(userDataStr);
+          } catch (e) {
+            console.error("Error parsing user data:", e);
+          }
+        }
+
+        // Load reports
+        loadReports();
+      });
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color, transform,
+          opacity;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      *:focus-visible {
+        outline: 2px solid #15c5ce;
+        outline-offset: 2px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
+  </body>
+</html>

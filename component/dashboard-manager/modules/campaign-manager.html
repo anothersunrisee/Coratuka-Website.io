@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campaign & Event Manager - CORATUKA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#15C5CE",
+              secondary: "#FF8156",
+              tertiary: "#FFD166",
+              info: "#3b82f6",
+              danger: "#f64c4c",
+              warning: "#ffad0d",
+              success: "#47b881",
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Tab styles */
+      .tab-button {
+        position: relative;
+        padding: 1rem 1.5rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        color: #6b7280;
+      }
+
+      .tab-button.active {
+        color: #15c5ce;
+        font-weight: 600;
+      }
+
+      .tab-button.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #15c5ce;
+        border-radius: 2px 2px 0 0;
+      }
+
+      /* Tab content */
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Modal styles */
+      .modal-overlay {
+        display: none !important;
+      }
+
+      .modal-overlay.active {
+        display: flex !important;
+      }
+
+      /* Card styles with border */
+      .campaign-card,
+      .event-card {
+        position: relative;
+        transition: all 0.3s ease;
+        border: 2px solid #e5e7eb;
+      }
+
+      .campaign-card:hover,
+      .event-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(21, 197, 206, 0.15);
+        border-color: #15c5ce;
+      }
+
+      /* Card image overlay */
+      .card-image-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-image-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0) 0%,
+          rgba(0, 0, 0, 0.7) 100%
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .campaign-card:hover .card-image-overlay,
+      .event-card:hover .card-image-overlay {
+        opacity: 1;
+      }
+
+      .overlay-button {
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+      }
+
+      .campaign-card:hover .overlay-button,
+      .event-card:hover .overlay-button {
+        transform: translateY(0);
+      }
+
+      /* Badge styles */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .badge-open {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+
+      .badge-closed {
+        background-color: #fee2e2;
+        color: #991b1b;
+      }
+
+      .badge-completed {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+
+      .badge-cancelled,
+      .badge-rejected {
+        background-color: #f3f4f6;
+        color: #6b7280;
+      }
+
+      .badge-pending {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+
+      /* Form styles */
+      .form-input,
+      .form-textarea,
+      .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+      }
+
+      .form-input:focus,
+      .form-textarea:focus,
+      .form-select:focus {
+        outline: none;
+        border-color: #15c5ce;
+        box-shadow: 0 0 0 3px rgba(21, 197, 206, 0.1);
+      }
+
+      .form-label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-label.required::after {
+        content: "*";
+        color: #ef4444;
+        margin-left: 0.25rem;
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Attendance checkbox */
+      .attendance-check {
+        width: 1.25rem;
+        height: 1.25rem;
+        color: #47b881;
+        border-color: #d1d5db;
+        border-radius: 0.25rem;
+      }
+
+      /* Registrant avatar */
+      .registrant-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: #d0f3f5;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #119ea5;
+        font-weight: bold;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-40">
+      <div class="px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="goBackToDashboard()"
+              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-2xl font-bold text-ink flex items-center gap-2">
+                📢 Campaign & Event Manager
+              </h1>
+              <p class="text-sm text-gray-600">
+                Manage campaigns, events & registrations
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Logged in as</p>
+              <p id="conservator-name" class="font-semibold text-ink">
+                Dev Conservator
+              </p>
+            </div>
+            <button
+              onclick="logout()"
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+          <!-- Total Items -->
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Total Items</span>
+              <span class="text-2xl">📊</span>
+            </div>
+            <p id="stat-total" class="text-3xl font-bold text-ink">0</p>
+            <p class="text-xs text-gray-500 mt-1">Campaigns + Events</p>
+          </div>
+
+          <!-- Upcoming -->
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Upcoming</span>
+              <span class="text-2xl">📅</span>
+            </div>
+            <p id="stat-upcoming" class="text-3xl font-bold text-primary">0</p>
+            <p class="text-xs text-gray-500 mt-1">Open events</p>
+          </div>
+
+          <!-- Total Registrants -->
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Total Registrants</span>
+              <span class="text-2xl">👥</span>
+            </div>
+            <p id="stat-registrants" class="text-3xl font-bold text-ink">0</p>
+            <p class="text-xs text-gray-500 mt-1">All participants</p>
+          </div>
+
+          <!-- Avg Attendance -->
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Avg Attendance</span>
+              <span class="text-2xl">✅</span>
+            </div>
+            <p id="stat-attendance" class="text-3xl font-bold text-success">
+              0%
+            </p>
+            <p class="text-xs text-gray-500 mt-1">For completed events</p>
+          </div>
+
+          <!-- Completed -->
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Completed</span>
+              <span class="text-2xl">🎯</span>
+            </div>
+            <p id="stat-completed" class="text-3xl font-bold text-ink">0</p>
+            <p class="text-xs text-gray-500 mt-1">Finished items</p>
+          </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-xl shadow-sm mb-6 border border-gray-200">
+          <div class="border-b px-6">
+            <div class="flex gap-8 overflow-x-auto">
+              <button
+                onclick="switchTab('campaigns')"
+                id="tab-campaigns"
+                class="tab-button active"
+              >
+                📢 Campaigns
+              </button>
+              <button
+                onclick="switchTab('events')"
+                id="tab-events"
+                class="tab-button"
+              >
+                📅 Events
+              </button>
+              <button
+                onclick="switchTab('registrants')"
+                id="tab-registrants"
+                class="tab-button"
+              >
+                👥 Registrants
+              </button>
+              <button
+                onclick="switchTab('attendance')"
+                id="tab-attendance"
+                class="tab-button"
+              >
+                ✅ Attendance
+              </button>
+              <button
+                onclick="switchTab('statistics')"
+                id="tab-statistics"
+                class="tab-button"
+              >
+                📊 Statistics
+              </button>
+            </div>
+          </div>
+
+          <!-- Tab Contents -->
+          <div class="p-6">
+            <!-- CAMPAIGNS TAB -->
+            <div id="campaigns-content" class="tab-content active">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-bold text-ink">All Campaigns</h2>
+                  <p class="text-sm text-gray-600">
+                    Manage conservation campaigns
+                  </p>
+                </div>
+                <div class="flex gap-3">
+                  <select
+                    id="campaign-filter"
+                    onchange="loadCampaigns()"
+                    class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="completed">Completed</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                  <select
+                    id="campaign-sort"
+                    onchange="loadCampaigns()"
+                    class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="progress">By Progress</option>
+                  </select>
+                  <button
+                    onclick="openCampaignModal()"
+                    class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium flex items-center gap-2"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    New Campaign
+                  </button>
+                </div>
+              </div>
+
+              <!-- Campaigns Grid -->
+              <div
+                id="campaigns-grid"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                <!-- Campaigns will be loaded here -->
+              </div>
+            </div>
+
+            <!-- EVENTS TAB -->
+            <div id="events-content" class="tab-content">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-bold text-ink">All Events</h2>
+                  <p class="text-sm text-gray-600">
+                    Manage conservation events
+                  </p>
+                </div>
+                <div class="flex gap-3">
+                  <select
+                    id="event-filter"
+                    onchange="loadEvents()"
+                    class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="all">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                  <select
+                    id="event-sort"
+                    onchange="loadEvents()"
+                    class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="date-asc">By Date</option>
+                    <option value="popular">Most Popular</option>
+                  </select>
+                  <button
+                    onclick="openEventModal()"
+                    class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium flex items-center gap-2"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    New Event
+                  </button>
+                </div>
+              </div>
+
+              <!-- Events Grid -->
+              <div
+                id="events-grid"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                <!-- Events will be loaded here -->
+              </div>
+            </div>
+
+            <!-- REGISTRANTS TAB -->
+            <div id="registrants-content" class="tab-content">
+              <div class="mb-6">
+                <h2 class="text-xl font-bold text-ink mb-2">
+                  Event Registrants
+                </h2>
+                <p class="text-sm text-gray-600">
+                  View and manage event participants
+                </p>
+              </div>
+
+              <div class="mb-6">
+                <select
+                  id="registrant-event-select"
+                  onchange="loadRegistrants()"
+                  class="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">-- Select Event --</option>
+                </select>
+              </div>
+
+              <div
+                id="registrants-list"
+                class="bg-white border-2 border-gray-200 rounded-xl p-6"
+              >
+                <div class="text-center py-12 text-gray-400">
+                  <div class="text-6xl mb-3">👥</div>
+                  <p class="text-sm">
+                    Please select an event to view registrants
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ATTENDANCE TAB -->
+            <div id="attendance-content" class="tab-content">
+              <div class="mb-6">
+                <h2 class="text-xl font-bold text-ink mb-2">
+                  Manage Attendance
+                </h2>
+                <p class="text-sm text-gray-600">
+                  Mark attendance for completed events
+                </p>
+              </div>
+
+              <div class="mb-6">
+                <select
+                  id="attendance-event-select"
+                  onchange="loadAttendance()"
+                  class="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">-- Select Event --</option>
+                </select>
+              </div>
+
+              <div
+                id="attendance-list"
+                class="bg-white border-2 border-gray-200 rounded-xl p-6"
+              >
+                <div class="text-center py-12 text-gray-400">
+                  <div class="text-6xl mb-3">✅</div>
+                  <p class="text-sm">
+                    Please select an event to manage attendance
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- STATISTICS TAB -->
+            <div id="statistics-content" class="tab-content">
+              <div class="mb-6">
+                <h2 class="text-xl font-bold text-ink">
+                  Statistics & Analytics
+                </h2>
+                <p class="text-sm text-gray-600">
+                  Comprehensive performance metrics
+                </p>
+              </div>
+
+              <!-- Stats Grid -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Most Popular Events -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
+                  <h3 class="font-bold text-ink mb-4">Most Popular Events</h3>
+                  <div id="popular-events-list" class="space-y-3">
+                    <p class="text-sm text-gray-500">Loading...</p>
+                  </div>
+                </div>
+
+                <!-- Upcoming Events -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
+                  <h3 class="font-bold text-ink mb-4">Upcoming Events</h3>
+                  <div id="upcoming-events-list" class="space-y-3">
+                    <p class="text-sm text-gray-500">Loading...</p>
+                  </div>
+                </div>
+
+                <!-- Registration Metrics -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
+                  <h3 class="font-bold text-ink mb-4">Registration Metrics</h3>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600"
+                        >Total Registrations</span
+                      >
+                      <span
+                        class="text-lg font-bold text-ink"
+                        id="total-registrations"
+                        >0</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600">Avg per Event</span>
+                      <span
+                        class="text-lg font-bold text-ink"
+                        id="avg-per-event"
+                        >0</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600"
+                        >Capacity Fill Rate</span
+                      >
+                      <span
+                        class="text-lg font-bold text-success"
+                        id="capacity-fill"
+                        >0%</span
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Attendance Metrics -->
+                <div class="bg-white border-2 border-gray-200 rounded-xl p-6">
+                  <h3 class="font-bold text-ink mb-4">
+                    Attendance Performance
+                  </h3>
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600"
+                        >Overall Attendance</span
+                      >
+                      <span
+                        class="text-lg font-bold text-success"
+                        id="overall-attendance"
+                        >0%</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600">Total Attended</span>
+                      <span
+                        class="text-lg font-bold text-ink"
+                        id="total-attended"
+                        >0</span
+                      >
+                    </div>
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm text-gray-600"
+                        >Events Completed</span
+                      >
+                      <span
+                        class="text-lg font-bold text-ink"
+                        id="events-completed"
+                        >0</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Campaign Modal (Create/Edit) -->
+    <div
+      id="campaign-modal"
+      class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
+      <div
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+        >
+          <h2 id="campaign-modal-title" class="text-xl font-bold text-ink">
+            Create Campaign
+          </h2>
+          <button
+            onclick="closeCampaignModal()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="campaign-form" class="p-6 space-y-4">
+          <input type="hidden" id="campaign-id" />
+
+          <div>
+            <label class="form-label required">Campaign Title</label>
+            <input
+              type="text"
+              id="campaign-title"
+              class="form-input"
+              placeholder="e.g., Save Our Reef Campaign"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="form-label required">Description</label>
+            <textarea
+              id="campaign-description"
+              class="form-textarea"
+              rows="3"
+              placeholder="Describe the campaign..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label">Emoji</label>
+              <input
+                type="text"
+                id="campaign-emoji"
+                class="form-input"
+                placeholder="🪸"
+                maxlength="2"
+              />
+            </div>
+
+            <div>
+              <label class="form-label required">Category</label>
+              <select id="campaign-category" class="form-select" required>
+                <option value="edukasi">Edukasi</option>
+                <option value="relawan">Relawan</option>
+                <option value="kampanye">Kampanye Alam</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">Campaign Image</label>
+            <input
+              type="file"
+              id="campaign-image"
+              accept="image/*"
+              class="form-input"
+              onchange="previewCampaignImage(this)"
+            />
+            <img
+              id="campaign-image-preview"
+              class="mt-2 w-full rounded-lg hidden"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label required">Target Participants</label>
+              <input
+                type="number"
+                id="campaign-target"
+                class="form-input"
+                placeholder="500"
+                required
+                min="1"
+              />
+            </div>
+
+            <div>
+              <label class="form-label">Duration</label>
+              <input
+                type="text"
+                id="campaign-duration"
+                class="form-input"
+                placeholder="e.g., 3 bulan"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label required">Status</label>
+            <select id="campaign-status" class="form-select" required>
+              <option value="open">Open</option>
+              <option value="closed">Closed</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+
+          <div class="flex gap-3 pt-4 border-t">
+            <button
+              type="button"
+              onclick="closeCampaignModal()"
+              class="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onclick="saveCampaign()"
+              class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            >
+              Save Campaign
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Event Modal (Create/Edit) -->
+    <div
+      id="event-modal"
+      class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
+      <div
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+        >
+          <h2 id="event-modal-title" class="text-xl font-bold text-ink">
+            Create Event
+          </h2>
+          <button
+            onclick="closeEventModal()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="event-form" class="p-6 space-y-4">
+          <input type="hidden" id="event-id" />
+
+          <div>
+            <label class="form-label required">Event Title</label>
+            <input
+              type="text"
+              id="event-title"
+              class="form-input"
+              placeholder="e.g., Beach Cleanup Marina"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="form-label required">Description</label>
+            <textarea
+              id="event-description"
+              class="form-textarea"
+              rows="3"
+              placeholder="Describe the event..."
+              required
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="form-label">Event Image</label>
+            <input
+              type="file"
+              id="event-image"
+              accept="image/*"
+              class="form-input"
+              onchange="previewEventImage(this)"
+            />
+            <img
+              id="event-image-preview"
+              class="mt-2 w-full rounded-lg hidden"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label required">Date</label>
+              <input type="date" id="event-date" class="form-input" required />
+            </div>
+
+            <div>
+              <label class="form-label required">Time</label>
+              <input type="time" id="event-time" class="form-input" required />
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label required">Location</label>
+            <input
+              type="text"
+              id="event-location"
+              class="form-input"
+              placeholder="Pantai Marina, Semarang"
+              required
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label required">Max Participants</label>
+              <input
+                type="number"
+                id="event-max-participants"
+                class="form-input"
+                placeholder="50"
+                required
+                min="1"
+              />
+            </div>
+
+            <div>
+              <label class="form-label required">Status</label>
+              <select id="event-status" class="form-select" required>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">Contact Person</label>
+            <input
+              type="text"
+              id="event-contact"
+              class="form-input"
+              placeholder="Budi (081234567890)"
+            />
+          </div>
+
+          <div>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                id="event-featured"
+                class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+              <span class="text-sm text-gray-700">Featured Event</span>
+            </label>
+          </div>
+
+          <div class="flex gap-3 pt-4 border-t">
+            <button
+              type="button"
+              onclick="closeEventModal()"
+              class="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onclick="saveEvent()"
+              class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            >
+              Save Event
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div
+      id="notification-toast"
+      class="fixed top-4 right-4 z-[60] hidden transition-all duration-300"
+    >
+      <div
+        class="bg-white rounded-lg shadow-2xl p-4 min-w-[300px] border-l-4"
+        id="toast-content"
+      >
+        <div class="flex items-center gap-3">
+          <div id="toast-icon" class="text-2xl"></div>
+          <div class="flex-1">
+            <p id="toast-message" class="font-medium text-ink"></p>
+          </div>
+          <button
+            onclick="closeNotification()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/data-init-campaign.js"></script>
+    <script src="../assets/js/campaign-handler.js"></script>
+
+    <script>
+      // Simple notification system
+      function showNotification(message, type = "success") {
+        const toast = document.getElementById("notification-toast");
+        const content = document.getElementById("toast-content");
+        const icon = document.getElementById("toast-icon");
+        const msg = document.getElementById("toast-message");
+
+        // Set icon and color based on type
+        if (type === "success") {
+          icon.textContent = "✅";
+          content.style.borderLeftColor = "#47b881";
+        } else if (type === "error") {
+          icon.textContent = "❌";
+          content.style.borderLeftColor = "#f64c4c";
+        } else if (type === "warning") {
+          icon.textContent = "⚠️";
+          content.style.borderLeftColor = "#ffad0d";
+        } else {
+          icon.textContent = "ℹ️";
+          content.style.borderLeftColor = "#3b82f6";
+        }
+
+        msg.textContent = message;
+        toast.classList.remove("hidden");
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+          toast.classList.add("hidden");
+        }, 3000);
+      }
+
+      function closeNotification() {
+        document.getElementById("notification-toast").classList.add("hidden");
+      }
+
+      // Stub functions for compatibility
+      function checkConservatorAccess() {
+        return true; // Mock - implement real auth
+      }
+
+      function getCurrentConservator() {
+        return { name: "Dev Conservator" }; // Mock
+      }
+
+      function saveToLocalStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+
+      function loadFromLocalStorage(key) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+      }
+
+      function setupMultiTabSync(callback) {
+        window.addEventListener("storage", callback);
+      }
+
+      function goBackToDashboard() {
+        window.location.href = "../dashboard-manager.html";
+      }
+
+      function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+          window.location.href = "conservator-login.html";
+        }
+      }
+    </script>
+  </body>
+</html>

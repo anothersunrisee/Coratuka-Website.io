@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ocean Challenge Manager - CORATUKA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#15C5CE",
+              secondary: "#FF8156",
+              tertiary: "#FFD166",
+              info: "#3b82f6",
+              danger: "#f64c4c",
+              warning: "#ffad0d",
+              success: "#47b881",
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Tab styles */
+      .tab-button {
+        position: relative;
+        padding: 1rem 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .tab-button.active {
+        color: #15c5ce;
+        font-weight: 600;
+      }
+
+      .tab-button.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #15c5ce;
+        border-radius: 2px 2px 0 0;
+      }
+
+      /* Modal & Overlay styles */
+      .modal-overlay {
+        display: none !important;
+      }
+
+      .modal-overlay.active {
+        display: flex !important;
+      }
+
+      /* Detail panel slide-in */
+      .detail-panel {
+        position: fixed;
+        top: 0;
+        right: -700px;
+        width: 700px;
+        height: 100vh;
+        background: white;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+        transition: right 0.3s ease-in-out;
+        z-index: 60;
+        overflow-y: auto;
+      }
+
+      .detail-panel.active {
+        right: 0;
+      }
+
+      .detail-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 50;
+        display: none;
+      }
+
+      .detail-overlay.active {
+        display: block;
+      }
+
+      /* Card hover effects */
+      .challenge-card,
+      .reward-card {
+        border-color: black;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+      }
+
+      .challenge-card:hover,
+      .reward-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(21, 197, 206, 0.15);
+      }
+
+      /* Responsive design */
+      @media (max-width: 1024px) {
+        .detail-panel {
+          width: 100%;
+          right: -100%;
+        }
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-40">
+      <div class="px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="window.location.href='../dashboard-manager.html'"
+              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-2xl font-bold text-ink flex items-center gap-2">
+                🎯 Ocean Challenge & Rewards Manager
+              </h1>
+              <p class="text-sm text-gray-600">
+                Manage challenges, validate submissions, and handle rewards
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Logged in as</p>
+              <p id="conservator-name" class="font-semibold text-ink">
+                Conservator
+              </p>
+            </div>
+            <button
+              onclick="logout()"
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <!-- Total Challenges -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Total Challenges</span>
+              <span class="text-2xl">🎯</span>
+            </div>
+            <p id="stat-total-challenges" class="text-3xl font-bold text-ink">
+              0
+            </p>
+            <p class="text-xs text-gray-500 mt-1">Available challenges</p>
+          </div>
+
+          <!-- Active Challenges -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Active</span>
+              <span class="text-2xl">✅</span>
+            </div>
+            <p id="stat-active" class="text-3xl font-bold text-success">0</p>
+            <p class="text-xs text-gray-500 mt-1">Active challenges</p>
+          </div>
+
+          <!-- Pending Submissions -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Pending</span>
+              <span class="text-2xl">⏳</span>
+            </div>
+            <p id="stat-pending" class="text-3xl font-bold text-warning">0</p>
+            <p class="text-xs text-gray-500 mt-1">Awaiting validation</p>
+          </div>
+
+          <!-- Total Rewards -->
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Rewards</span>
+              <span class="text-2xl">🎁</span>
+            </div>
+            <p id="stat-rewards" class="text-3xl font-bold text-ink">0</p>
+            <p class="text-xs text-gray-500 mt-1">Available rewards</p>
+          </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="bg-white rounded-xl shadow-sm mb-6">
+          <div class="border-b px-6">
+            <div class="flex gap-8 overflow-x-auto">
+              <button
+                onclick="switchTab('challenges')"
+                id="tab-challenges"
+                class="tab-button active"
+              >
+                🎯 Challenges
+              </button>
+              <button
+                onclick="switchTab('submissions')"
+                id="tab-submissions"
+                class="tab-button text-gray-600"
+              >
+                📝 Submissions
+              </button>
+              <button
+                onclick="switchTab('rewards')"
+                id="tab-rewards"
+                class="tab-button text-gray-600"
+              >
+                🎁 Rewards
+              </button>
+            </div>
+          </div>
+
+          <!-- Tab Content -->
+          <div class="p-6">
+            <!-- Challenges Tab -->
+            <div id="challenges-content" class="tab-content">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-bold text-ink">Manage Challenges</h2>
+                  <p class="text-sm text-gray-600">
+                    Create, edit, and manage ocean challenges
+                  </p>
+                </div>
+                <button
+                  onclick="openCreateChallengeModal()"
+                  class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium flex items-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Create Challenge
+                </button>
+              </div>
+
+              <div
+                id="challenges-grid"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                <!-- Challenges will be rendered here -->
+              </div>
+            </div>
+
+            <!-- Submissions Tab -->
+            <div id="submissions-content" class="tab-content hidden">
+              <div class="mb-6">
+                <h2 class="text-xl font-bold text-ink mb-2">
+                  Validate Submissions
+                </h2>
+                <p class="text-sm text-gray-600">
+                  Review and approve user challenge submissions
+                </p>
+              </div>
+
+              <!-- Filter Bar -->
+              <div class="flex gap-3 mb-6">
+                <select
+                  id="filter-submission-status"
+                  onchange="applySubmissionFilters()"
+                  class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="all">All Status</option>
+                  <option value="submitted">Submitted</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+
+                <input
+                  type="text"
+                  id="search-submissions"
+                  placeholder="Search by user or challenge..."
+                  oninput="applySubmissionFilters()"
+                  class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              <div id="submissions-list" class="space-y-4">
+                <!-- Submissions will be rendered here -->
+              </div>
+            </div>
+
+            <!-- Rewards Tab -->
+            <div id="rewards-content" class="tab-content hidden">
+              <div class="flex items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl font-bold text-ink">Manage Rewards</h2>
+                  <p class="text-sm text-gray-600">
+                    Create and manage reward catalog
+                  </p>
+                </div>
+                <button
+                  onclick="openCreateRewardModal()"
+                  class="px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors font-medium flex items-center gap-2"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  Create Reward
+                </button>
+              </div>
+
+              <div
+                id="rewards-grid"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                <!-- Rewards will be rendered here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Detail Panel (Slide-in) -->
+    <div
+      id="detail-overlay"
+      class="detail-overlay"
+      onclick="closeDetailPanel()"
+    ></div>
+    <div id="detail-panel" class="detail-panel">
+      <div
+        class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+      >
+        <h2 id="detail-title" class="text-xl font-bold text-ink">Details</h2>
+        <button
+          onclick="closeDetailPanel()"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div id="detail-content" class="p-6">
+        <!-- Content will be injected by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Create/Edit Challenge Modal -->
+    <div
+      id="challenge-modal"
+      class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
+      <div
+        class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+        >
+          <h2 id="challenge-modal-title" class="text-xl font-bold text-ink">
+            Create Challenge
+          </h2>
+          <button
+            onclick="closeChallengeModal()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="challenge-form" onsubmit="saveChallenge(event)" class="p-6">
+          <input type="hidden" id="challenge-id" />
+
+          <!-- Challenge Form Fields will be added by JavaScript -->
+          <div id="challenge-form-fields"></div>
+
+          <div class="flex gap-3 pt-4 border-t mt-6">
+            <button
+              type="button"
+              onclick="closeChallengeModal()"
+              class="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            >
+              Save Challenge
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Create/Edit Reward Modal -->
+    <div
+      id="reward-modal"
+      class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
+      <div
+        class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+      >
+        <div
+          class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+        >
+          <h2 id="reward-modal-title" class="text-xl font-bold text-ink">
+            Create Reward
+          </h2>
+          <button
+            onclick="closeRewardModal()"
+            class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <form id="reward-form" onsubmit="saveReward(event)" class="p-6">
+          <input type="hidden" id="reward-id" />
+
+          <!-- Reward Form Fields will be added by JavaScript -->
+          <div id="reward-form-fields"></div>
+
+          <div class="flex gap-3 pt-4 border-t mt-6">
+            <button
+              type="button"
+              onclick="closeRewardModal()"
+              class="flex-1 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors"
+            >
+              Save Reward
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/data-init-challenge.js"></script>
+    <script src="../assets/js/challenge-handler.js"></script>
+  </body>
+</html>

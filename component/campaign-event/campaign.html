@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campaign Konservasi - CORATUKA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              btn: "#FFD166",
+              "btn-hover": "#d8b052",
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              info: { DEFAULT: "#3b82f6" },
+              danger: { DEFAULT: "#f64c4c" },
+              warning: { DEFAULT: "#ffad0d" },
+              success: { DEFAULT: "#47b881" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Desktop: Container scroll, page fixed */
+      @media (min-width: 768px) {
+        body {
+          overflow: hidden;
+        }
+        #scrollContainer {
+          height: calc(100vh - 350px);
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+      }
+
+      /* Mobile: Full page scroll */
+      @media (max-width: 767px) {
+        body {
+          overflow: auto;
+        }
+        #scrollContainer {
+          height: auto;
+          overflow: visible;
+        }
+        .mascot {
+          display: none !important;
+        }
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Card hover effect */
+      .campaign-card {
+        transition: all 0.3s ease;
+      }
+
+      .campaign-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Status toggle buttons */
+      .status-btn {
+        transition: all 0.2s ease;
+      }
+
+      .status-btn.active {
+        background-color: #ffd166;
+        color: #4b4b4b;
+        font-weight: 600;
+        border-color: #ffd166;
+      }
+
+      /* Custom Dropdown - HIGH Z-INDEX */
+      .dropdown {
+        position: relative;
+      }
+
+      .dropdown-toggle {
+        transition: all 0.2s ease;
+      }
+
+      .dropdown-toggle:hover {
+        background-color: #e8f9fa;
+        border-color: #15c5ce;
+      }
+
+      .dropdown.active .dropdown-toggle svg {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        margin-top: 0.25rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        z-index: 100; /* HIGH Z-INDEX - above cards */
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .dropdown.active .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu button {
+        width: 100%;
+        text-align: left;
+        padding: 0.5rem 1rem;
+        transition: all 0.15s ease;
+        color: #4b4b4b;
+      }
+
+      .dropdown-menu button:hover {
+        background-color: #e8f9fa;
+        color: #15c5ce;
+      }
+
+      .dropdown-menu button.selected {
+        background-color: #d0f3f5;
+        color: #119ea5;
+        font-weight: 600;
+      }
+
+      /* Badge styles */
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .badge-relawan {
+        background-color: #dbeafe;
+        color: #1e40af;
+      }
+      .badge-edukasi {
+        background-color: #d1fae5;
+        color: #065f46;
+      }
+      .badge-kampanye {
+        background-color: #fef3c7;
+        color: #92400e;
+      }
+      .badge-selesai {
+        background-color: #e0e7ff;
+        color: #4338ca;
+      }
+
+      /* Modal backdrop blur */
+      .modal-backdrop {
+        backdrop-filter: blur(8px);
+      }
+
+      /* Image gallery grid */
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .gallery-grid img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        border: 2px solid #e5e7eb;
+      }
+
+      /* Animation */
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .success-popup {
+        animation: slideInUp 0.3s ease;
+      }
+
+      /* Scrollbar styling */
+      #scrollContainer::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #scrollContainer::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+
+      #scrollContainer::-webkit-scrollbar-thumb {
+        background: #15c5ce;
+        border-radius: 10px;
+      }
+
+      #scrollContainer::-webkit-scrollbar-thumb:hover {
+        background: #119ea5;
+      }
+    </style>
+  </head>
+
+  <body class="bg-primary-50 font-inter">
+    <!-- Navbar -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="window.location.href='../Features/campaign-event.html'"
+              class="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn-hover rounded-lg transition-all"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span class="font-medium">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <img src="../../img/index/logo coratuka.png" class="h-12" alt="" />
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              class="relative p-2 hover:bg-gray-100 rounded-lg transition-all"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </button>
+            <div
+              class="w-8 h-8 bg-primary-200 rounded-full flex items-center justify-center"
+            >
+              <span class="text-primary-700 font-bold text-sm">W</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section with Pattern Background -->
+    <section class="relative pt-8 pb-6 md:pt-12 md:pb-8 overflow-hidden">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 bg-white"></div>
+
+      <!-- Ocean Pattern Overlay -->
+      <div
+        class="pointer-events-none absolute inset-0 opacity-5"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 45c8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15-8.284 0-15 6.716-15 15 0 8.284 6.716 15 15 15zm0-5c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z\' fill=\'%23FF8156\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+        "
+      ></div>
+
+      <!-- Hero Content -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-4xl mx-auto">
+          <h1 class="text-3xl md:text-5xl font-black text-ink mb-4">
+            Campaign Konservasi Laut
+          </h1>
+          <p class="text-base md:text-lg text-gray-700 mb-6">
+            Bergabunglah dalam gerakan awareness dan edukasi untuk menjaga
+            ekosistem laut Indonesia
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter Section (Fixed with Hero) -->
+    <section class="relative pb-6 overflow-visible z-30">
+      <div class="absolute inset-0 bg-white"></div>
+      <div
+        class="pointer-events-none absolute inset-0 opacity-5"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 45c8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15-8.284 0-15 6.716-15 15 0 8.284 6.716 15 15 15zm0-5c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z\' fill=\'%23FF8156\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+        "
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
+        <div
+          class="bg-white border-2 border-gray-200 rounded-2xl p-4 md:p-6 shadow-sm"
+        >
+          <div
+            class="flex flex-col md:flex-row items-start md:items-center gap-4"
+          >
+            <!-- Kategori Dropdown -->
+            <div class="flex items-center gap-3 w-full md:w-auto">
+              <label class="text-sm font-bold text-ink whitespace-nowrap">
+                Kategori:
+              </label>
+              <div class="flex-1 md:w-48">
+                <div class="dropdown" id="dropdownKategori">
+                  <button
+                    type="button"
+                    class="dropdown-toggle w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg font-medium text-gray-700 flex items-center justify-between hover:border-primary transition-all"
+                  >
+                    <span id="selectedKategori">Semua</span>
+                    <svg
+                      class="w-4 h-4 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <button
+                      type="button"
+                      data-value="semua"
+                      class="selected text-sm"
+                    >
+                      Semua
+                    </button>
+                    <button type="button" data-value="relawan" class="text-sm">
+                      Relawan
+                    </button>
+                    <button type="button" data-value="edukasi" class="text-sm">
+                      Edukasi
+                    </button>
+                    <button type="button" data-value="kampanye" class="text-sm">
+                      Kampanye Alam
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="hidden md:block h-8 w-px bg-gray-300"></div>
+
+            <!-- Waktu Dropdown -->
+            <div class="flex items-center gap-3 w-full md:w-auto">
+              <label class="text-sm font-bold text-ink whitespace-nowrap">
+                Waktu:
+              </label>
+              <div class="flex-1 md:w-48">
+                <div class="dropdown" id="dropdownWaktu">
+                  <button
+                    type="button"
+                    class="dropdown-toggle w-full px-3 py-2 text-sm border-2 border-gray-300 rounded-lg font-medium text-gray-700 flex items-center justify-between hover:border-primary transition-all"
+                  >
+                    <span id="selectedWaktu">Semua</span>
+                    <svg
+                      class="w-4 h-4 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </button>
+                  <div class="dropdown-menu">
+                    <button
+                      type="button"
+                      data-value="semua"
+                      class="selected text-sm"
+                    >
+                      Semua
+                    </button>
+                    <button
+                      type="button"
+                      data-value="minggu-ini"
+                      class="text-sm"
+                    >
+                      Minggu Ini
+                    </button>
+                    <button
+                      type="button"
+                      data-value="bulan-ini"
+                      class="text-sm"
+                    >
+                      Bulan Ini
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="hidden md:block h-8 w-px bg-gray-300"></div>
+
+            <!-- Status Toggle Buttons -->
+            <div class="flex items-center gap-2 w-full md:w-auto md:ml-auto">
+              <button
+                id="statusTersedia"
+                class="status-btn active flex-1 md:flex-none px-4 md:px-5 py-2 text-sm border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:border-btn transition-all"
+              >
+                Tersedia
+              </button>
+              <button
+                id="statusTerdaftar"
+                class="status-btn flex-1 md:flex-none px-4 md:px-5 py-2 text-sm border-2 border-gray-300 rounded-lg font-semibold text-gray-700 hover:border-btn transition-all"
+              >
+                Terdaftar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scrollable Content Container with WHITE + Pattern Background -->
+    <div id="scrollContainer" class="relative">
+      <!-- WHITE Background + Pattern -->
+      <div class="absolute inset-0 bg-white"></div>
+      <div
+        class="pointer-events-none absolute inset-0 opacity-5"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 45c8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15-8.284 0-15 6.716-15 15 0 8.284 6.716 15 15 15zm0-5c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z\' fill=\'%23FF8156\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+        "
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <!-- Campaign Grid Section -->
+        <section class="pb-20 pt-4">
+          <div
+            id="campaignGrid"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            <!-- Campaign Card 1 (Tersedia) -->
+            <div
+              class="campaign-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border border-gray-100"
+              data-category="edukasi"
+              data-time="minggu-ini"
+              data-status="tersedia"
+              data-campaign-id="campaign-1"
+            >
+              <!-- Image with Badge -->
+              <div
+                class="relative h-40 bg-gray-400 flex items-center justify-center"
+                style="
+                  background-image: url('../../img/campaign-event/1.png');
+                  background-size: cover;
+                  background-position: center;
+                "
+              >
+                <span class="text-5xl">🪸</span>
+                <!-- Badge on top-right corner -->
+                <span class="badge badge-edukasi absolute top-3 right-3"
+                  >Edukasi</span
+                >
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-lg font-bold text-ink mb-2">
+                  Kampanye #SaveOurReef
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Edukasi pentingnya terumbu karang untuk ekosistem laut
+                </p>
+
+                <!-- Simplified Participant Count -->
+                <div class="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                    />
+                  </svg>
+                  <span class="font-semibold">234/500</span>
+                  <span class="text-gray-500">mendaftar</span>
+                </div>
+
+                <button
+                  class="campaign-register-btn w-full bg-tertiary hover:bg-btn-hover text-ink font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Gabung Sekarang
+                </button>
+              </div>
+            </div>
+
+            <!-- Campaign Card 2 (Tersedia) -->
+            <div
+              class="campaign-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border border-gray-100"
+              data-category="kampanye"
+              data-time="bulan-ini"
+              data-status="tersedia"
+              data-campaign-id="campaign-2"
+            >
+              <div
+                class="relative h-40 bg-gray-400 flex items-center justify-center"
+                style="
+                  background-image: url('../../img/campaign-event/2.png');
+                  background-size: cover;
+                  background-position: center;
+                "
+              >
+                <span class="text-5xl">♻️</span>
+                <span class="badge badge-kampanye absolute top-3 right-3"
+                  >Kampanye Alam</span
+                >
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-lg font-bold text-ink mb-2">
+                  Bijak Plastik di Pantai
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Kampanye pengurangan sampah plastik di kawasan pesisir
+                </p>
+
+                <div class="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                    />
+                  </svg>
+                  <span class="font-semibold">567/1000</span>
+                  <span class="text-gray-500">mendaftar</span>
+                </div>
+
+                <button
+                  class="campaign-register-btn w-full bg-tertiary hover:bg-btn-hover text-ink font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Gabung Sekarang
+                </button>
+              </div>
+            </div>
+
+            <!-- Campaign Card 3 (Tersedia) -->
+            <div
+              class="campaign-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border border-gray-100"
+              data-category="relawan"
+              data-time="bulan-ini"
+              data-status="tersedia"
+              data-campaign-id="campaign-3"
+            >
+              <div
+                class="relative h-40 bg-gray-400 flex items-center justify-center"
+                style="
+                  background-image: url('../../img/campaign-event/3.png');
+                  background-size: cover;
+                  background-position: center;
+                "
+              >
+                <span class="text-5xl">🐢</span>
+                <span class="badge badge-relawan absolute top-3 right-3"
+                  >Relawan</span
+                >
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-lg font-bold text-ink mb-2">
+                  Jaga Penyu Bersama
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Program rekrutmen relawan untuk perlindungan habitat penyu
+                </p>
+
+                <div class="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                    />
+                  </svg>
+                  <span class="font-semibold">89/150</span>
+                  <span class="text-gray-500">relawan</span>
+                </div>
+
+                <button
+                  class="campaign-register-btn w-full bg-tertiary hover:bg-btn-hover text-ink font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Gabung Sekarang
+                </button>
+              </div>
+            </div>
+
+            <!-- Campaign Card 4 (Tersedia) -->
+            <div
+              class="campaign-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border border-gray-100"
+              data-category="edukasi"
+              data-time="minggu-ini"
+              data-status="tersedia"
+              data-campaign-id="campaign-4"
+            >
+              <div
+                class="relative h-40 bg-gray-400 flex items-center justify-center"
+                style="
+                  background-image: url('../../img/campaign-event/4.png');
+                  background-size: cover;
+                  background-position: center;
+                "
+              >
+                <span class="text-5xl">🌊</span>
+                <span class="badge badge-edukasi absolute top-3 right-3"
+                  >Edukasi</span
+                >
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-lg font-bold text-ink mb-2">
+                  Laut Sehat, Hidup Sehat
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Program edukasi hubungan kesehatan laut dengan manusia
+                </p>
+
+                <div class="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+                    />
+                  </svg>
+                  <span class="font-semibold">178/300</span>
+                  <span class="text-gray-500">mendaftar</span>
+                </div>
+
+                <button
+                  class="campaign-register-btn w-full bg-tertiary hover:bg-btn-hover text-ink font-semibold py-2.5 rounded-lg transition-colors"
+                >
+                  Gabung Sekarang
+                </button>
+              </div>
+            </div>
+
+            <!-- Campaign Card 5 (Terdaftar & Selesai) - Hidden by default -->
+            <div
+              class="campaign-card bg-white rounded-xl shadow-md overflow-hidden cursor-pointer border border-gray-100 hidden"
+              data-category="edukasi"
+              data-time="bulan-ini"
+              data-status="terdaftar"
+              data-completed="true"
+              data-campaign-id="campaign-5"
+            >
+              <div
+                class="relative h-40 bg-gray-400 flex items-center justify-center"
+                style="
+                  background-image: url('../../img/campaign-event/5.png');
+                  background-size: cover;
+                  background-position: center;
+                "
+              >
+                <span class="text-5xl">🌿</span>
+                <div class="absolute top-3 right-3 flex gap-2">
+                  <span class="badge badge-edukasi">Edukasi</span>
+                  <span class="badge badge-selesai">Selesai</span>
+                </div>
+              </div>
+
+              <div class="p-5">
+                <h3 class="text-lg font-bold text-ink mb-2">
+                  Pantai Bersih Indonesia
+                </h3>
+                <p class="text-sm text-gray-600 mb-4">
+                  Campaign edukasi kebersihan pantai yang telah selesai
+                </p>
+
+                <div class="flex items-center gap-1 text-sm text-gray-600 mb-4">
+                  <svg
+                    class="w-4 h-4 text-success"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span class="font-semibold text-success">450 Peserta</span>
+                </div>
+
+                <button
+                  class="certificate-btn w-full bg-tertiary hover:bg-btn-hover text-ink font-semibold py-2.5 rounded-lg transition-colors mb-2"
+                >
+                  Lihat Sertifikat
+                </button>
+                <button
+                  class="detail-btn w-full bg-gray-100 hover:bg-gray-200 text-ink font-medium py-2.5 rounded-lg transition-colors"
+                >
+                  Lihat Detail
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- No Results Message -->
+          <div id="noResults" class="hidden text-center py-16">
+            <div class="text-6xl mb-4">🔍</div>
+            <h3 class="text-2xl font-bold text-ink mb-2">
+              Tidak Ada Campaign Ditemukan
+            </h3>
+            <p class="text-gray-600">Coba ubah filter pencarian kamu</p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Mascot Tuka (Bottom Left) - Offset -->
+    <div
+      class="mascot fixed -bottom-8 -left-8 w-64 h-64 pointer-events-none z-40 hidden md:block"
+    >
+      <img src="../../img/welcome/tuka.png"" alt="Tuka Mascot" class="w-full
+      h-full object-contain" />
+    </div>
+
+    <!-- Mascot Cora (Bottom Right) - Offset -->
+    <div
+      class="mascot fixed -bottom-8 -right-8 w-64 h-64 pointer-events-none z-40 hidden md:block"
+    >
+      <img src="../../img/welcome/cora.png"" alt="Cora Mascot" class="w-full
+      h-full object-contain" />
+    </div>
+
+    <!-- Modal Registration Campaign -->
+    <div
+      id="campaignModal"
+      class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop bg-black/50"
+    >
+      <div class="flex items-center justify-center min-h-screen px-4 py-8">
+        <div
+          class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden transform transition-all"
+        >
+          <!-- Modal Header Image -->
+          <div
+            id="modalHeroImage"
+            class="h-48 bg-gray-400 flex items-center justify-center relative"
+          >
+            <span class="text-7xl">🪸</span>
+            <span
+              id="modalBadgeTop"
+              class="badge badge-edukasi absolute top-3 right-3"
+              >Edukasi</span
+            >
+          </div>
+
+          <!-- Modal Content -->
+          <div class="p-8">
+            <!-- Close Button -->
+            <button
+              id="closeCampaignModal"
+              class="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-2 transition-colors z-10"
+            >
+              <svg
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <!-- Title -->
+            <div class="mb-6">
+              <h2 id="modalTitle" class="text-3xl font-extrabold text-ink mb-3">
+                Kampanye #SaveOurReef
+              </h2>
+              <p id="modalDescription" class="text-gray-600 leading-relaxed">
+                Edukasi pentingnya terumbu karang untuk ekosistem laut dan cara
+                melindunginya.
+              </p>
+            </div>
+
+            <!-- Campaign Stats -->
+            <div class="grid grid-cols-2 gap-4 mb-6">
+              <div class="bg-primary-50 rounded-lg p-4 text-center">
+                <div
+                  id="modalParticipants"
+                  class="text-2xl font-bold text-primary"
+                >
+                  234
+                </div>
+                <div class="text-sm text-gray-600">Peserta Terdaftar</div>
+              </div>
+              <div class="bg-green-50 rounded-lg p-4 text-center">
+                <div id="modalTarget" class="text-2xl font-bold text-success">
+                  500
+                </div>
+                <div class="text-sm text-gray-600">Target Peserta</div>
+              </div>
+            </div>
+
+            <!-- Registration Form -->
+            <div class="border-t pt-6">
+              <h3 class="font-bold text-ink text-lg mb-4">
+                Formulir Pendaftaran:
+              </h3>
+              <form id="campaignRegistrationForm" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Nama Lengkap</label
+                  >
+                  <input
+                    type="text"
+                    id="formNama"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    placeholder="Masukkan nama lengkap"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Email</label
+                  >
+                  <input
+                    type="email"
+                    id="formEmail"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    placeholder="email@example.com"
+                  />
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >No. HP</label
+                    >
+                    <input
+                      type="tel"
+                      id="formPhone"
+                      required
+                      pattern="[0-9]{10,13}"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                      placeholder="081234567890"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1"
+                      >Usia</label
+                    >
+                    <input
+                      type="number"
+                      id="formUsia"
+                      required
+                      min="10"
+                      max="100"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                      placeholder="17"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Instansi/Sekolah</label
+                  >
+                  <input
+                    type="text"
+                    id="formInstansi"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                    placeholder="SMA Negeri 1 Semarang"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  class="w-full bg-tertiary hover:bg-btn-hover text-ink font-bold py-3 rounded-lg transition-all transform hover:scale-105"
+                >
+                  ✓ Konfirmasi Pendaftaran
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Detail (for Terdaftar & Completed Campaigns) -->
+    <div
+      id="detailModal"
+      class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop bg-black/50"
+    >
+      <div class="flex items-center justify-center min-h-screen px-4 py-8">
+        <div
+          class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden transform transition-all max-h-[90vh] overflow-y-auto"
+        >
+          <div class="p-8">
+            <!-- Close Button -->
+            <button
+              id="closeDetailModal"
+              class="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-2 transition-colors"
+            >
+              <svg
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <h2 class="text-3xl font-extrabold text-ink mb-6">
+              Dokumentasi Campaign
+            </h2>
+
+            <!-- Campaign Summary -->
+            <div class="bg-primary-50 rounded-lg p-6 mb-6">
+              <h3 class="font-bold text-ink mb-4">Data Campaign:</h3>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span class="text-gray-600">Nama Campaign:</span>
+                  <span class="font-bold text-ink ml-2"
+                    >Pantai Bersih Indonesia</span
+                  >
+                </div>
+                <div>
+                  <span class="text-gray-600">Durasi:</span>
+                  <span class="font-bold text-ink ml-2">3 bulan</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Kategori:</span>
+                  <span class="font-bold text-ink ml-2">Edukasi</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Total Peserta:</span>
+                  <span class="font-bold text-ink ml-2">450 orang</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievement Data -->
+            <div class="bg-green-50 rounded-lg p-6 mb-6">
+              <h3 class="font-bold text-ink mb-4">Data Capaian:</h3>
+              <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span class="text-gray-600">Konten Dibuat:</span>
+                  <span class="font-bold text-ink ml-2">120 post</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Reach:</span>
+                  <span class="font-bold text-ink ml-2">50K+ orang</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Engagement:</span>
+                  <span class="font-bold text-ink ml-2">15K interaksi</span>
+                </div>
+                <div>
+                  <span class="text-gray-600">Awareness:</span>
+                  <span class="font-bold text-ink ml-2">85% increase</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Documentation Gallery -->
+            <div class="mb-6">
+              <h3 class="font-bold text-ink mb-3">Dokumentasi:</h3>
+              <div class="gallery-grid">
+                <img
+                  src="../../img/campaign-event/10-1.png"
+                  alt="Dokumentasi 1"
+                />
+                <img
+                  src="../../img/campaign-event/10-2.png"
+                  alt="Dokumentasi 2"
+                />
+                <img
+                  src="../../img/campaign-event/10-3.png"
+                  alt="Dokumentasi 3"
+                />
+                <img
+                  src="../../img/campaign-event/10-4.png"
+                  alt="Dokumentasi 4"
+                />
+                <img
+                  src="../../img/campaign-event/10-5.png"
+                  alt="Dokumentasi 5"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Certificate -->
+    <div
+      id="certificateModal"
+      class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop bg-black/50"
+    >
+      <div class="flex items-center justify-center min-h-screen px-4 py-8">
+        <div
+          class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden transform transition-all"
+        >
+          <div class="p-8">
+            <!-- Close Button -->
+            <button
+              id="closeCertificateModal"
+              class="absolute top-4 right-4 bg-white/90 hover:bg-white rounded-full p-2 transition-colors"
+            >
+              <svg
+                class="w-6 h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <h2 class="text-3xl font-extrabold text-ink mb-6 text-center">
+              🏆 Sertifikat Partisipasi
+            </h2>
+
+            <!-- Certificate Preview -->
+            <div
+              class="border-4 border-primary rounded-lg p-8 bg-gradient-to-br from-primary-50 to-white mb-6"
+            >
+              <div class="text-center mb-6">
+                <div class="text-6xl mb-4">🪸</div>
+                <h3 class="text-2xl font-bold text-ink mb-2">SERTIFIKAT</h3>
+                <p class="text-gray-600">Diberikan Kepada:</p>
+              </div>
+
+              <div class="text-center mb-6">
+                <h4 class="text-3xl font-black text-primary mb-2">
+                  Kelompok 1 F1
+                </h4>
+                <p class="text-gray-600 mb-4">Atas partisipasinya dalam</p>
+                <h5 class="text-xl font-bold text-ink">
+                  Pantai Bersih Indonesia
+                </h5>
+                <p class="text-sm text-gray-500 mt-2">
+                  Campaign Konservasi Laut 2025
+                </p>
+              </div>
+
+              <div class="text-center text-sm text-gray-600">
+                <p>Terima kasih atas kontribusi Anda dalam</p>
+                <p>menjaga kelestarian ekosistem laut Indonesia</p>
+              </div>
+            </div>
+
+            <button
+              class="w-full bg-tertiary hover:bg-btn-hover text-ink font-bold py-3 rounded-lg transition-colors"
+            >
+              📥 Download Sertifikat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div
+      id="successPopup"
+      class="hidden fixed top-4 right-4 z-[60] success-popup"
+    >
+      <div
+        class="bg-white rounded-lg shadow-2xl p-6 max-w-sm border-l-4 border-success"
+      >
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0">
+            <div
+              class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center"
+            >
+              <svg
+                class="w-6 h-6 text-success"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-ink mb-1">
+              Pendaftaran Berhasil! 🎉
+            </h4>
+            <p class="text-sm text-gray-600 mb-2">
+              Terima kasih sudah bergabung dalam campaign konservasi!
+            </p>
+            <p class="text-xs text-gray-500">
+              Sertifikat digital akan dikirim ke email kamu.
+            </p>
+          </div>
+          <button
+            id="closeSuccessPopup"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/campaign-event.js"></script>
+  </body>
+</html>

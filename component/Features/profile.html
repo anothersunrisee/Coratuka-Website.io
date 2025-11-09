@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profile Settings – CoraTuka</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body
+    class="bg-gradient-to-br from-primary-50/30 via-white to-slate-50/30 font-inter text-ink"
+  >
+    <!-- Huge Sidebar (Full) will be loaded here dynamically -->
+
+    <!-- Mini Sidebar (Desktop Only - Icon Only) -->
+    <aside
+      id="miniSidebar"
+      class="fixed left-0 top-0 z-40 hidden h-full w-20 flex-col border-r border-slate-200 bg-white shadow-lg lg:flex"
+    >
+      <!-- Open Sidebar Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-20 items-center justify-center border-b border-slate-200 transition hover:bg-slate-50"
+        title="Open Menu"
+      >
+        <svg
+          class="h-8 w-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Nav Icons -->
+      <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+        <!-- Home -->
+        <a
+          href="../features/Home.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Home"
+          data-page="Home"
+        >
+          <img
+            src="../../img/icons/home.png"
+            alt="Home"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Explore -->
+        <a
+          href="Explore.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Explore"
+          data-page="Explore"
+        >
+          <img
+            src="../../img/icons/explore.png"
+            alt="Explore"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Learn & Act -->
+        <a
+          href="learn-act.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Learn & Act"
+          data-page="learn-act"
+        >
+          <img
+            src="../../img/icons/learn.png"
+            alt="Learn"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Emergency Rescue -->
+        <a
+          href="emergency-rescue.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-secondary-50"
+          title="Emergency Rescue"
+          data-page="emergency-rescue"
+        >
+          <img
+            src="../../img/icons/Reporting.png"
+            alt="Emergency"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Campaign & Event -->
+        <a
+          href="campaign-event.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-tertiary-50"
+          title="Campaign"
+          data-page="campaign-event"
+        >
+          <img
+            src="../../img/icons/campaign.png"
+            alt="Campaign"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Dashboard (Conservator Only) -->
+        <a
+          href="../dashboard-manager/dashboard-manager.html"
+          id="miniDashboard"
+          class="mini-nav-link group hidden h-14 w-14 items-center justify-center rounded-xl transition hover:bg-slate-100"
+          title="Dashboard"
+          data-page="dashboard-manager"
+        >
+          <img
+            src="../../img/icons/dashboard.png"
+            alt="Dashboard"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+      </nav>
+
+      <!-- User Profile at Bottom (Active) -->
+      <div class="border-t border-slate-200 p-3">
+        <a
+          href="profile.html"
+          class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-300 text-primary-700 font-bold text-sm transition hover:bg-primary-400"
+          title="Profile"
+          id="miniUserAvatar"
+        >
+          U
+        </a>
+      </div>
+    </aside>
+
+    <!-- Mobile Navbar (Sticky) -->
+    <nav
+      id="mobileNavbar"
+      class="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-md lg:hidden"
+    >
+      <!-- Hamburger Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+      >
+        <svg
+          class="h-6 w-6 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Logo (Center) -->
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka"
+        class="h-8 object-contain"
+        onerror="this.style.display='none';"
+      />
+
+      <!-- Back Button -->
+      <a
+        href="Home.html"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+        title="Back to Home"
+      >
+        <svg
+          class="h-5 w-5 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen lg:ml-20">
+      <!-- Desktop Top Bar - STICKY -->
+      <div
+        class="sticky top-0 z-30 hidden h-20 items-center justify-between border-b border-slate-200 bg-white px-8 shadow-sm lg:flex"
+      >
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">Profile Settings</h1>
+          <p class="text-xs text-slate-600">Manage your account information</p>
+        </div>
+        <a
+          href="Home.html"
+          class="inline-flex h-12 items-center gap-2 rounded-xl bg-tertiary px-6 font-extrabold text-slate-800 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-yellow-400"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          <span>Back to Home</span>
+        </a>
+      </div>
+
+      <!-- Content Container -->
+      <div class="container mx-auto px-4 py-20 md:px-8 lg:py-8">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-4xl font-extrabold text-slate-900 md:text-5xl">
+            Profile Settings
+          </h1>
+          <p class="mt-2 text-lg text-slate-600">
+            Update informasi pribadi, foto profil, dan pengaturan akun kamu
+          </p>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid gap-8 lg:grid-cols-3">
+          <!-- Left Column: Profile Photo & Quick Info -->
+          <div class="space-y-6">
+            <!-- Profile Photo Card -->
+            <div
+              class="rounded-xl border-2 border-primary-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-4 text-lg font-bold text-slate-900">
+                Profile Photo
+              </h3>
+
+              <!-- Current Photo -->
+              <div class="mb-4 flex justify-center">
+                <div class="relative">
+                  <div
+                    id="profilePhoto"
+                    class="flex h-32 w-32 items-center justify-center rounded-full bg-primary-200 text-5xl font-bold text-primary-700"
+                  >
+                    U
+                  </div>
+                  <button
+                    onclick="document.getElementById('photoUpload').click()"
+                    class="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white shadow-lg transition hover:bg-primary-700"
+                  >
+                    <svg
+                      class="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </button>
+                  <input
+                    type="file"
+                    id="photoUpload"
+                    accept="image/*"
+                    class="hidden"
+                    onchange="handlePhotoUpload(event)"
+                  />
+                </div>
+              </div>
+
+              <p class="text-center text-sm text-slate-600">
+                Click the camera icon to upload new photo
+              </p>
+              <p class="text-center text-xs text-slate-500 mt-1">
+                Max size: 2MB (JPG, PNG)
+              </p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-4 text-lg font-bold text-slate-900">
+                Account Stats
+              </h3>
+              <div class="space-y-3">
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Member Since</span>
+                  <span class="font-bold text-slate-900">Nov 2025</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Total Points</span>
+                  <span class="font-bold text-primary-600" id="statsPoints"
+                    >340</span
+                  >
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Badges Earned</span>
+                  <span class="font-bold text-tertiary-600" id="statsBadges"
+                    >8</span
+                  >
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Activities</span>
+                  <span
+                    class="font-bold text-secondary-600"
+                    id="statsActivities"
+                    >15</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div
+              class="rounded-xl border-2 border-red-200 bg-red-50 p-6 shadow-lg"
+            >
+              <h3 class="mb-2 text-lg font-bold text-red-900">Danger Zone</h3>
+              <p class="mb-4 text-sm text-red-700">
+                These actions cannot be undone
+              </p>
+              <button
+                onclick="deleteAccount()"
+                class="w-full rounded-lg bg-red-600 py-2 text-sm font-bold text-white transition hover:bg-red-700"
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Forms -->
+          <div class="space-y-6 lg:col-span-2">
+            <!-- Personal Information -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-6 text-xl font-bold text-slate-900">
+                👤 Personal Information
+              </h3>
+
+              <form onsubmit="savePersonalInfo(event)" class="space-y-4">
+                <!-- Full Name -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Full Name</label
+                  >
+                  <input
+                    type="text"
+                    id="fullName"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+
+                <!-- Username -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Username</label
+                  >
+                  <input
+                    type="text"
+                    id="username"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="@username"
+                  />
+                </div>
+
+                <!-- Email -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Email Address</label
+                  >
+                  <input
+                    type="email"
+                    id="email"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="your@email.com"
+                  />
+                </div>
+
+                <!-- Phone -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Phone Number</label
+                  >
+                  <input
+                    type="tel"
+                    id="phone"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="+62 812 3456 7890"
+                  />
+                </div>
+
+                <!-- Role (Read-only) -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Role</label
+                  >
+                  <input
+                    type="text"
+                    id="role"
+                    class="w-full rounded-lg border-2 border-slate-200 bg-slate-50 px-4 py-3 text-slate-500"
+                    readonly
+                  />
+                </div>
+
+                <!-- Save Button -->
+                <button
+                  type="submit"
+                  class="w-full rounded-lg bg-primary-600 py-3 font-bold text-white transition hover:bg-primary-700"
+                >
+                  Save Changes
+                </button>
+              </form>
+            </div>
+
+            <!-- Location & Bio -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-6 text-xl font-bold text-slate-900">
+                📍 Location & Bio
+              </h3>
+
+              <form onsubmit="saveLocationBio(event)" class="space-y-4">
+                <!-- Location -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Location</label
+                  >
+                  <input
+                    type="text"
+                    id="location"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="City, Country"
+                  />
+                </div>
+
+                <!-- Bio -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Bio</label
+                  >
+                  <textarea
+                    id="bio"
+                    rows="4"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="Tell us about yourself..."
+                  ></textarea>
+                  <p class="mt-1 text-xs text-slate-500">Max 200 characters</p>
+                </div>
+
+                <!-- Save Button -->
+                <button
+                  type="submit"
+                  class="w-full rounded-lg bg-primary-600 py-3 font-bold text-white transition hover:bg-primary-700"
+                >
+                  Save Changes
+                </button>
+              </form>
+            </div>
+
+            <!-- Change Password -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-6 text-xl font-bold text-slate-900">
+                🔒 Change Password
+              </h3>
+
+              <form onsubmit="changePassword(event)" class="space-y-4">
+                <!-- Current Password -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Current Password</label
+                  >
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="Enter current password"
+                  />
+                </div>
+
+                <!-- New Password -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >New Password</label
+                  >
+                  <input
+                    type="password"
+                    id="newPassword"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="Enter new password"
+                  />
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                  <label class="mb-2 block text-sm font-semibold text-slate-700"
+                    >Confirm New Password</label
+                  >
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    class="w-full rounded-lg border-2 border-slate-300 px-4 py-3 transition focus:border-primary-500 focus:outline-none"
+                    placeholder="Confirm new password"
+                  />
+                </div>
+
+                <!-- Save Button -->
+                <button
+                  type="submit"
+                  class="w-full rounded-lg bg-primary-600 py-3 font-bold text-white transition hover:bg-primary-700"
+                >
+                  Update Password
+                </button>
+              </form>
+            </div>
+
+            <!-- Notifications -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-6 text-xl font-bold text-slate-900">
+                🔔 Notification Preferences
+              </h3>
+
+              <div class="space-y-4">
+                <!-- Email Notifications -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="font-semibold text-slate-900">
+                      Email Notifications
+                    </p>
+                    <p class="text-sm text-slate-600">
+                      Receive updates via email
+                    </p>
+                  </div>
+                  <label
+                    class="relative inline-flex cursor-pointer items-center"
+                  >
+                    <input
+                      type="checkbox"
+                      id="emailNotif"
+                      class="peer sr-only"
+                      checked
+                    />
+                    <div
+                      class="peer h-6 w-11 rounded-full bg-slate-300 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all peer-checked:bg-primary-600 peer-checked:after:translate-x-full"
+                    ></div>
+                  </label>
+                </div>
+
+                <!-- Push Notifications -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="font-semibold text-slate-900">
+                      Push Notifications
+                    </p>
+                    <p class="text-sm text-slate-600">
+                      Receive push notifications
+                    </p>
+                  </div>
+                  <label
+                    class="relative inline-flex cursor-pointer items-center"
+                  >
+                    <input
+                      type="checkbox"
+                      id="pushNotif"
+                      class="peer sr-only"
+                      checked
+                    />
+                    <div
+                      class="peer h-6 w-11 rounded-full bg-slate-300 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all peer-checked:bg-primary-600 peer-checked:after:translate-x-full"
+                    ></div>
+                  </label>
+                </div>
+
+                <!-- SMS Notifications -->
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="font-semibold text-slate-900">
+                      SMS Notifications
+                    </p>
+                    <p class="text-sm text-slate-600">
+                      Receive SMS for urgent alerts
+                    </p>
+                  </div>
+                  <label
+                    class="relative inline-flex cursor-pointer items-center"
+                  >
+                    <input type="checkbox" id="smsNotif" class="peer sr-only" />
+                    <div
+                      class="peer h-6 w-11 rounded-full bg-slate-300 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all peer-checked:bg-primary-600 peer-checked:after:translate-x-full"
+                    ></div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar Script -->
+    <script src="../Features/sidebar.js"></script>
+
+    <script>
+      // Load user data
+      document.addEventListener("DOMContentLoaded", () => {
+        loadUserData();
+      });
+
+      function loadUserData() {
+        const userDataStr =
+          sessionStorage.getItem("coratuka_user") ||
+          sessionStorage.getItem("new_user") ||
+          localStorage.getItem("coratuka_user");
+
+        if (userDataStr) {
+          try {
+            const userData = JSON.parse(userDataStr);
+
+            // Update profile photo
+            const profilePhoto = document.getElementById("profilePhoto");
+            const miniAvatar = document.getElementById("miniUserAvatar");
+            if (userData.name) {
+              const initial = userData.name.charAt(0).toUpperCase();
+              if (profilePhoto) profilePhoto.textContent = initial;
+              if (miniAvatar) miniAvatar.textContent = initial;
+            }
+
+            // Fill form fields
+            if (userData.name)
+              document.getElementById("fullName").value = userData.name;
+            if (userData.email)
+              document.getElementById("email").value = userData.email;
+            if (userData.role)
+              document.getElementById("role").value = userData.role;
+
+            // Generate dummy data
+            document.getElementById("username").value =
+              "@" + (userData.name || "user").toLowerCase().replace(" ", "");
+            document.getElementById("phone").value = "+62 812 3456 7890";
+            document.getElementById("location").value = "Yogyakarta, Indonesia";
+            document.getElementById("bio").value =
+              "Ocean conservation enthusiast 🌊";
+
+            // Stats
+            document.getElementById("statsPoints").textContent =
+              Math.floor(Math.random() * 500) + 100;
+            document.getElementById("statsBadges").textContent =
+              Math.floor(Math.random() * 15) + 3;
+            document.getElementById("statsActivities").textContent =
+              Math.floor(Math.random() * 30) + 5;
+
+            // Show dashboard icon if conservator
+            if (
+              userData.role === "Conservator" ||
+              userData.role === "Tim Konservator"
+            ) {
+              const miniDashboard = document.getElementById("miniDashboard");
+              if (miniDashboard) {
+                miniDashboard.classList.remove("hidden");
+                miniDashboard.classList.add("flex");
+              }
+            }
+          } catch (e) {
+            console.error("Error parsing user data:", e);
+          }
+        }
+      }
+
+      function handlePhotoUpload(event) {
+        const file = event.target.files[0];
+        if (file) {
+          if (file.size > 2 * 1024 * 1024) {
+            alert("File size must be less than 2MB");
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const profilePhoto = document.getElementById("profilePhoto");
+            profilePhoto.style.backgroundImage = `url(${e.target.result})`;
+            profilePhoto.style.backgroundSize = "cover";
+            profilePhoto.style.backgroundPosition = "center";
+            profilePhoto.textContent = "";
+            alert(
+              "Photo uploaded successfully! (Will be saved when you click Save Changes)"
+            );
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      function savePersonalInfo(event) {
+        event.preventDefault();
+
+        const fullName = document.getElementById("fullName").value;
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+
+        if (!fullName || !email) {
+          alert("Please fill in all required fields");
+          return;
+        }
+
+        // Update session storage
+        const userData = {
+          name: fullName,
+          email: email,
+          username: username,
+          phone: phone,
+          role: document.getElementById("role").value,
+        };
+
+        sessionStorage.setItem("coratuka_user", JSON.stringify(userData));
+
+        alert("Personal information saved successfully!");
+
+        // Reload to update everywhere
+        setTimeout(() => location.reload(), 500);
+      }
+
+      function saveLocationBio(event) {
+        event.preventDefault();
+
+        const location = document.getElementById("location").value;
+        const bio = document.getElementById("bio").value;
+
+        if (bio.length > 200) {
+          alert("Bio must be 200 characters or less");
+          return;
+        }
+
+        alert("Location & bio saved successfully!");
+      }
+
+      function changePassword(event) {
+        event.preventDefault();
+
+        const current = document.getElementById("currentPassword").value;
+        const newPass = document.getElementById("newPassword").value;
+        const confirm = document.getElementById("confirmPassword").value;
+
+        if (!current || !newPass || !confirm) {
+          alert("Please fill in all password fields");
+          return;
+        }
+
+        if (newPass !== confirm) {
+          alert("New passwords do not match");
+          return;
+        }
+
+        if (newPass.length < 8) {
+          alert("Password must be at least 8 characters");
+          return;
+        }
+
+        alert("Password changed successfully!");
+
+        // Clear form
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+      }
+
+      function deleteAccount() {
+        if (
+          confirm(
+            "Are you sure you want to delete your account?\n\nThis action cannot be undone!"
+          )
+        ) {
+          if (confirm("Final confirmation: Delete account permanently?")) {
+            alert(
+              "Account deletion request submitted.\n\nYour account will be deleted within 24 hours."
+            );
+            // TODO: Implement actual deletion
+          }
+        }
+      }
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color, transform,
+          opacity;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* Mini sidebar hover tooltips */
+      .mini-nav-link {
+        position: relative;
+      }
+
+      .mini-nav-link:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 12px;
+        padding: 6px 12px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        border-radius: 6px;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0;
+        animation: tooltipFade 0.2s ease-in forwards;
+      }
+
+      @keyframes tooltipFade {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Mobile navbar stays on top */
+      #mobileNavbar {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.95);
+      }
+    </style>
+  </body>
+</html>

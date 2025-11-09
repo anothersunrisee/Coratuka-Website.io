@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>test</h1>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cora's Journey - Konservasi Penyu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ocean: {
+                dark: "#0d3d56",
+                light: "#1a5f7a",
+                blue: "#2C7DA0",
+              },
+              btn: "#FFD166",
+              "btn-hover": "#F4C542",
+              cora: "#ff8156",
+            },
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* Map Container */
+      #mapContainer {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: linear-gradient(to bottom, #1a5f7a, #0d3d56);
+        touch-action: none;
+        cursor: grab;
+      }
+
+      #mapContainer.dragging {
+        cursor: grabbing;
+      }
+
+      #mapCanvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        will-change: transform;
+        transition: transform 0.1s ease-out;
+      }
+
+      #mapImage {
+        display: block;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      /* Level Button Styling */
+      .level-btn {
+        position: absolute;
+        pointer-events: auto;
+        z-index: 10;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      .level-btn:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      .level-btn:active {
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+
+      .level-inner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .level-stars {
+        display: flex;
+        gap: 2px;
+        margin-top: -10px;
+      }
+
+      .level-stars .star {
+        font-size: 16px;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+
+      .level-stars .star.filled {
+        color: #ffd700;
+      }
+
+      .level-stars .star.empty {
+        color: #6b7280;
+      }
+
+      /* Mascot Display */
+      .mascot-display {
+        position: absolute;
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      .mascot-display img {
+        width: 120px;
+        height: auto;
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+      }
+
+      @media (min-width: 768px) {
+        .mascot-display img {
+          width: 160px;
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      /* Overlay Styling */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .overlay.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .overlay-content {
+        animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Lessonal Overlay */
+      .Lessonal-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      @media (min-width: 1024px) {
+        .Lessonal-container {
+          grid-template-columns: 1fr 1fr;
+          gap: 32px;
+        }
+      }
+
+      .media-box {
+        background: #f3f4f6;
+        border-radius: 16px;
+        overflow: hidden;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .media-box img,
+      .media-box video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .content-box {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      /* Quiz Overlay */
+      .quiz-container {
+        max-width: 900px;
+        width: 95%;
+      }
+
+      .option-btn {
+        transition: all 0.2s ease;
+        border: 3px solid transparent;
+      }
+
+      .option-btn:hover {
+        transform: translateX(8px);
+        border-color: #5dd3c1;
+      }
+
+      .option-btn.selected {
+        background: #5dd3c1 !important;
+        color: white;
+        border-color: #5dd3c1;
+      }
+
+      .option-btn.correct {
+        background: #10b981 !important;
+        color: white;
+        border-color: #10b981;
+        animation: pulse 0.5s ease;
+      }
+
+      .option-btn.wrong {
+        background: #ef4444 !important;
+        color: white;
+        border-color: #ef4444;
+        animation: shake 0.5s ease;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+
+      /* Progress Dots */
+      .progress-dots {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .progress-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #d1d5db;
+        transition: all 0.3s ease;
+      }
+
+      .progress-dot.active {
+        background: #5dd3c1;
+        transform: scale(1.3);
+      }
+
+      .progress-dot.completed {
+        background: #10b981;
+      }
+
+      /* Star Rating Animation */
+      .star-display {
+        display: flex;
+        gap: 12px;
+        font-size: 48px;
+      }
+
+      .star-display .star {
+        animation: starPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation-fill-mode: both;
+      }
+
+      .star-display .star:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .star-display .star:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      .star-display .star:nth-child(3) {
+        animation-delay: 0.5s;
+      }
+
+      @keyframes starPop {
+        0% {
+          transform: scale(0) rotate(-180deg);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      /* Button Styling */
+      .btn-primary {
+        background: #ffd166;
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: #f4c542;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(255, 209, 102, 0.4);
+      }
+
+      .btn-primary:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-secondary {
+        background: white;
+        color: #0d3d56;
+        border: 2px solid #0d3d56;
+        transition: all 0.2s ease;
+      }
+
+      .btn-secondary:hover {
+        background: #0d3d56;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Feedback Box */
+      .feedback-box {
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-top: 16px;
+        animation: slideDown 0.3s ease;
+      }
+
+      .feedback-box.correct {
+        background: #d1fae5;
+        border-left: 4px solid #10b981;
+        color: #065f46;
+      }
+
+      .feedback-box.wrong {
+        background: #fee2e2;
+        border-left: 4px solid #ef4444;
+        color: #991b1b;
+      }
+
+      @keyframes slideDown {
+        from {
+          transform: translateY(-10px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="font-inter bg-ocean-dark">
+    <!-- Back Button -->
+    <button
+      onclick="window.location.href='./ocean_odyssey.html'"
+      class="fixed top-4 left-4 md:top-8 md:left-8 z-50 btn-primary px-5 py-2.5 md:px-7 md:py-3 rounded-[20px] shadow-lg font-semibold text-gray-800 text-sm md:text-base"
+    >
+      ← Back
+    </button>
+
+    <!-- Title & Progress Bar Container -->
+    <div
+      class="fixed top-4 right-4 md:right-8 z-50 flex flex-col items-end gap-3"
+    >
+      <!-- Title -->
+      <div
+        class="bg-white/90 px-5 py-2.5 rounded-[20px] shadow-lg backdrop-blur-md"
+      >
+        <h1 class="text-base md:text-lg font-bold text-ocean-dark text-center">
+          Cora's Journey
+        </h1>
+      </div>
+
+      <!-- Progress Bar -->
+      <div
+        class="bg-white/90 backdrop-blur-md px-4 py-3 rounded-[20px] shadow-lg min-w-[160px]"
+      >
+        <div class="text-sm text-gray-600 text-center mb-2">
+          <span class="font-bold text-tuka text-lg" id="progressCount">0</span>
+          <span class="text-gray-500"> / 10</span>
+          <span class="text-xs block mt-0.5">Level selesai</span>
+        </div>
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            id="progressBar"
+            class="h-full bg-tuka transition-all duration-500"
+            style="width: 0%"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="mapContainer">
+      <div id="mapCanvas">
+        <img
+          id="mapImage"
+          src="../../../img/ocean odyssey/cora-map.png"
+          alt="Tuka Map"
+        />
+
+        <!-- Mascot Tuka Display - Bottom Left -->
+        <div class="mascot-display" data-x="0.10" data-y="0.60">
+          <img src="../../../img/ocean odyssey/cora.png" alt="Tuka" />
+        </div>
+
+        <!-- Mascot Tuka Display - Top Right -->
+        <div class="mascot-display" data-x="0.80" data-y="0.60">
+          <img src="../../../img/ocean odyssey/landmark-cora.png" alt="Tuka" />
+        </div>
+
+        <!-- Level Buttons (10 levels) -->
+        <button class="level-btn" data-level="1" data-x="0.26" data-y="0.60">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 1
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="2" data-x="0.35" data-y="0.48">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 2
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="3" data-x="0.43" data-y="0.35">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 3
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="4" data-x="0.55" data-y="0.29">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 4
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="5" data-x="0.68" data-y="0.30">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 5
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="6" data-x="0.70" data-y="0.50">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 6
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="7" data-x="0.55" data-y="0.58">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 7
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="8" data-x="0.43" data-y="0.68">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 8
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="9" data-x="0.52" data-y="0.82">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 9
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="level-btn" data-level="10" data-x="0.67" data-y="0.80">
+          <div class="level-inner">
+            <div
+              class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            >
+              Lesson 10
+            </div>
+            <div class="level-stars" data-stars="0">
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+              <span class="star empty">★</span>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Lessonal Overlay -->
+    <div id="LessonalOverlay" class="overlay">
+      <div
+        class="overlay-content bg-white rounded-3xl shadow-2xl max-w-6xl w-[95%] max-h-[90vh] overflow-y-auto p-6 md:p-10"
+      >
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h2
+              id="LessonalTitle"
+              class="text-2xl md:text-3xl font-bold text-ocean-dark mb-2"
+            >
+              Level Title
+            </h2>
+            <p id="LessonalSubtitle" class="text-gray-600">Subtitle</p>
+          </div>
+          <button
+            id="closeLessonal"
+            class="text-gray-400 hover:text-gray-700 text-3xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        <div class="Lessonal-container">
+          <!-- Left: Media -->
+          <div class="media-box" id="mediaBox">
+            <div class="text-gray-400">Media akan dimuat di sini</div>
+          </div>
+
+          <!-- Right: Content -->
+          <div class="content-box">
+            <div
+              id="LessonalContent"
+              class="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed"
+            >
+              <!-- Content will be loaded here -->
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-8">
+          <button
+            id="startQuizBtn"
+            class="btn-primary px-8 py-3 rounded-[20px] shadow-lg font-bold text-gray-800 text-lg"
+          >
+            Start Quiz →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quiz Overlay -->
+    <div id="quizOverlay" class="overlay">
+      <div
+        class="overlay-content quiz-container bg-white rounded-3xl shadow-2xl p-6 md:p-10"
+      >
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-3">
+            <img
+              src="../../../img/welcome/cora.png"
+              alt="Tuka"
+              class="w-12 h-12"
+            />
+            <div>
+              <h3
+                id="quizLevelTitle"
+                class="text-xl md:text-2xl font-bold text-ocean-dark"
+              >
+                Level 1
+              </h3>
+              <p class="text-sm text-gray-600">Konservasi Penyu</p>
+            </div>
+          </div>
+          <button
+            id="closeQuiz"
+            class="text-gray-400 hover:text-gray-700 text-3xl font-bold"
+          >
+            ×
+          </button>
+        </div>
+
+        <!-- Progress Dots -->
+        <div class="progress-dots mb-6">
+          <div class="progress-dot" data-question="1"></div>
+          <div class="progress-dot" data-question="2"></div>
+          <div class="progress-dot" data-question="3"></div>
+        </div>
+
+        <!-- Question Container -->
+        <div id="questionContainer">
+          <!-- Question will be loaded here -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center mt-8">
+          <button
+            id="prevQuestionBtn"
+            class="btn-secondary px-6 py-3 rounded-[20px] font-semibold hidden"
+          >
+            ← previous
+          </button>
+          <div class="flex-1"></div>
+          <button
+            id="nextQuestionBtn"
+            class="btn-primary px-8 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+            disabled
+          >
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Overlay -->
+    <div id="resultOverlay" class="overlay">
+      <div
+        class="overlay-content bg-white rounded-3xl shadow-2xl max-w-md w-[90%] p-8 md:p-10 text-center"
+      >
+        <div class="mb-6">
+          <img
+            src="../../../img/welcome/cora.png"
+            alt="Tuka"
+            class="w-24 h-24 mx-auto mb-4"
+          />
+          <h2 class="text-3xl font-bold text-ocean-dark mb-2">Finish</h2>
+          <p class="text-gray-600" id="resultMessage">
+            Kamu telah menyelesaikan level ini
+          </p>
+        </div>
+
+        <div class="star-display justify-center mb-6">
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+        </div>
+
+        <div class="bg-tuka/10 rounded-2xl p-6 mb-6">
+          <div class="text-4xl font-bold text-ocean-dark mb-2" id="finalScore">
+            0/3
+          </div>
+          <div class="text-gray-600">Answer Correct</div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <button
+            id="retryQuizBtn"
+            class="btn-secondary px-6 py-3 rounded-[20px] font-semibold"
+          >
+            🔄 Re-Attemt Quiz
+          </button>
+          <button
+            id="backToMapBtn"
+            class="btn-primary px-6 py-3 rounded-[20px] shadow-lg font-bold text-gray-800"
+          >
+            ← Back to Map
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load Quiz Data -->
+    <script src="quiz-data-cora.js"></script>
+
+    <script>
+      // ========================================
+      // GLOBAL STATE
+      // ========================================
+      const STATE = {
+        scale: 1,
+        posX: 0,
+        posY: 0,
+        isDragging: false,
+        startX: 0,
+        startY: 0,
+        mapWidth: 0,
+        mapHeight: 0,
+        currentLevel: null,
+        currentQuestionIndex: 0,
+        userAnswers: [],
+        score: 0,
+      };
+
+      // ========================================
+      // ELEMENTS
+      // ========================================
+      const mapContainer = document.getElementById("mapContainer");
+      const mapCanvas = document.getElementById("mapCanvas");
+      const mapImage = document.getElementById("mapImage");
+      const levelButtons = document.querySelectorAll(".level-btn[data-level]");
+      const mascotDisplays = document.querySelectorAll(".mascot-display");
+
+      const LessonalOverlay = document.getElementById("LessonalOverlay");
+      const quizOverlay = document.getElementById("quizOverlay");
+      const resultOverlay = document.getElementById("resultOverlay");
+
+      const progressCount = document.getElementById("progressCount");
+      const progressBar = document.getElementById("progressBar");
+
+      // ========================================
+      // MAP INITIALIZATION
+      // ========================================
+      function initMap() {
+        const containerWidth = mapContainer.clientWidth;
+        const containerHeight = mapContainer.clientHeight;
+        const imgRatio = mapImage.naturalWidth / mapImage.naturalHeight;
+        const containerRatio = containerWidth / containerHeight;
+
+        if (imgRatio > containerRatio) {
+          STATE.mapHeight = containerHeight;
+          STATE.mapWidth = STATE.mapHeight * imgRatio;
+        } else {
+          STATE.mapWidth = containerWidth;
+          STATE.mapHeight = STATE.mapWidth / imgRatio;
+        }
+
+        mapCanvas.style.width = STATE.mapWidth + "px";
+        mapCanvas.style.height = STATE.mapHeight + "px";
+
+        // Position level buttons
+        levelButtons.forEach((btn) => {
+          const x = parseFloat(btn.dataset.x);
+          const y = parseFloat(btn.dataset.y);
+          btn.style.left = x * STATE.mapWidth + "px";
+          btn.style.top = y * STATE.mapHeight + "px";
+        });
+
+        // Position mascot displays
+        mascotDisplays.forEach((mascot) => {
+          const x = parseFloat(mascot.dataset.x);
+          const y = parseFloat(mascot.dataset.y);
+          mascot.style.left = x * STATE.mapWidth + "px";
+          mascot.style.top = y * STATE.mapHeight + "px";
+        });
+
+        updateTransform();
+        loadProgress();
+      }
+
+      function limitPan() {
+        const containerWidth = mapContainer.clientWidth;
+        const containerHeight = mapContainer.clientHeight;
+        const scaledWidth = STATE.mapWidth * STATE.scale;
+        const scaledHeight = STATE.mapHeight * STATE.scale;
+
+        const maxX = Math.max(0, (scaledWidth - containerWidth) / 2);
+        const maxY = Math.max(0, (scaledHeight - containerHeight) / 2);
+
+        STATE.posX = Math.max(-maxX, Math.min(maxX, STATE.posX));
+        STATE.posY = Math.max(-maxY, Math.min(maxY, STATE.posY));
+      }
+
+      function updateTransform() {
+        limitPan();
+        mapCanvas.style.transform = `translate(calc(-50% + ${STATE.posX}px), calc(-50% + ${STATE.posY}px)) scale(${STATE.scale})`;
+      }
+
+      // ========================================
+      // MAP INTERACTIONS
+      // ========================================
+      mapContainer.addEventListener("mousedown", (e) => {
+        if (
+          e.target.closest(".level-btn") ||
+          e.target.closest(".mascot-display")
+        )
+          return;
+        STATE.isDragging = true;
+        STATE.startX = e.clientX - STATE.posX;
+        STATE.startY = e.clientY - STATE.posY;
+        mapContainer.classList.add("dragging");
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!STATE.isDragging) return;
+        STATE.posX = e.clientX - STATE.startX;
+        STATE.posY = e.clientY - STATE.startY;
+        updateTransform();
+      });
+
+      document.addEventListener("mouseup", () => {
+        STATE.isDragging = false;
+        mapContainer.classList.remove("dragging");
+      });
+
+      mapContainer.addEventListener(
+        "wheel",
+        (e) => {
+          e.preventDefault();
+          const oldScale = STATE.scale;
+          const delta = e.deltaY > 0 ? -0.1 : 0.1;
+          STATE.scale = Math.max(1, Math.min(3, STATE.scale + delta));
+          if (STATE.scale !== oldScale) updateTransform();
+        },
+        { passive: false }
+      );
+
+      // Touch support
+      let touchStartDistance = 0;
+      let touchStartScale = 1;
+
+      mapContainer.addEventListener("touchstart", (e) => {
+        if (
+          e.target.closest(".level-btn") ||
+          e.target.closest(".mascot-display")
+        )
+          return;
+
+        if (e.touches.length === 1) {
+          STATE.isDragging = true;
+          STATE.startX = e.touches[0].clientX - STATE.posX;
+          STATE.startY = e.touches[0].clientY - STATE.posY;
+        } else if (e.touches.length === 2) {
+          STATE.isDragging = false;
+          const dx = e.touches[0].clientX - e.touches[1].clientX;
+          const dy = e.touches[0].clientY - e.touches[1].clientY;
+          touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+          touchStartScale = STATE.scale;
+        }
+      });
+
+      mapContainer.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches.length === 1 && STATE.isDragging) {
+            e.preventDefault();
+            STATE.posX = e.touches[0].clientX - STATE.startX;
+            STATE.posY = e.touches[0].clientY - STATE.startY;
+            updateTransform();
+          } else if (e.touches.length === 2) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const scaleChange = distance / touchStartDistance;
+            STATE.scale = Math.max(
+              1,
+              Math.min(3, touchStartScale * scaleChange)
+            );
+            updateTransform();
+          }
+        },
+        { passive: false }
+      );
+
+      mapContainer.addEventListener("touchend", () => {
+        STATE.isDragging = false;
+      });
+
+      // ========================================
+      // PROGRESS MANAGEMENT
+      // ========================================
+      function loadProgress() {
+        const progress = JSON.parse(
+          localStorage.getItem("cora_progress") || "{}"
+        );
+        const completedCount = Object.keys(progress).length;
+
+        progressCount.textContent = completedCount;
+        progressBar.style.width = (completedCount / 10) * 100 + "%";
+
+        // Update star displays
+        levelButtons.forEach((btn) => {
+          const level = btn.dataset.level;
+          const levelProgress = progress[`level${level}`];
+
+          if (levelProgress) {
+            const starsContainer = btn.querySelector(".level-stars");
+            const stars = starsContainer.querySelectorAll(".star");
+            const earnedStars = levelProgress.stars || 0;
+
+            stars.forEach((star, index) => {
+              if (index < earnedStars) {
+                star.classList.remove("empty");
+                star.classList.add("filled");
+              }
+            });
+          }
+        });
+      }
+
+      function saveProgress(level, stars, score) {
+        const progress = JSON.parse(
+          localStorage.getItem("cora_progress") || "{}"
+        );
+
+        // Only save if better than previous
+        if (
+          !progress[`level${level}`] ||
+          progress[`level${level}`].stars < stars
+        ) {
+          progress[`level${level}`] = {
+            stars: stars,
+            score: score,
+            completedAt: new Date().toISOString(),
+          };
+
+          localStorage.setItem("cora_progress", JSON.stringify(progress));
+        }
+
+        loadProgress();
+      }
+
+      // ========================================
+      // LEVEL BUTTON HANDLERS
+      // ========================================
+      levelButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const levelNum = parseInt(btn.dataset.level);
+          openLessonal(levelNum);
+        });
+      });
+
+      // ========================================
+      // LessonAL OVERLAY
+      // ========================================
+      function openLessonal(levelNum) {
+        STATE.currentLevel = levelNum;
+        const levelData = getLevelData("cora", levelNum);
+
+        if (!levelData) {
+          alert(`Level ${levelNum} belum tersedia. Segera hadir!`);
+          return;
+        }
+
+        // Set title and subtitle
+        document.getElementById("LessonalTitle").textContent = levelData.title;
+        document.getElementById("LessonalSubtitle").textContent =
+          levelData.subtitle;
+
+        // Load media
+        const mediaBox = document.getElementById("mediaBox");
+        mediaBox.innerHTML = "";
+
+        if (levelData.mediaType === "video") {
+          const video = document.createElement("video");
+          video.src = levelData.mediaSrc;
+          video.controls = true;
+          video.className = "w-full h-full";
+          mediaBox.appendChild(video);
+        } else if (
+          levelData.mediaType === "image" ||
+          levelData.mediaType === "poster"
+        ) {
+          const img = document.createElement("img");
+          img.src = levelData.mediaSrc;
+          img.alt = levelData.title;
+          img.className = "w-full h-full object-contain";
+          mediaBox.appendChild(img);
+        } else {
+          mediaBox.innerHTML =
+            '<div class="text-gray-400">Media tidak tersedia</div>';
+        }
+
+        // Load content
+        document.getElementById("LessonalContent").innerHTML =
+          levelData.content.detail.replace(/\n/g, "<br>");
+
+        LessonalOverlay.classList.add("active");
+      }
+
+      document.getElementById("closeLessonal").addEventListener("click", () => {
+        LessonalOverlay.classList.remove("active");
+      });
+
+      document.getElementById("startQuizBtn").addEventListener("click", () => {
+        LessonalOverlay.classList.remove("active");
+        setTimeout(() => openQuiz(), 300);
+      });
+
+      // ========================================
+      // QUIZ OVERLAY
+      // ========================================
+      function openQuiz() {
+        STATE.currentQuestionIndex = 0;
+        STATE.userAnswers = [];
+        STATE.score = 0;
+
+        const levelData = getLevelData("tuka", STATE.currentLevel);
+        document.getElementById("quizLevelTitle").textContent = levelData.title;
+
+        // Reset progress dots
+        document.querySelectorAll(".progress-dot").forEach((dot) => {
+          dot.classList.remove("active", "completed");
+        });
+
+        loadQuestion();
+        quizOverlay.classList.add("active");
+      }
+
+      function loadQuestion() {
+        const levelData = getLevelData("cora", STATE.currentLevel);
+        const question = levelData.questions[STATE.currentQuestionIndex];
+
+        // Update progress dots
+        document.querySelectorAll(".progress-dot").forEach((dot, index) => {
+          dot.classList.remove("active", "completed");
+          if (index < STATE.currentQuestionIndex) {
+            dot.classList.add("completed");
+          } else if (index === STATE.currentQuestionIndex) {
+            dot.classList.add("active");
+          }
+        });
+
+        // Build question HTML
+        const questionHTML = `
+                <div class="mb-6">
+                    <div class="text-sm text-gray-500 mb-2">Soal ${
+                      STATE.currentQuestionIndex + 1
+                    } dari 3</div>
+                    <h4 class="text-xl md:text-2xl font-semibold text-ocean-dark mb-6">${
+                      question.question
+                    }</h4>
+                    
+                    <div class="space-y-3">
+                        ${question.options
+                          .map(
+                            (option) => `
+                            <button 
+                                class="option-btn w-full text-left px-6 py-4 bg-gray-100 hover:bg-gray-200 rounded-2xl font-medium text-gray-800"
+                                data-answer="${option.label}"
+                            >
+                                <span class="font-bold text-tuka">${option.label}.</span> ${option.text}
+                            </button>
+                        `
+                          )
+                          .join("")}
+                    </div>
+                    
+                    <div id="feedbackBox"></div>
+                </div>
+            `;
+
+        document.getElementById("questionContainer").innerHTML = questionHTML;
+
+        // Add click handlers to options
+        document.querySelectorAll(".option-btn").forEach((btn) => {
+          btn.addEventListener("click", () => selectAnswer(btn));
+        });
+
+        // Update navigation buttons
+        document.getElementById("nextQuestionBtn").disabled = true;
+        document
+          .getElementById("prevQuestionBtn")
+          .classList.toggle("hidden", STATE.currentQuestionIndex === 0);
+      }
+
+      function selectAnswer(selectedBtn) {
+        const levelData = getLevelData("cora", STATE.currentLevel);
+        const question = levelData.questions[STATE.currentQuestionIndex];
+        const selectedAnswer = selectedBtn.dataset.answer;
+        const isCorrect = selectedAnswer === question.correctAnswer;
+
+        // Disable all buttons
+        document.querySelectorAll(".option-btn").forEach((btn) => {
+          btn.disabled = true;
+          btn.classList.remove("selected");
+        });
+
+        // Mark selected answer
+        selectedBtn.classList.add("selected");
+        selectedBtn.classList.add(isCorrect ? "correct" : "wrong");
+
+        // Show correct answer if wrong
+        if (!isCorrect) {
+          document.querySelectorAll(".option-btn").forEach((btn) => {
+            if (btn.dataset.answer === question.correctAnswer) {
+              btn.classList.add("correct");
+            }
+          });
+        }
+
+        // Store answer
+        STATE.userAnswers[STATE.currentQuestionIndex] = {
+          selected: selectedAnswer,
+          correct: isCorrect,
+        };
+
+        if (isCorrect) STATE.score++;
+
+        // Show feedback
+        const feedbackBox = document.getElementById("feedbackBox");
+        feedbackBox.innerHTML = `
+                <div class="feedback-box ${isCorrect ? "correct" : "wrong"}">
+                    ${
+                      isCorrect
+                        ? question.feedback.correct
+                        : question.feedback.wrong
+                    }
+                </div>
+            `;
+
+        // Enable next button
+        document.getElementById("nextQuestionBtn").disabled = false;
+      }
+
+      document
+        .getElementById("nextQuestionBtn")
+        .addEventListener("click", () => {
+          const levelData = getLevelData("cora", STATE.currentLevel);
+
+          if (STATE.currentQuestionIndex < levelData.questions.length - 1) {
+            STATE.currentQuestionIndex++;
+            loadQuestion();
+          } else {
+            // Quiz completed
+            quizOverlay.classList.remove("active");
+            setTimeout(() => showResult(), 300);
+          }
+        });
+
+      document
+        .getElementById("prevQuestionBtn")
+        .addEventListener("click", () => {
+          if (STATE.currentQuestionIndex > 0) {
+            STATE.currentQuestionIndex--;
+            loadQuestion();
+          }
+        });
+
+      document.getElementById("closeQuiz").addEventListener("click", () => {
+        if (confirm("Yakin ingin keluar? Progress quiz akan hilang.")) {
+          quizOverlay.classList.remove("active");
+        }
+      });
+
+      // ========================================
+      // RESULT OVERLAY
+      // ========================================
+      function showResult() {
+        const stars = STATE.score === 3 ? 3 : STATE.score === 2 ? 2 : 1;
+
+        document.getElementById("finalScore").textContent = `${STATE.score}/3`;
+        document.getElementById("resultMessage").textContent =
+          stars === 3
+            ? "Sempurna! Kamu sangat memahami Lesson ini!"
+            : stars === 2
+            ? "Bagus! Kamu sudah paham sebagian besar Lesson."
+            : "Lumayan! Coba pelajari lagi Lessonnya ya.";
+
+        // Animate stars
+        const starDisplay = document.querySelector(".star-display");
+        const starElements = starDisplay.querySelectorAll(".star");
+        starElements.forEach((star, index) => {
+          star.style.display = index < stars ? "inline" : "none";
+        });
+
+        // Save progress
+        saveProgress(STATE.currentLevel, stars, STATE.score);
+
+        resultOverlay.classList.add("active");
+      }
+
+      document.getElementById("retryQuizBtn").addEventListener("click", () => {
+        resultOverlay.classList.remove("active");
+        setTimeout(() => openLessonal(STATE.currentLevel), 300);
+      });
+
+      document.getElementById("backToMapBtn").addEventListener("click", () => {
+        resultOverlay.classList.remove("active");
+      });
+
+      // ========================================
+      // INITIALIZATION
+      // ========================================
+      mapImage.onload = initMap;
+
+      window.addEventListener("resize", () => {
+        clearTimeout(window._resizeTimer);
+        window._resizeTimer = setTimeout(initMap, 150);
+      });
+
+      if (mapImage.complete) {
+        initMap();
+      }
+    </script>
+  </body>
+</html>

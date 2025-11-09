@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergency Rescue Manager - CORATUKA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: "#15C5CE",
+              secondary: "#FF8156",
+              tertiary: "#FFD166",
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Detail Panel Slide-in */
+      .detail-panel {
+        position: fixed;
+        top: 0;
+        right: -600px;
+        width: 600px;
+        height: 100vh;
+        background: white;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+        transition: right 0.3s ease-in-out;
+        z-index: 50;
+        overflow-y: auto;
+      }
+
+      .detail-panel.active {
+        right: 0;
+      }
+
+      .detail-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 40;
+        display: none;
+      }
+
+      .detail-overlay.active {
+        display: block;
+      }
+
+      /* Priority badges */
+      .priority-urgent {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .priority-high {
+        background: #fed7aa;
+        color: #9a3412;
+      }
+      .priority-medium {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .priority-low {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      /* Status badges */
+      .status-pending {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .status-in-progress {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .status-resolved {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      @media (max-width: 768px) {
+        .detail-panel {
+          width: 100%;
+          right: -100%;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-30">
+      <div class="px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="goBackToDashboard()"
+              class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-2xl font-bold text-ink flex items-center gap-2">
+                🚨 Emergency Rescue Manager
+              </h1>
+              <p class="text-sm text-gray-600">
+                Manage marine animal rescue reports
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="text-right">
+              <p class="text-sm text-gray-600">Logged in as</p>
+              <p id="conservator-name" class="font-semibold text-ink">
+                Conservator
+              </p>
+            </div>
+            <button
+              onclick="logout()"
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-6">
+      <div class="max-w-7xl mx-auto">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Total Reports</span>
+              <span class="text-2xl">📋</span>
+            </div>
+            <p id="stat-total" class="text-3xl font-bold text-ink">0</p>
+            <p class="text-xs text-gray-500 mt-1">All emergency reports</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Pending</span>
+              <span class="text-2xl">🔴</span>
+            </div>
+            <p id="stat-pending" class="text-3xl font-bold text-red-600">0</p>
+            <p class="text-xs text-gray-500 mt-1">Awaiting response</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">In Progress</span>
+              <span class="text-2xl">🟡</span>
+            </div>
+            <p id="stat-progress" class="text-3xl font-bold text-yellow-600">
+              0
+            </p>
+            <p class="text-xs text-gray-500 mt-1">Being handled</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-6 shadow-sm">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-gray-600 text-sm">Resolved</span>
+              <span class="text-2xl">🟢</span>
+            </div>
+            <p id="stat-resolved" class="text-3xl font-bold text-green-600">
+              0
+            </p>
+            <p class="text-xs text-gray-500 mt-1">Successfully handled</p>
+          </div>
+        </div>
+
+        <!-- Filter & Actions Bar -->
+        <div class="bg-white rounded-xl shadow-sm mb-6 p-4">
+          <div
+            class="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between"
+          >
+            <div class="flex flex-wrap gap-3 flex-1">
+              <select
+                id="filter-status"
+                onchange="applyFilters()"
+                class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+
+              <select
+                id="filter-priority"
+                onchange="applyFilters()"
+                class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="all">All Priority</option>
+                <option value="urgent">Urgent</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+              </select>
+
+              <select
+                id="filter-animal"
+                onchange="applyFilters()"
+                class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                <option value="all">All Animals</option>
+                <option value="sea-turtle">🐢 Penyu Laut</option>
+                <option value="dolphin">🐬 Lumba-lumba</option>
+                <option value="shark">🦈 Hiu</option>
+                <option value="manta-ray">🦋 Pari Manta</option>
+                <option value="whale">🐋 Paus</option>
+                <option value="other">🐠 Lainnya</option>
+              </select>
+
+              <input
+                type="text"
+                id="search-input"
+                placeholder="Search by ID, location, reporter..."
+                oninput="applyFilters()"
+                class="flex-1 min-w-[200px] px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+
+            <div class="flex gap-2">
+              <button
+                onclick="exportToCSV()"
+                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Export CSV
+              </button>
+              <button
+                onclick="refreshData()"
+                class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors flex items-center gap-2"
+              >
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+                Refresh
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports Grid -->
+        <div class="bg-white rounded-xl shadow-sm">
+          <div class="border-b px-6 py-4">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-ink">Emergency Reports</h2>
+              <span id="report-count" class="text-sm text-gray-600"
+                >0 reports</span
+              >
+            </div>
+          </div>
+
+          <div
+            id="reports-grid"
+            class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            <!-- Reports will be rendered here -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Detail Panel -->
+    <div
+      id="detail-overlay"
+      class="detail-overlay"
+      onclick="closeDetailPanel()"
+    ></div>
+    <div id="detail-panel" class="detail-panel">
+      <div
+        class="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between z-10"
+      >
+        <h2 class="text-xl font-bold text-ink">Report Details</h2>
+        <button
+          onclick="closeDetailPanel()"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div id="detail-content" class="p-6">
+        <!-- Content will be injected by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/manager-core.js"></script>
+    <script src="../assets/js/modal-fix.js"></script>
+    <script src="../assets/js/data-init-emergency.js"></script>
+    <script src="../assets/js/emergency-handler.js"></script>
+
+    <!-- Auto Login for Demo/Testing -->
+    <script>
+      // Auto-login conservator for testing purposes
+      // Remove this in production!
+      (function () {
+        const currentConservator = localStorage.getItem("currentConservator");
+        if (!currentConservator) {
+          // Create demo conservator
+          const demoConservator = {
+            id: "conservator-001",
+            name: "Dev Conservator",
+            email: "konservator@coratuka.id",
+            role: "admin",
+          };
+          localStorage.setItem(
+            "currentConservator",
+            JSON.stringify(demoConservator)
+          );
+          console.log("🔐 Auto-login demo conservator");
+        }
+      })();
+    </script>
+  </body>
+</html>

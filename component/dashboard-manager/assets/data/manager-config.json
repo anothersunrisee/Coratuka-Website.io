@@ -1,0 +1,603 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-08",
+  "projectName": "CORATUKA Manager Dashboard",
+  "projectDescription": "Comprehensive conservation management platform for marine education and community engagement",
+
+  "branding": {
+    "colors": {
+      "primary": "#15C5CE",
+      "primaryLight": "#E8F9FA",
+      "primaryDark": "#119EA5",
+      "secondary": "#FF8156",
+      "tertiary": "#FFD166",
+      "ink": "#4B4B4B",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#3B82F6"
+    },
+    "fonts": {
+      "primary": "Inter, ui-sans-serif, system-ui, sans-serif"
+    },
+    "logos": {
+      "main": "/assets/images/coratuka-logo.png",
+      "icon": "/assets/images/coratuka-icon.png"
+    }
+  },
+
+  "modules": {
+    "emergency": {
+      "id": "emergency",
+      "name": "Emergency Manager",
+      "description": "Handle emergency rescue reports",
+      "icon": "🚨",
+      "route": "modules/emergency-manager.html",
+      "enabled": true,
+      "order": 1,
+      "permissions": [
+        "view_reports",
+        "update_status",
+        "assign_handler",
+        "export_data"
+      ],
+      "features": {
+        "filterReports": true,
+        "statusTracking": true,
+        "photoGallery": true,
+        "exportCSV": true,
+        "multiTabSync": true
+      },
+      "priorities": {
+        "urgent": {
+          "label": "Urgent",
+          "color": "#EF4444",
+          "icon": "🔴",
+          "conditions": ["dead", "mati", "multiple", "banyak"]
+        },
+        "high": {
+          "label": "High",
+          "color": "#F97316",
+          "icon": "🟠",
+          "conditions": ["injured", "terluka", "entangled", "terjerat"]
+        },
+        "medium": {
+          "label": "Medium",
+          "color": "#F59E0B",
+          "icon": "🟡",
+          "conditions": ["stranded", "terdampar", "sick", "sakit"]
+        },
+        "low": {
+          "label": "Low",
+          "color": "#10B981",
+          "icon": "🟢",
+          "conditions": []
+        }
+      },
+      "statuses": ["pending", "in-progress", "resolved"],
+      "pagination": {
+        "itemsPerPage": 20,
+        "maxVisiblePages": 5
+      }
+    },
+
+    "challenge": {
+      "id": "challenge",
+      "name": "Challenge Manager",
+      "description": "Manage challenges, rewards & validations",
+      "icon": "🏆",
+      "route": "modules/challenge-manager.html",
+      "enabled": true,
+      "order": 2,
+      "permissions": [
+        "manage_challenges",
+        "validate_submissions",
+        "manage_rewards",
+        "process_redemptions"
+      ],
+      "features": {
+        "challengeCRUD": true,
+        "submissionValidation": true,
+        "rewardManagement": true,
+        "redemptionTracking": true,
+        "pointsSystem": true,
+        "exportCSV": true
+      },
+      "tabs": [
+        "challenges",
+        "validation",
+        "rewards",
+        "redemptions",
+        "statistics"
+      ],
+      "validationStatuses": ["pending", "approved", "rejected"],
+      "rewardTypes": ["merchandise", "voucher", "certificate", "experience"],
+      "stockLevels": {
+        "low": 30,
+        "medium": 70,
+        "high": 100
+      }
+    },
+
+    "campaign": {
+      "id": "campaign",
+      "name": "Campaign Manager",
+      "description": "Manage events & registrations",
+      "icon": "📅",
+      "route": "modules/campaign-manager.html",
+      "enabled": true,
+      "order": 3,
+      "permissions": [
+        "manage_events",
+        "view_registrants",
+        "track_attendance",
+        "export_data"
+      ],
+      "features": {
+        "eventCRUD": true,
+        "registrationManagement": true,
+        "attendanceTracking": true,
+        "featuredEvents": true,
+        "exportCSV": true
+      },
+      "tabs": ["events", "registrants", "attendance", "statistics"],
+      "eventStatuses": ["open", "closed", "completed", "cancelled"]
+    },
+
+    "classroom": {
+      "id": "classroom",
+      "name": "Classroom Manager",
+      "description": "Manage Ocean Odyssey educational content",
+      "icon": "🎓",
+      "route": "modules/classroom-manager.html",
+      "enabled": true,
+      "order": 4,
+      "permissions": [
+        "manage_lessons",
+        "manage_quizzes",
+        "view_progress",
+        "export_data"
+      ],
+      "features": {
+        "lessonManagement": true,
+        "quizBuilder": true,
+        "progressTracking": true,
+        "multiMascot": true,
+        "multiLevel": true,
+        "exportCSV": true
+      },
+      "tabs": ["content", "quiz", "progress", "analytics"],
+      "quizTypes": ["multiple-choice", "true-false", "fill-blank"],
+      "passingScore": 70
+    },
+
+    "beachGuide": {
+      "id": "beachGuide",
+      "name": "Beach Guide Manager",
+      "description": "Manage QR guide content for beaches",
+      "icon": "📍",
+      "route": "modules/beach-guide-manager.html",
+      "enabled": true,
+      "order": 5,
+      "permissions": [
+        "manage_locations",
+        "edit_content",
+        "generate_qr",
+        "view_analytics"
+      ],
+      "features": {
+        "locationManagement": true,
+        "richContentEditor": true,
+        "qrCodeGeneration": true,
+        "scanAnalytics": true,
+        "multimediaSupport": true
+      },
+      "tabs": ["locations", "content", "qrcodes", "analytics"],
+      "contentTypes": ["text", "image", "video", "youtube"],
+      "qrCodeSettings": {
+        "size": 200,
+        "colorDark": "#15C5CE",
+        "colorLight": "#FFFFFF",
+        "correctLevel": "H"
+      }
+    }
+  },
+
+  "mascots": {
+    "tuka": {
+      "id": "tuka",
+      "name": "Tuka",
+      "fullName": "Tuka the Turtle",
+      "description": "Sea Turtle Conservation Guardian",
+      "emoji": "🐢",
+      "color": "#10B981",
+      "colorLight": "#D1FAE5",
+      "theme": "turtle",
+      "focus": "Sea turtle conservation and nesting protection",
+      "enabled": true
+    },
+    "cora": {
+      "id": "cora",
+      "name": "Cora",
+      "fullName": "Cora the Coral",
+      "description": "Coral Reef Protection Champion",
+      "emoji": "🪸",
+      "color": "#EC4899",
+      "colorLight": "#FCE7F3",
+      "theme": "coral",
+      "focus": "Coral reef restoration and marine biodiversity",
+      "enabled": true
+    },
+    "coco": {
+      "id": "coco",
+      "name": "Coco",
+      "fullName": "Coco the Coastal Guide",
+      "description": "Sustainable Tourism Advocate",
+      "emoji": "🏖️",
+      "color": "#3B82F6",
+      "colorLight": "#DBEAFE",
+      "theme": "coastal",
+      "focus": "Sustainable coastal tourism and beach cleanup",
+      "enabled": true
+    }
+  },
+
+  "educationLevels": {
+    "beginner": {
+      "id": "beginner",
+      "name": "Beginner",
+      "description": "Introduction to marine conservation",
+      "icon": "🟢",
+      "color": "#10B981",
+      "colorLight": "#D1FAE5",
+      "order": 1,
+      "targetAge": "10-12",
+      "estimatedTime": 15
+    },
+    "intermediate": {
+      "id": "intermediate",
+      "name": "Intermediate",
+      "description": "Deep dive into conservation practices",
+      "icon": "🟡",
+      "color": "#F59E0B",
+      "colorLight": "#FEF3C7",
+      "order": 2,
+      "targetAge": "13-15",
+      "estimatedTime": 20
+    },
+    "advanced": {
+      "id": "advanced",
+      "name": "Advanced",
+      "description": "Expert-level conservation knowledge",
+      "icon": "🔴",
+      "color": "#EF4444",
+      "colorLight": "#FEE2E2",
+      "order": 3,
+      "targetAge": "16+",
+      "estimatedTime": 25
+    }
+  },
+
+  "beachLocations": {
+    "marina": {
+      "id": "marina",
+      "name": "Pantai Marina",
+      "city": "Semarang",
+      "description": "Pantai Marina adalah salah satu destinasi favorit di Semarang dengan pasir putih dan fasilitas lengkap.",
+      "coordinates": {
+        "lat": -6.9932,
+        "lng": 110.4203
+      },
+      "facilities": ["parking", "restroom", "food-court", "playground"],
+      "enabled": true,
+      "order": 1
+    },
+    "maron": {
+      "id": "maron",
+      "name": "Pantai Maron",
+      "city": "Semarang",
+      "description": "Pantai Maron menawarkan suasana tenang dengan pemandangan sunset yang indah.",
+      "coordinates": {
+        "lat": -6.9845,
+        "lng": 110.4156
+      },
+      "facilities": ["parking", "gazebo", "fishing-spot"],
+      "enabled": true,
+      "order": 2
+    },
+    "tirang": {
+      "id": "tirang",
+      "name": "Pantai Tirang",
+      "city": "Semarang",
+      "description": "Pantai Tirang terkenal dengan ekosistem mangrove dan aktivitas konservasi.",
+      "coordinates": {
+        "lat": -6.9956,
+        "lng": 110.4289
+      },
+      "facilities": ["mangrove-trail", "education-center", "viewing-deck"],
+      "enabled": true,
+      "order": 3
+    },
+    "baruna": {
+      "id": "baruna",
+      "name": "Pantai Baruna",
+      "city": "Semarang",
+      "description": "Pantai Baruna cocok untuk keluarga dengan playground dan area piknik.",
+      "coordinates": {
+        "lat": -6.9923,
+        "lng": 110.4178
+      },
+      "facilities": ["parking", "playground", "picnic-area", "restroom"],
+      "enabled": true,
+      "order": 4
+    },
+    "kartini": {
+      "id": "kartini",
+      "name": "Pantai Kartini",
+      "city": "Jepara",
+      "description": "Pantai Kartini adalah ikon Jepara dengan taman laut yang menarik.",
+      "coordinates": {
+        "lat": -6.5894,
+        "lng": 110.6678
+      },
+      "facilities": ["parking", "aquarium", "food-court", "boat-rental"],
+      "enabled": true,
+      "order": 5
+    },
+    "muaraBaru": {
+      "id": "muara-baru",
+      "name": "Pantai Muara Baru",
+      "city": "Semarang",
+      "description": "Pantai Muara Baru menawarkan spot fishing dan kuliner seafood segar.",
+      "coordinates": {
+        "lat": -6.9978,
+        "lng": 110.4312
+      },
+      "facilities": ["fishing-spot", "seafood-market", "boat-dock"],
+      "enabled": true,
+      "order": 6
+    }
+  },
+
+  "animalTypes": {
+    "sea-turtle": {
+      "id": "sea-turtle",
+      "name": "Penyu Laut",
+      "nameEn": "Sea Turtle",
+      "emoji": "🐢",
+      "mascot": "tuka",
+      "enabled": true
+    },
+    "dolphin": {
+      "id": "dolphin",
+      "name": "Lumba-lumba",
+      "nameEn": "Dolphin",
+      "emoji": "🐬",
+      "mascot": "tuka",
+      "enabled": true
+    },
+    "shark": {
+      "id": "shark",
+      "name": "Hiu",
+      "nameEn": "Shark",
+      "emoji": "🦈",
+      "mascot": "tuka",
+      "enabled": true
+    },
+    "manta-ray": {
+      "id": "manta-ray",
+      "name": "Pari Manta",
+      "nameEn": "Manta Ray",
+      "emoji": "🦋",
+      "mascot": "tuka",
+      "enabled": true
+    },
+    "whale": {
+      "id": "whale",
+      "name": "Paus",
+      "nameEn": "Whale",
+      "emoji": "🐋",
+      "mascot": "tuka",
+      "enabled": true
+    },
+    "other": {
+      "id": "other",
+      "name": "Lainnya",
+      "nameEn": "Other",
+      "emoji": "🐠",
+      "mascot": null,
+      "enabled": true
+    }
+  },
+
+  "animalConditions": {
+    "stranded": {
+      "id": "stranded",
+      "name": "Terdampar",
+      "nameEn": "Stranded",
+      "priority": "medium",
+      "enabled": true
+    },
+    "injured": {
+      "id": "injured",
+      "name": "Terluka",
+      "nameEn": "Injured",
+      "priority": "high",
+      "enabled": true
+    },
+    "entangled": {
+      "id": "entangled",
+      "name": "Terjerat",
+      "nameEn": "Entangled",
+      "priority": "high",
+      "enabled": true
+    },
+    "sick": {
+      "id": "sick",
+      "name": "Sakit",
+      "nameEn": "Sick",
+      "priority": "medium",
+      "enabled": true
+    },
+    "dead": {
+      "id": "dead",
+      "name": "Mati",
+      "nameEn": "Dead",
+      "priority": "urgent",
+      "enabled": true
+    },
+    "other": {
+      "id": "other",
+      "name": "Lainnya",
+      "nameEn": "Other",
+      "priority": "low",
+      "enabled": true
+    }
+  },
+
+  "localStorage": {
+    "keys": {
+      "conservatorUser": "conservatorUser",
+      "loggedInUser": "loggedInUser",
+      "emergencyReports": "emergencyReports",
+      "oceanChallenges": "oceanChallenges",
+      "oceanRewards": "oceanRewards",
+      "campaignEvents": "campaignEvents",
+      "oceanOdysseyLessons": "oceanOdysseyLessons",
+      "oceanOdysseyQuizzes": "oceanOdysseyQuizzes",
+      "userOdysseyProgress": "userOdysseyProgress",
+      "beachGuideLocations": "beachGuideLocations",
+      "userPoints": "userPoints",
+      "userRedeemedRewards": "userRedeemedRewards"
+    },
+    "expirationDays": {
+      "session": 7,
+      "reports": 365,
+      "progress": 730
+    }
+  },
+
+  "api": {
+    "endpoints": {
+      "auth": "/api/auth",
+      "reports": "/api/reports",
+      "challenges": "/api/challenges",
+      "events": "/api/events",
+      "lessons": "/api/lessons",
+      "locations": "/api/locations"
+    },
+    "timeout": 30000,
+    "retryAttempts": 3
+  },
+
+  "notifications": {
+    "duration": 3000,
+    "position": "top-right",
+    "types": {
+      "success": {
+        "bgColor": "#10B981",
+        "icon": "✓"
+      },
+      "error": {
+        "bgColor": "#EF4444",
+        "icon": "✕"
+      },
+      "warning": {
+        "bgColor": "#F59E0B",
+        "icon": "⚠"
+      },
+      "info": {
+        "bgColor": "#3B82F6",
+        "icon": "ℹ"
+      }
+    }
+  },
+
+  "fileUpload": {
+    "maxImageSize": 5242880,
+    "maxVideoSize": 52428800,
+    "acceptedImageTypes": [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp"
+    ],
+    "acceptedVideoTypes": ["video/mp4", "video/webm", "video/ogg"],
+    "compressionQuality": 0.8,
+    "maxDimension": 1920
+  },
+
+  "pagination": {
+    "defaultItemsPerPage": 20,
+    "maxItemsPerPage": 100,
+    "maxVisiblePages": 5
+  },
+
+  "validation": {
+    "minPasswordLength": 8,
+    "maxPasswordLength": 50,
+    "emailRegex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+    "phoneRegex": "^(\\+62|62|0)[0-9]{9,13}$"
+  },
+
+  "dateFormats": {
+    "display": "DD MMM YYYY",
+    "displayFull": "DD MMM YYYY, HH:mm",
+    "input": "YYYY-MM-DD",
+    "timestamp": "YYYY-MM-DDTHH:mm:ss.SSSZ"
+  },
+
+  "features": {
+    "multiTabSync": {
+      "enabled": true,
+      "syncInterval": 1000
+    },
+    "autoSave": {
+      "enabled": true,
+      "interval": 30000
+    },
+    "analytics": {
+      "enabled": true,
+      "trackEvents": true,
+      "trackPageViews": true
+    },
+    "exportData": {
+      "enabled": true,
+      "formats": ["csv", "json"],
+      "includeTimestamp": true
+    },
+    "offlineMode": {
+      "enabled": false,
+      "cacheDuration": 86400000
+    }
+  },
+
+  "security": {
+    "sessionTimeout": 3600000,
+    "maxLoginAttempts": 5,
+    "lockoutDuration": 900000,
+    "csrfProtection": true,
+    "xssProtection": true
+  },
+
+  "contact": {
+    "organizationName": "CORATUKA Conservation Team",
+    "email": "info@coratuka.org",
+    "phone": "+62 812-3456-7890",
+    "address": "Semarang, Central Java, Indonesia",
+    "website": "https://coratuka.org",
+    "socialMedia": {
+      "instagram": "@coratuka",
+      "facebook": "/coratuka",
+      "twitter": "@coratuka"
+    }
+  },
+
+  "credits": {
+    "developedBy": "CORATUKA Development Team",
+    "designedBy": "CORATUKA UX Research Team",
+    "year": 2025,
+    "license": "MIT"
+  }
+}

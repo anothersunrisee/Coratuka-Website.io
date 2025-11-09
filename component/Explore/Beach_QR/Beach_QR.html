@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beach QR Guide - CORATUKA</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      * {
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Smooth fade-in animation */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* QR Card hover effect */
+      .qr-card {
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .qr-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Card image container - 1:1 aspect ratio */
+      .card-image-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%; /* 1:1 aspect ratio */
+        overflow: hidden;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+      }
+
+      .card-image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Fallback emoji */
+      .card-emoji-fallback {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
+      }
+
+      /* Overlay styles */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+
+      .overlay.active {
+        display: flex;
+        animation: fadeInOverlay 0.3s ease;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .overlay-content {
+        background: white;
+        border-radius: 24px;
+        max-width: 700px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 2rem;
+        position: relative;
+        animation: slideUp 0.4s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Speech bubble - dialog style */
+      .speech-bubble {
+        position: relative;
+        background: white;
+        border: 2px solid #15c5ce;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .speech-bubble::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 15px solid transparent;
+        border-bottom: 15px solid transparent;
+        border-right: 20px solid #15c5ce;
+      }
+
+      .speech-bubble::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: -16px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 13px solid transparent;
+        border-bottom: 13px solid transparent;
+        border-right: 18px solid white;
+      }
+
+      /* Badge for scanned QRs */
+      .scanned-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #10b981;
+        color: white;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-weight: 600;
+        z-index: 10;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1023px) {
+        .speech-bubble::before,
+        .speech-bubble::after {
+          display: none;
+        }
+
+        .speech-bubble {
+          border: 2px solid #bae6fd;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .overlay-content {
+          padding: 1.5rem;
+          border-radius: 20px 20px 0 0;
+          max-height: 85vh;
+        }
+      }
+
+      /* Video/iframe responsive container */
+      .media-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        overflow: hidden;
+        border-radius: 12px;
+      }
+
+      .media-container iframe,
+      .media-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .media-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gradient-to-b from-sky-50 to-blue-50 min-h-screen font-inter">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a
+            href="../../Features/Explore.html"
+            class="bg-tertiary text-ink hover:bg-tertiary/90 font-semibold px-6 py-2 rounded-full transition-colors flex items-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to Explore
+          </a>
+          <div class="text-sm font-medium text-ink">
+            <span id="scanned-count">0</span>/6 QR Terpindai
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Mobile Layout (stacked vertical) -->
+      <div class="lg:hidden">
+        <!-- Header Section with Coco -->
+        <div class="text-center mb-8 fade-in">
+          <!-- Coco Mascot Illustration -->
+          <div class="flex justify-center mb-6">
+            <img
+              src="../../../img/welcome/coco-land.png"
+              alt="Coco - Coastal Guide"
+              class="w-48 h-48 sm:w-64 sm:h-64 object-contain"
+            />
+          </div>
+
+          <div>
+            <!-- Title -->
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
+              Beach QR Guide
+            </h1>
+            <p class="text-base text-gray-600 max-w-2xl mx-auto mb-6">
+              Pandu pantai digitalmu bersama Coco! Scan QR di lokasi atau pilih
+              topik di bawah untuk belajar menjaga kebersihan dan kelestarian
+              pantai.
+            </p>
+          </div>
+
+          <!-- Coco Speech Bubble -->
+          <div class="bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 mb-6">
+            <p class="text-ink font-medium text-sm sm:text-base">
+              "Hai Sahabat Laut! 🌊 Aku Coco, pemandu pantaimu. Yuk kenali
+              lokasi-lokasi penting di pantai dan pelajari cara menjaga
+              kebersihannya! Klik kartu di bawah atau scan QR langsung di
+              lapangan!"
+            </p>
+          </div>
+        </div>
+
+        <!-- QR Location Cards Grid (Mobile: 1 column) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+          <!-- Cards will be populated here -->
+        </div>
+
+        <!-- Info Banner (Mobile) -->
+        <div
+          class="bg-sky-100 border-2 border-sky-200 rounded-2xl p-6 text-center"
+        >
+          <div class="text-3xl mb-3">📱</div>
+          <h3 class="font-bold text-gray-900 mb-2">Scan QR di Lokasi Fisik</h3>
+          <p class="text-gray-700 text-sm">
+            Temukan QR code kami di berbagai titik strategis di pantai. Setiap
+            QR memberikan informasi kontekstual sesuai lokasi Anda berada!
+          </p>
+        </div>
+      </div>
+
+      <!-- Desktop Layout (mascot left, cards right) -->
+      <div class="hidden lg:flex gap-8">
+        <!-- Left Column: Mascot + Title + Speech Bubble -->
+        <div class="w-2/5 fade-in">
+          <!-- Title -->
+          <h1 class="text-4xl xl:text-5xl font-bold text-gray-900 mb-6">
+            Beach QR Guide
+          </h1>
+
+          <!-- Coco Mascot -->
+          <div class="flex justify-center mb-6">
+            <img
+              src="../../../img/welcome/coco-land.png"
+              alt="Coco - Coastal Guide"
+              class="w-80 h-80 xl:w-96 xl:h-96 object-contain"
+            />
+          </div>
+
+          <!-- Speech Bubble -->
+          <div class="speech-bubble">
+            <p class="text-ink font-medium text-base leading-relaxed">
+              "Hai Sahabat Laut! 🌊 Aku Coco, pemandu pantaimu. Yuk kenali
+              lokasi-lokasi penting di pantai dan pelajari cara menjaga
+              kebersihannya! Klik kartu di bawah atau scan QR langsung di
+              lapangan!"
+            </p>
+          </div>
+
+          <!-- Info Banner (Desktop) -->
+          <div class="bg-sky-100 border-2 border-sky-200 rounded-2xl p-6 mt-8">
+            <div class="text-3xl mb-3 text-center">📱</div>
+            <h3 class="font-bold text-gray-900 mb-2 text-center">
+              Scan QR di Lokasi Fisik
+            </h3>
+            <p class="text-gray-700 text-sm text-center">
+              Temukan QR code kami di berbagai titik strategis di pantai. Setiap
+              QR memberikan informasi kontekstual sesuai lokasi Anda berada!
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Column: QR Cards (2x3 grid) -->
+        <div class="w-3/5">
+          <p class="text-base text-gray-600 mb-6">
+            Pandu pantai digitalmu bersama Coco! Scan QR di lokasi atau pilih
+            topik di bawah untuk belajar menjaga kebersihan dan kelestarian
+            pantai.
+          </p>
+
+          <div class="grid grid-cols-2 gap-6" id="desktop-cards-container">
+            <!-- Cards will be populated here by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Overlay Modal -->
+    <div id="qr-overlay" class="overlay">
+      <div class="overlay-content">
+        <!-- Close Button -->
+        <button
+          id="close-overlay"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <!-- Content will be injected by JavaScript -->
+        <div id="overlay-body">
+          <!-- Dynamic content here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="Assets/js/qr-handler.js"></script>
+  </body>
+</html>

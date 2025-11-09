@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reward Catalog - Ocean Challenge</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { inter: ["Inter", "sans-serif"] },
+            colors: {
+              btn: "#FFD166",
+              "btn-hover": "#d8b052",
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              info: { DEFAULT: "#3b82f6" },
+              danger: { DEFAULT: "#f64c4c" },
+              warning: { DEFAULT: "#ffad0d" },
+              success: { DEFAULT: "#47b881" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .ocean-pattern {
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          );
+      }
+      .tab-button {
+        position: relative;
+        padding: 1rem;
+        transition: all 0.3s ease;
+      }
+      .tab-button.active {
+        color: #15c5ce;
+        font-weight: 600;
+      }
+      .tab-button.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background-color: #15c5ce;
+        border-radius: 2px 2px 0 0;
+      }
+      .reward-card {
+        transition: all 0.3s ease;
+      }
+      .reward-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(21, 197, 206, 0.15);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 ocean-pattern">
+    <!-- Navbar -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center gap-4">
+            <button
+              onclick="goBack()"
+              class="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn-hover rounded-lg transition-all"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
+              </svg>
+              <span class="font-medium">Back</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🌊</span>
+            <span class="font-bold text-ink">CORATUKA</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              class="relative p-2 hover:bg-gray-100 rounded-lg transition-all"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+            </button>
+            <div
+              class="w-8 h-8 bg-primary-200 rounded-full flex items-center justify-center"
+            >
+              <span class="text-primary-700 font-bold text-sm">W</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header
+      class="bg-gradient-to-r from-warning/20 via-tertiary/10 to-warning/20 border-b"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-3xl font-bold text-ink mb-2">Reward Catalog</h1>
+            <p class="text-gray-600">
+              Tukar poinmu dengan eco-reward menarik! 🎁
+            </p>
+          </div>
+
+          <!-- Total Points Display -->
+          <div class="bg-white rounded-2xl shadow-sm p-6 text-center">
+            <p class="text-sm text-gray-500 mb-1">Your Poin</p>
+            <p class="text-4xl font-bold text-warning">999999</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Tab Navigation -->
+      <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="flex gap-8">
+          <button
+            onclick="switchTab('tukar')"
+            id="tab-tukar"
+            class="tab-button active"
+          >
+            Reedem Reward
+          </button>
+          <button
+            onclick="switchTab('saya')"
+            id="tab-saya"
+            class="tab-button text-gray-500 hover:text-primary"
+          >
+            Your Reward
+          </button>
+        </div>
+      </div>
+
+      <!-- Tukar Reward Tab -->
+      <div id="tukar-content">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Reward Card 1: Physical -->
+          <div
+            class="reward-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-success/20 to-success/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/sticker.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+              <span class="hidden text-6xl">🎨</span>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span
+                  class="px-2 py-1 bg-success/20 text-success text-xs font-bold rounded"
+                  >Physical</span
+                >
+                <span class="text-xs text-gray-500">Stok: 25</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink mb-2">Eco Sticker Pack</h3>
+              <p class="text-sm text-gray-600 mb-4">
+                Set 10 stiker konservasi laut dengan desain eksklusif
+              </p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-warning"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="font-bold text-warning text-lg">100 Poin</span>
+                </div>
+              </div>
+
+              <button
+                onclick="confirmRedeem('Eco Sticker Pack', 100, 'physical')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Reedem Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Reward Card 2: Physical -->
+          <div
+            class="reward-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-success/20 to-success/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/mug.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+              <span class="hidden text-6xl">🎨</span>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span
+                  class="px-2 py-1 bg-success/20 text-success text-xs font-bold rounded"
+                  >Physical</span
+                >
+                <span class="text-xs text-gray-500">Stok: 15</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink mb-2">coratuka Mug</h3>
+              <p class="text-sm text-gray-600 mb-4">
+                mug dengan desain coratuka yang lucu dan menarik
+              </p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-warning"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="font-bold text-warning text-lg">500 Poin</span>
+                </div>
+              </div>
+
+              <button
+                onclick="confirmRedeem('coratuka Mug', 500, 'physical')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Reedem Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Reward Card 3: Physical -->
+          <div
+            class="reward-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-success/20 to-success/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/kaos.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+              <span class="hidden text-6xl">🎨</span>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span
+                  class="px-2 py-1 bg-success/20 text-success text-xs font-bold rounded"
+                  >Physical</span
+                >
+                <span class="text-xs text-gray-500">Stok: 25</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink mb-2">
+                Kaos Coratuka (all-size)
+              </h3>
+              <p class="text-sm text-gray-600 mb-4">
+                kaos dengan desain coratuka yang lucu dan menarik
+              </p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-warning"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="font-bold text-warning text-lg">1000 Poin</span>
+                </div>
+              </div>
+
+              <button
+                onclick="confirmRedeem('Kaos Coratuka (all-size)', 1000, 'physical')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Reedem Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Reward Card 2: Voucher -->
+          <div
+            class="reward-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/diskon.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span
+                  class="px-2 py-1 bg-primary/20 text-primary text-xs font-bold rounded"
+                  >Voucher</span
+                >
+                <span class="text-xs text-gray-500">Stok: 15</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink mb-2">Eco-Tour Voucher</h3>
+              <p class="text-sm text-gray-600 mb-4">
+                Voucher diskon 50% untuk tur konservasi pantai
+              </p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-warning"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="font-bold text-warning text-lg">200 Poin</span>
+                </div>
+              </div>
+
+              <button
+                onclick="confirmRedeem('Eco-Tour Voucher', 200, 'voucher')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Reedem Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Reward Card 3: Digital Badge -->
+          <div
+            class="reward-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-warning/20 to-warning/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/badge.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span
+                  class="px-2 py-1 bg-warning/20 text-warning text-xs font-bold rounded"
+                  >Digital</span
+                >
+                <span class="text-xs text-gray-500">Unlimited</span>
+              </div>
+              <h3 class="text-xl font-bold text-ink mb-2">
+                Ocean Guardian Badge
+              </h3>
+              <p class="text-sm text-gray-600 mb-4">
+                Badge digital eksklusif untuk profil kamu
+              </p>
+
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5 text-warning"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                    />
+                  </svg>
+                  <span class="font-bold text-warning text-lg">50 Poin</span>
+                </div>
+              </div>
+
+              <button
+                onclick="confirmRedeem('Ocean Guardian Badge', 50, 'digital')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Reedem Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reward Saya Tab -->
+      <div id="saya-content" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Claimed Reward Card -->
+          <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+            <div
+              class="relative h-48 bg-gradient-to-br from-success/20 to-success/40 flex items-center justify-center"
+            >
+              <img
+                src="../../../img/reward/sticker.png"
+                alt="Eco Sticker Pack"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+              />
+              <div
+                class="absolute top-4 right-4 px-3 py-1 bg-success text-white text-xs font-bold rounded-full"
+              >
+                Claimed
+              </div>
+            </div>
+
+            <div class="p-6">
+              <span
+                class="px-2 py-1 bg-success/20 text-success text-xs font-bold rounded mb-3 inline-block"
+                >Physical</span
+              >
+              <h3 class="text-xl font-bold text-ink mb-2">Eco Sticker Pack</h3>
+              <p class="text-xs text-gray-500 mb-4">Ditukar: 8 Nov 2025</p>
+
+              <button
+                onclick="showClaimModal('Eco Sticker Pack', 'ECO-STK-8472', 'physical')"
+                class="w-full py-3 bg-primary hover:bg-primary-700 text-white font-semibold rounded-xl transition-all"
+              >
+                View claim code
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="md:col-span-2 lg:col-span-3">
+            <div class="bg-white rounded-2xl shadow-sm p-12 text-center">
+              <div class="text-6xl mb-4">🎁</div>
+              <h3 class="text-xl font-bold text-ink mb-2">
+                No Other Rewards Yet
+              </h3>
+              <p class="text-gray-600 mb-6">
+                Kumpulkan poin dari challenge dan tukar dengan reward menarik!
+              </p>
+              <button
+                onclick="switchTab('tukar')"
+                class="px-6 py-3 bg-tertiary hover:bg-btn-hover text-ink rounded-xl font-semibold"
+              >
+                See the Rewards Catalog
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div
+      id="confirm-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-md w-full p-6">
+        <h3 class="text-2xl font-bold text-ink mb-4">Reedem Confirmation</h3>
+        <p class="text-gray-700 mb-6">
+          Yakin ingin menukar <strong id="confirm-reward-name"></strong> dengan
+          <strong class="text-warning" id="confirm-points"></strong>?
+        </p>
+        <p class="text-sm text-gray-500 mb-6">
+          Poin kamu akan berkurang dan tidak dapat dikembalikan.
+        </p>
+
+        <div class="flex gap-3">
+          <button
+            onclick="closeConfirmModal()"
+            class="flex-1 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            onclick="redeemReward()"
+            class="flex-1 py-3 bg-tertiary hover:bg-btn-hover text-ink rounded-xl font-semibold transition-all"
+          >
+            yes, Reedem
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Claim Modal with Barcode -->
+    <div
+      id="claim-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto"
+    >
+      <div
+        class="bg-white rounded-2xl max-w-lg w-full p-6 md:p-8 my-10 max-h-[90vh] overflow-y-auto"
+      >
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-2xl font-bold text-ink">Detail Reward</h3>
+          <button
+            onclick="closeClaimModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Reward Info -->
+        <div class="text-center mb-6">
+          <div
+            class="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <span class="text-4xl">🎨</span>
+          </div>
+          <h4 class="text-xl font-bold text-ink mb-2" id="claim-reward-name">
+            Eco Sticker Pack
+          </h4>
+          <p class="text-sm text-gray-500">Reedemed: 8 Nov 2025</p>
+        </div>
+
+        <!-- Claim Code -->
+        <div class="bg-gray-50 rounded-xl p-6 mb-6">
+          <p class="text-sm text-gray-600 mb-3 text-center">Reedem Code</p>
+          <p
+            class="text-3xl font-bold text-ink text-center mb-4 tracking-wider"
+            id="claim-code"
+          >
+            ECO-STK-8472
+          </p>
+
+          <!-- Barcode Placeholder -->
+          <div class="bg-white rounded-lg p-4 flex items-center justify-center">
+            <svg id="barcode" width="250" height="100"></svg>
+          </div>
+        </div>
+
+        <!-- Claim Location -->
+        <div class="bg-primary-50 rounded-xl p-4 mb-6">
+          <p class="text-sm font-semibold text-ink mb-2">📍 Reedem Location</p>
+          <p class="text-sm text-gray-700" id="claim-location">
+            Pos Konservasi Pantai Parangtritis, Bantul
+          </p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="bg-warning/10 rounded-xl p-4 mb-6">
+          <p class="text-xs font-semibold text-ink mb-2">📝 How to Reedem</p>
+          <ol class="text-xs text-gray-700 space-y-1 list-decimal list-inside">
+            <li>Datang ke lokasi penukaran</li>
+            <li>Tunjukkan kode atau barcode ini</li>
+            <li>Sebutkan nama kamu untuk verifikasi</li>
+          </ol>
+        </div>
+
+        <button
+          onclick="closeClaimModal()"
+          class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink rounded-xl font-semibold transition-all"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Redeem Modal -->
+    <div
+      id="success-redeem-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+        <div
+          class="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <svg
+            class="w-12 h-12 text-success"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <h3 class="text-2xl font-bold text-ink mb-3">Penukaran Berhasil! 🎉</h3>
+        <p class="text-gray-700 mb-6">
+          Reward berhasil ditukar dan sudah masuk ke tab "Reward Saya"
+        </p>
+
+        <button
+          onclick="viewMyRewards()"
+          class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink rounded-xl font-semibold transition-all mb-3"
+        >
+          Lihat Reward Saya
+        </button>
+        <button
+          onclick="closeSuccessModal()"
+          class="w-full py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script>
+      let currentRewardData = null;
+
+      // Tab Switching
+      function switchTab(tabName) {
+        const tabs = ["tukar", "saya"];
+        tabs.forEach((tab) => {
+          const button = document.getElementById(`tab-${tab}`);
+          const content = document.getElementById(`${tab}-content`);
+
+          if (tab === tabName) {
+            button.classList.add("active", "text-primary");
+            button.classList.remove("text-gray-500");
+            content.classList.remove("hidden");
+          } else {
+            button.classList.remove("active", "text-primary");
+            button.classList.add("text-gray-500");
+            content.classList.add("hidden");
+          }
+        });
+      }
+
+      // Confirm Redeem
+      function confirmRedeem(name, points, type) {
+        currentRewardData = { name, points, type };
+        document.getElementById("confirm-reward-name").textContent = name;
+        document.getElementById("confirm-points").textContent =
+          points + " poin";
+        document.getElementById("confirm-modal").classList.remove("hidden");
+      }
+
+      function closeConfirmModal() {
+        document.getElementById("confirm-modal").classList.add("hidden");
+      }
+
+      function redeemReward() {
+        // Simulate redemption
+        console.log("Redeeming:", currentRewardData);
+        closeConfirmModal();
+
+        // Show success modal
+        document
+          .getElementById("success-redeem-modal")
+          .classList.remove("hidden");
+
+        // Update points (demo)
+        // In real app, make API call to deduct points
+      }
+
+      // Show Claim Modal
+      function showClaimModal(name, code, type) {
+        document.getElementById("claim-reward-name").textContent = name;
+        document.getElementById("claim-code").textContent = code;
+
+        // Generate barcode
+        JsBarcode("#barcode", code, {
+          format: "CODE128",
+          width: 2,
+          height: 80,
+          displayValue: false,
+        });
+
+        document.getElementById("claim-modal").classList.remove("hidden");
+      }
+
+      function closeClaimModal() {
+        document.getElementById("claim-modal").classList.add("hidden");
+      }
+
+      function viewMyRewards() {
+        closeSuccessModal();
+        switchTab("saya");
+      }
+
+      function closeSuccessModal() {
+        document.getElementById("success-redeem-modal").classList.add("hidden");
+      }
+
+      // Navigation
+      function goBack() {
+        window.location.href = "ocean-challenge.html";
+      }
+
+      // Close modals on outside click
+      document
+        .getElementById("confirm-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) closeConfirmModal();
+        });
+
+      document
+        .getElementById("claim-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) closeClaimModal();
+        });
+
+      document
+        .getElementById("success-redeem-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) closeSuccessModal();
+        });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Reward Catalog initialized");
+      });
+    </script>
+  </body>
+</html>

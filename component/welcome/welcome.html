@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Welcome – CoraTuka</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="h-full bg-white font-inter text-ink overflow-hidden">
+    <!-- Close Button with X -->
+
+    <main class="flex h-full flex-col items-center justify-center px-4 py-8">
+      <!-- Header -->
+      <div class="mb-6 text-center">
+        <h1 class="mb-2 text-3xl font-extrabold text-slate-900 md:text-4xl">
+          Welcome!
+        </h1>
+        <p class="text-base text-slate-700">
+          Selamat menjadi bagian dari Coratuka
+        </p>
+      </div>
+
+      <!-- Main Content Container -->
+      <div class="relative w-full max-w-4xl">
+        <!-- Tuka Mascot - Left Side -->
+        <div
+          class="absolute -left-8 bottom-4 z-10 w-24 md:-left-16 md:bottom-8 md:w-40 lg:-left-20 lg:w-48"
+        >
+          <img
+            src="../../img/welcome/tuka.png"
+            alt="Maskot Tuka"
+            class="h-auto w-full object-contain drop-shadow-2xl"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <!-- Fallback Emoji -->
+          <div class="hidden text-6xl md:text-8xl">🐢</div>
+        </div>
+
+        <!-- Cora Mascot - Right Side -->
+        <div
+          class="absolute -right-8 bottom-4 z-10 w-24 md:-right-16 md:bottom-8 md:w-40 lg:-right-20 lg:w-48"
+        >
+          <img
+            src="../../img/welcome/cora.png"
+            alt="Maskot Cora"
+            class="h-auto w-full object-contain drop-shadow-2xl"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <!-- Fallback Emoji -->
+          <div class="hidden text-6xl md:text-8xl">🪸</div>
+        </div>
+
+        <!-- Video/Content Box -->
+        <div
+          class="relative overflow-hidden rounded-3xl bg-slate-100 shadow-xl"
+        >
+          <div class="aspect-video w-full bg-black">
+            <!-- YouTube Embed -->
+            <iframe
+              id="youtubeVideo"
+              class="h-full w-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+
+            <!-- Placeholder jika YouTube tidak load -->
+            <div
+              class="hidden flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300"
+            >
+              <div class="text-center p-6">
+                <div class="mb-3 text-5xl md:text-6xl">🎥</div>
+                <p class="text-base font-semibold text-slate-700 md:text-lg">
+                  Video Tutorial
+                </p>
+                <p class="mt-1 text-sm text-slate-600">Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lewati Button -->
+      <div class="mt-6 text-center">
+        <button
+          id="btnLewati"
+          type="button"
+          class="inline-flex items-center justify-center gap-2 text-lg font-extrabold text-slate-900 transition hover:text-primary-600 focus:outline-none"
+        >
+          <span>Lewati</span>
+          <span class="text-xl">≫</span>
+        </button>
+      </div>
+    </main>
+
+    <script>
+      // ========================================
+      // Check if user just registered
+      // ========================================
+      window.addEventListener("DOMContentLoaded", () => {
+        const newUser = sessionStorage.getItem("new_user");
+
+        // For demo, allow access without registration session
+        if (newUser) {
+          const userData = JSON.parse(newUser);
+          console.log("=== WELCOME NEW USER ===");
+          console.log("Role:", userData.role);
+          console.log("Name:", userData.name);
+          console.log("========================");
+        }
+      });
+
+      // ========================================
+      // Go to Index/Dashboard
+      // ========================================
+      function goToIndex() {
+        // Clear registration session if exists
+        sessionStorage.removeItem("new_user");
+
+        // Redirect to index.html
+        console.log("Redirecting to index.html");
+        window.location.href = "../../Index.html";
+      }
+
+      // ========================================
+      // Button Handlers
+      // ========================================
+      document.getElementById("btnClose")?.addEventListener("click", goToIndex);
+      document
+        .getElementById("btnLewati")
+        ?.addEventListener("click", goToIndex);
+
+      // ========================================
+      // YouTube Video URL Guide
+      // ========================================
+      // Untuk mengganti video YouTube:
+      // 1. Buka video YouTube yang diinginkan
+      // 2. Copy ID video dari URL (contoh: https://www.youtube.com/watch?v=VIDEO_ID)
+      // 3. Ganti 'dQw4w9WgXcQ' di src iframe dengan VIDEO_ID Anda
+      //
+      // Contoh:
+      // src="https://www.youtube.com/embed/VIDEO_ID_ANDA?rel=0&modestbranding=1"
+      //
+      // Parameter yang bisa ditambahkan:
+      // - autoplay=1 : auto play saat load
+      // - mute=1 : mute audio (wajib untuk autoplay)
+      // - loop=1 : loop video
+      // - start=10 : mulai dari detik ke-10
+      // - end=60 : stop di detik ke-60
+      // - controls=0 : hilangkan controls
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color,
+          text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+      }
+
+      *:focus-visible {
+        outline: 2px solid #15c5ce;
+        outline-offset: 2px;
+      }
+
+      /* Prevent text selection on mascots */
+      img {
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+
+      /* Drop shadow for mascots */
+      .drop-shadow-2xl {
+        filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.15));
+      }
+    </style>
+  </body>
+</html>

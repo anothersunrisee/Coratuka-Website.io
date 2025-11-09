@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Coratuka – Edukasi & Konservasi Kelautan</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="styleguide.css" />
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { inter: ["Inter", "ui-sans-serif", "system-ui"] },
+            colors: {
+              primary: "#163F5F",
+              ink: "#0F172A",
+              sea: "#0EA5E9",
+              sand: "#F8FAFC",
+              deep: "#0B1220",
+            },
+            boxShadow: {
+              soft: "0 8px 24px rgba(0,0,0,0.15)",
+            },
+            borderRadius: {
+              xl2: "1rem",
+              xl3: "1.5rem",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Gradient utility */
+      .gradient-bottom {
+        background: linear-gradient(
+          180deg,
+          rgba(22, 63, 95, 0) 0%,
+          rgba(18, 45, 65, 0.95) 65%
+        );
+      }
+
+      /* ====== NAVBAR STYLES ====== */
+      .navbar {
+        display: flex;
+        width: 100%;
+        max-width: 1344px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        position: fixed;
+        top: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(254, 254, 254, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+        z-index: 50;
+        transition: all 0.3s ease;
+      }
+
+      /* Logo & Brand */
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+
+      .logo-placeholder {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #15c5ce 0%, #0ea5e9 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: white;
+        font-size: 20px;
+      }
+
+      .brand-text {
+        font-family: "Inter", Helvetica;
+        font-weight: 800;
+        color: var(--global-tokens-text-primary);
+        font-size: 20px;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      .brand-text .light {
+        font-weight: 400;
+      }
+
+      /* Navigation Items */
+      .nav-menu {
+        display: flex;
+        align-items: center;
+        gap: 48px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .nav-link {
+        font-family: var(--label-main-l16-regular-font-family);
+        font-weight: var(--label-main-l16-regular-font-weight);
+        font-size: var(--label-main-l16-regular-font-size);
+        color: var(--color-styles-text-70);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.2s;
+      }
+
+      .nav-link:hover {
+        color: var(--global-tokens-color-primary);
+      }
+
+      /* CTA Buttons */
+      .nav-buttons {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* ====== UNIFIED BUTTON STYLES ====== */
+      .btn-reporting,
+      .btn-start,
+      .btn-cta,
+      .btn-primary,
+      .btn-secondary,
+      .btn-gradient {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px;
+        border-radius: 16px;
+        font-family: var(--label-main-l16-extra-bold-font-family);
+        font-weight: var(--label-main-l16-extra-bold-font-weight);
+        font-size: var(--label-main-l16-extra-bold-font-size);
+        text-decoration: none;
+        white-space: nowrap;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+      }
+
+      .btn-reporting {
+        background-color: var(--warning-70);
+        color: var(--color-styles-white-10);
+      }
+
+      .btn-start {
+        background-color: var(--color-styles-tertiary-70);
+        color: var(--global-tokens-text-primary);
+      }
+
+      .btn-cta,
+      .btn-primary {
+        background-color: var(--global-tokens-color-primary);
+        color: white;
+      }
+
+      .btn-secondary {
+        background-color: var(--color-styles-secondary-70);
+        color: white;
+      }
+
+      .btn-gradient {
+        background: linear-gradient(135deg, #15c5ce 0%, #0ea5e9 100%);
+        color: white;
+      }
+
+      .btn-reporting:hover,
+      .btn-start:hover,
+      .btn-cta:hover,
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .btn-gradient:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      }
+
+      .btn-reporting:active,
+      .btn-start:active,
+      .btn-cta:active,
+      .btn-primary:active,
+      .btn-secondary:active,
+      .btn-gradient:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Hamburger Menu Button */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 4px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 24px;
+        height: 3px;
+        background-color: var(--global-tokens-text-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+      }
+
+      /* Mobile Menu */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 96px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 32px);
+        max-width: 400px;
+        background-color: rgba(254, 254, 254, 0.98);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        padding: 24px;
+        z-index: 49;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .mobile-menu.active {
+        display: flex;
+      }
+
+      .mobile-nav-links {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .mobile-nav-link {
+        font-family: var(--label-main-l16-regular-font-family);
+        font-weight: var(--label-main-l16-regular-font-weight);
+        font-size: var(--label-main-l16-regular-font-size);
+        color: var(--color-styles-text-70);
+        text-decoration: none;
+        padding: 12px 16px;
+        border-radius: 12px;
+        transition: background-color 0.2s;
+      }
+
+      .mobile-nav-link:hover {
+        background-color: var(--color-styles-primary-10);
+        color: var(--global-tokens-color-primary);
+      }
+
+      .mobile-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid var(--color-styles-icon-20);
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 1024px) {
+        .navbar {
+          width: calc(100% - 32px);
+          max-width: none;
+        }
+
+        .nav-menu {
+          display: none;
+        }
+
+        .hamburger {
+          display: flex;
+        }
+
+        .brand-text {
+          font-size: 18px;
+        }
+
+        .logo-placeholder {
+          width: 44px;
+          height: 44px;
+          font-size: 18px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .navbar {
+          padding: 12px 16px;
+          top: 16px;
+        }
+
+        .brand-text {
+          font-size: 16px;
+        }
+
+        .logo-placeholder {
+          width: 40px;
+          height: 40px;
+          font-size: 16px;
+        }
+
+        .mobile-menu {
+          top: 80px;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-inter text-slate-800 bg-white">
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar">
+      <a href="#home" class="navbar-brand">
+        <img
+          src="img/index/logo coratuka.png"
+          class="w-16 sm:w-24 h-auto"
+          alt="Coratuka Logo"
+        />
+        <p class="brand-text">
+          <span>Coratuka -</span>
+          <span class="light">Ocean-Edu</span>
+        </p>
+      </a>
+
+      <div class="nav-menu">
+        <div class="nav-links">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+          <a href="#contact" class="nav-link">Info</a>
+        </div>
+        <div class="nav-buttons">
+          <a
+            href="/component/emergency-rescue/emergency-report.html"
+            class="btn-reporting"
+            >Emergency Rescue</a
+          >
+          <a href="component/login/login.html" class="btn-start">Start Now</a>
+        </div>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <div class="mobile-nav-links">
+        <a href="#home" class="mobile-nav-link">Home</a>
+        <a href="#features" class="mobile-nav-link">Features</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+        <a href="#faq" class="mobile-nav-link">FAQ</a>
+        <a href="#contact" class="mobile-nav-link">Info</a>
+      </div>
+      <div class="mobile-buttons">
+        <a
+          href="/component/emergency-rescue/emergency-report.html"
+          class="btn-reporting"
+          style="text-align: center"
+          >Emergency Rescue</a
+        >
+        <a
+          href="component/login/login.html"
+          class="btn-start"
+          style="text-align: center"
+          >Start Now</a
+        >
+      </div>
+    </div>
+
+    <!-- ====== HERO SECTION ====== -->
+    <section id="home" class="scroll-mt-40 relative overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        <img
+          src="img/index/home fix.jpg"
+          alt="Latar hero"
+          class="h-full w-full object-cover"
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-deep/10 via-deep/10 to-deep/50"
+        ></div>
+      </div>
+
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-32 lg:py-40 grid lg:grid-cols-2 gap-10 items-center"
+      >
+        <div class="order-2 lg:order-1">
+          <div class="grid grid-cols-3 gap-4">
+            <img
+              src="img/index/wisatawan home.jpg"
+              alt="Pantai Parangtritis"
+              class="col-span-2 h-56 sm:h-64 w-full object-cover rounded-3xl shadow-soft"
+            />
+            <img
+              src="img/index/turtle home.jpg"
+              alt="Anak penyu di pasir"
+              class="h-56 sm:h-64 w-full object-cover rounded-3xl shadow-soft"
+            />
+            <img
+              src="img/index/coral home.jpg"
+              alt="Terumbu karang"
+              class="col-span-3 h-48 sm:h-60 w-full object-cover rounded-3xl shadow-soft"
+            />
+          </div>
+        </div>
+
+        <div class="order-1 lg:order-2 text-center lg:text-left">
+          <h1
+            class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white drop-shadow-lg leading-tight"
+          >
+            CoraTuka
+          </h1>
+          <p class="mt-4 text-xl sm:text-2xl text-white/95 drop-shadow">
+            Halo! Sambutan hangat dari Coratuka untukmu.<br />
+            Mari Bersama kita lestarikan Kehidupan Laut!
+          </p>
+          <div class="mt-8">
+            <a href="#welcome" class="btn-start"> Get Started → </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CONTINUOUS GRADIENT WRAPPER START ====== -->
+    <div
+      class="relative bg-[url('img/index/Box%20all.png')] bg-no-repeat bg-center bg-[length:100%]"
+    >
+      <!-- Gradient overlay yang menyambung -->
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-white via-cyan-50 via-blue-50 to-deep -z-10"
+      ></div>
+
+      <!-- ====== WELCOME SECTION ====== -->
+      <section
+        id="welcome"
+        class="scroll-mt-40 relative py-20 sm:py-24 bg-[url('/img/index/Box all.png')] bg-no-repeat bg-center bg-[length:300px]"
+      >
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div
+            class="rounded-3xl overflow-hidden bg-[url('img/index/welcome.png')] bg-cover bg-center p-12 sm:p-16 shadow-lg"
+          >
+            <div class="text-center">
+              <h2
+                class="text-4xl sm:text-5xl font-extrabold text-white drop-shadow-lg"
+              >
+                Welcome
+              </h2>
+              <p
+                class="mt-4 text-xl text-white/90 max-w-2xl mx-auto drop-shadow"
+              >
+                Halo! Sambutan hangat dari Coratuka untukmu.<br />
+                Mari Bersama kita lestarikan Kehidupan Laut!
+              </p>
+
+              <!-- Video Cards Grid -->
+              <div class="mt-12 grid md:grid-cols-3 gap-6">
+                <!-- Video 1 -->
+                <article
+                  class="group relative overflow-hidden rounded-3xl bg-white shadow-md hover:shadow-xl transition-all"
+                >
+                  <div class="aspect-video w-full overflow-hidden">
+                    <video
+                      class="w-full h-full object-cover"
+                      src="Video/Overview/lestari-laut.mp4"
+                      title="Pentingnya Lestarinya Penyu"
+                      controls
+                      preload="metadata"
+                    ></video>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="text-slate-900 font-bold text-lg">Overview</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                      Pentingnya Lestarinya Penyu
+                    </p>
+                  </div>
+                </article>
+
+                <!-- Video 2 -->
+                <article
+                  class="group relative overflow-hidden rounded-3xl bg-white shadow-md hover:shadow-xl transition-all"
+                >
+                  <div class="aspect-video w-full overflow-hidden">
+                    <video
+                      class="w-full h-full object-cover"
+                      src="Video/Overview/terumbu-karang.mp4"
+                      title="Jaga Ekosistem Terumbu Karang"
+                      controls
+                      preload="metadata"
+                    ></video>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="text-slate-900 font-bold text-lg">Overview</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                      Jaga Ekosistem Terumbu Karang
+                    </p>
+                  </div>
+                </article>
+
+                <!-- Video 3 -->
+                <article
+                  class="group relative overflow-hidden rounded-3xl bg-white shadow-md hover:shadow-xl transition-all"
+                >
+                  <div class="aspect-video w-full overflow-hidden">
+                    <video
+                      class="w-full h-full object-cover"
+                      src="Video/Overview/wisatawan-pantai.mp4"
+                      title="Wisatawan Ramah Lingkungan"
+                      controls
+                      preload="metadata"
+                    ></video>
+                  </div>
+                  <div class="p-4">
+                    <h3 class="text-slate-900 font-bold text-lg">Overview</h3>
+                    <p class="text-slate-600 text-sm mt-1">
+                      Wisatawan Ramah Lingkungan
+                    </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== FEATURES SECTION ====== -->
+      <section id="features" class="scroll-mt-40 py-20 sm:py-24">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            class="rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm p-8 sm:p-12 shadow-lg"
+          >
+            <header class="text-center mb-12">
+              <h2 class="text-4xl sm:text-5xl font-extrabold text-ink">
+                Features
+              </h2>
+              <p class="mt-3 text-xl text-slate-700 max-w-2xl mx-auto">
+                Belajar ilmu konservasi dengan Game, Edukasi-Interaktif, dan
+                kelas yang menambah wawasan tentang kelautan
+              </p>
+            </header>
+
+            <!-- Features Grid dengan Responsive Mobile -->
+            <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <!-- Explore Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6 flex flex-col sm:flex-row gap-5"
+              >
+                <div class="flex-shrink-0 mx-auto sm:mx-0">
+                  <img
+                    src="img/index/learning.png"
+                    alt="Learning"
+                    class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
+                  />
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h3 class="text-2xl font-extrabold text-ink mb-2">Explore</h3>
+                  <p class="text-slate-700 leading-relaxed">
+                    Jelajahi berbagai materi edukasi interaktif tentang
+                    ekosistem laut dan konservasi. terdapat quiz dan aksi
+                    menarik!
+                  </p>
+                </div>
+              </article>
+
+              <!-- Reporting Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6 flex flex-col sm:flex-row gap-5"
+              >
+                <div class="flex-shrink-0 mx-auto sm:mx-0">
+                  <img
+                    src="img/index/reporting.png"
+                    alt="Reporting"
+                    class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
+                  />
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h3 class="text-2xl font-extrabold text-ink mb-2">
+                    Emergency Rescue
+                  </h3>
+                  <p class="text-slate-700 leading-relaxed">
+                    Pelaporan kasus terkait situasi darurat kelautan secara
+                    cepat dan efisien melalui platform Coratuka.
+                  </p>
+                </div>
+              </article>
+
+              <!-- Learn & Act Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6 flex flex-col sm:flex-row gap-5"
+              >
+                <div class="flex-shrink-0 mx-auto sm:mx-0">
+                  <img
+                    src="img/index/challenge.png"
+                    alt="Challenge"
+                    class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
+                  />
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h3 class="text-2xl font-extrabold text-ink mb-2">
+                    Learn & Act
+                  </h3>
+                  <p class="text-slate-700 leading-relaxed">
+                    belajar langsung dipandu dengan konservator dan buat aksi
+                    nyata untuk mendukung konservasi laut.
+                  </p>
+                </div>
+              </article>
+
+              <!-- Campaign & Event Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6 flex flex-col sm:flex-row gap-5"
+              >
+                <div class="flex-shrink-0 mx-auto sm:mx-0">
+                  <img
+                    src="img/index/campaign_event.png"
+                    alt="Campaign & Event"
+                    class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
+                  />
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h3 class="text-2xl font-extrabold text-ink mb-2">
+                    Campaign & Event
+                  </h3>
+                  <p class="text-slate-700 leading-relaxed">
+                    Acara menarik yang bisa Anda ikuti dan menjadi bagian dari
+                    Coratuka bersama konservator!
+                  </p>
+                </div>
+              </article>
+
+              <!-- Dashboard Manager Card (Full Width) -->
+              <article
+                class="md:col-span-2 group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6 flex flex-col sm:flex-row gap-5"
+              >
+                <div class="flex-shrink-0 mx-auto sm:mx-0">
+                  <img
+                    src="img/index/dashboard_manager.png"
+                    alt="Dashboard Manager"
+                    class="h-24 w-24 sm:h-32 sm:w-32 object-contain"
+                  />
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h3 class="text-2xl font-extrabold text-ink mb-2">
+                    Dashboard Manager
+                  </h3>
+                  <p class="text-slate-700 leading-relaxed">
+                    Fitur khusus untuk pihak konservator untuk melihat data
+                    statistik, mengelola konten, dan mempermudah kegiatan
+                    konservasi.
+                  </p>
+                </div>
+              </article>
+            </div>
+
+            <div class="mt-12 text-center">
+              <a href="component/Features/Home.html" class="btn-start">
+                See all Features →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== ABOUT SECTION ====== -->
+      <section id="about" class="scroll-mt-40 py-20 sm:py-24">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            class="rounded-3xl overflow-hidden bg-white/80 backdrop-blur-sm p-8 sm:p-12 shadow-lg"
+          >
+            <header class="text-center mb-16">
+              <h2 class="text-4xl sm:text-5xl font-extrabold text-ink">
+                About Coratuka
+              </h2>
+              <p class="mt-3 text-xl text-slate-700 max-w-2xl mx-auto">
+                Kami berusaha menjadi layanan edukasi dan konservasi kelautan
+                terbaik di Indonesia
+              </p>
+            </header>
+
+            <!-- About Cards dengan Responsive Mobile -->
+            <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <!-- Edukasi Pelajar Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6"
+              >
+                <div
+                  class="flex flex-col sm:flex-row gap-4 items-center sm:items-start"
+                >
+                  <div class="flex-shrink-0">
+                    <img
+                      src="img/index/edukasi_belajar.png"
+                      alt="Edukasi pelajar"
+                      class="h-24 w-24 sm:h-32 sm:w-32 object-cover rounded-2xl"
+                    />
+                  </div>
+                  <div class="flex-1 text-center sm:text-left">
+                    <h3 class="text-2xl font-extrabold text-ink mb-2">
+                      Edukasi Pelajar
+                    </h3>
+                    <p class="text-slate-700 leading-relaxed">
+                      Coratuka menjadi media edukasi interaktif bagi pelajar
+                      untuk memahami ekosistem laut dengan cara yang
+                      menyenangkan dan kontekstual.
+                    </p>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Konservasi Lestari Card -->
+              <article
+                class="group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6"
+              >
+                <div
+                  class="flex flex-col sm:flex-row gap-4 items-center sm:items-start"
+                >
+                  <div class="flex-shrink-0">
+                    <img
+                      src="img/index/konservasi_lestari.png"
+                      alt="Konservasi Lestari"
+                      class="h-24 w-24 sm:h-32 sm:w-32 object-cover rounded-2xl"
+                    />
+                  </div>
+                  <div class="flex-1 text-center sm:text-left">
+                    <h3 class="text-2xl font-extrabold text-ink mb-2">
+                      Konservasi Lestari
+                    </h3>
+                    <p class="text-slate-700 leading-relaxed">
+                      Coratuka mengajak semua orang untuk menjaga kelestarian
+                      dan kehidupan bawah laut melalui aksi nyata dan
+                      berkelanjutan.
+                    </p>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Panduan Wisata Bahari Card (Full Width) -->
+              <article
+                class="md:col-span-2 group relative overflow-hidden rounded-3xl bg-white shadow-soft hover:shadow-xl transition-all p-6"
+              >
+                <div
+                  class="flex flex-col sm:flex-row gap-4 items-center sm:items-start"
+                >
+                  <div class="flex-shrink-0">
+                    <img
+                      src="img/index/panduan_wisata_bahari.png"
+                      alt="Panduan Wisata Bahari"
+                      class="h-24 w-24 sm:h-32 sm:w-32 object-cover rounded-2xl"
+                    />
+                  </div>
+                  <div class="flex-1 text-center sm:text-left">
+                    <h3 class="text-2xl font-extrabold text-ink mb-2">
+                      Panduan Wisata Bahari
+                    </h3>
+                    <p class="text-slate-700 leading-relaxed">
+                      Temukan keindahan laut Nusantara dan nikmati wisata bahari
+                      yang berkelanjutan dengan panduan yang ramah lingkungan.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== FAQ SECTION ====== -->
+      <section id="faq" class="scroll-mt-40 py-20 sm:py-24">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            class="rounded-3xl overflow-hidden bg-white backdrop-blur-sm p-8 sm:p-12 shadow-lg"
+          >
+            <header class="text-center mb-12">
+              <h2
+                class="text-4xl sm:text-5xl font-extrabold text-deep drop-shadow-lg"
+              >
+                FAQ
+              </h2>
+              <p class="mt-3 text-xl text-deep drop-shadow">
+                Panduan untuk menjelajah dan belajar bersama Coratuka
+              </p>
+            </header>
+
+            <div class="space-y-4">
+              <details
+                class="group rounded-2xl bg-white/95 backdrop-blur-sm shadow-soft p-6 open:shadow-xl transition-all"
+              >
+                <summary
+                  class="cursor-pointer list-none font-bold text-lg text-ink flex items-center justify-between"
+                >
+                  <span>Apa itu Coratuka?</span>
+                  <span
+                    class="text-2xl transition-transform group-open:rotate-180"
+                    >▾</span
+                  >
+                </summary>
+                <p class="mt-4 text-slate-700 leading-relaxed pl-2">
+                  Coratuka adalah platform edukasi dan konservasi kelautan yang
+                  mengajak pengguna mengenal serta menjaga laut Indonesia secara
+                  interaktif dengan gamifikasi berupa Quiz interaktif dan konten
+                  edukatif.
+                </p>
+              </details>
+
+              <details
+                class="group rounded-2xl bg-white/95 backdrop-blur-sm shadow-soft p-6 open:shadow-xl transition-all"
+              >
+                <summary
+                  class="cursor-pointer list-none font-bold text-lg text-ink flex items-center justify-between"
+                >
+                  <span>Apakah Coratuka menyediakan materi pembelajaran?</span>
+                  <span
+                    class="text-2xl transition-transform group-open:rotate-180"
+                    >▾</span
+                  >
+                </summary>
+                <p class="mt-4 text-slate-700 leading-relaxed pl-2">
+                  Ya, Coratuka menyediakan berbagai materi edukasi, video
+                  interaktif, kuis, dan challenge untuk memperdalam wawasan
+                  tentang ekosistem kelautan.
+                </p>
+              </details>
+
+              <details
+                class="group rounded-2xl bg-white/95 backdrop-blur-sm shadow-soft p-6 open:shadow-xl transition-all"
+              >
+                <summary
+                  class="cursor-pointer list-none font-bold text-lg text-ink flex items-center justify-between"
+                >
+                  <span>Siapa yang bisa menggunakan Coratuka?</span>
+                  <span
+                    class="text-2xl transition-transform group-open:rotate-180"
+                    >▾</span
+                  >
+                </summary>
+                <p class="mt-4 text-slate-700 leading-relaxed pl-2">
+                  Coratuka dapat digunakan oleh pelajar SMP/SMA untuk belajar,
+                  wisatawan bahari untuk panduan ramah lingkungan, dan tim
+                  konservator untuk manajemen edukasi dan pelaporan.
+                </p>
+              </details>
+
+              <details
+                class="group rounded-2xl bg-white/95 backdrop-blur-sm shadow-soft p-6 open:shadow-xl transition-all"
+              >
+                <summary
+                  class="cursor-pointer list-none font-bold text-lg text-ink flex items-center justify-between"
+                >
+                  <span>Apakah panduan wisata bahari bisa diakses gratis?</span>
+                  <span
+                    class="text-2xl transition-transform group-open:rotate-180"
+                    >▾</span
+                  >
+                </summary>
+                <p class="mt-4 text-slate-700 leading-relaxed pl-2">
+                  Ya, keseluruhan fitur coratuka dapat diakses secara gratis
+                  oleh semua pengguna tanpa biaya tambahan.
+                </p>
+              </details>
+            </div>
+
+            <div class="mt-10 text-center">
+              <a href="#" class="btn-start"> See More → </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== FOOTER ====== -->
+      <footer id="contact" class="scroll-mt-40 pt-16 pb-8">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div
+            class="rounded-3xl overflow-hidden bg-deep/95 backdrop-blur-sm p-8 sm:p-12 shadow-lg text-white"
+          >
+            <div class="grid lg:grid-cols-2 gap-12 mb-12">
+              <div>
+                <div class="flex items-center gap-3 mb-4">
+                  <img
+                    src="img/index/logo coratuka.png"
+                    alt="Coratuka Logo"
+                    class="w-14 h-14 object-contain rounded-xl bg-white/10 p-2"
+                  />
+                  <div>
+                    <p class="text-2xl font-extrabold">Coratuka</p>
+                    <p class="text-white/70 text-sm">by DPTEI FT UNY</p>
+                  </div>
+                </div>
+
+                <p class="text-lg text-white/90 mb-8 max-w-xl">
+                  Education platform for Conservation Campaign and Event
+                </p>
+
+                <div class="space-y-4">
+                  <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-6 h-6 mt-1">
+                      <svg
+                        class="w-full h-full text-white/80"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-bold">DPTEI FT UNY</p>
+                      <p class="text-white/80 text-sm leading-relaxed">
+                        Jl. Karangmalang No.15, Karang Gayam, Caturtunggal,<br />
+                        Kec. Depok, Kabupaten Sleman, DIY 55281
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="flex-shrink-0 w-6 h-6">
+                      <svg
+                        class="w-full h-full text-white/80"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"
+                        />
+                      </svg>
+                    </div>
+                    <p class="text-white/90">
+                      Senin - Jumat : 07:30 - 16:00 WIB
+                    </p>
+                  </div>
+
+                  <div class="flex items-center gap-3">
+                    <div class="flex-shrink-0 w-6 h-6">
+                      <svg
+                        class="w-full h-full text-white/80"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M20 15.5c-1.2 0-2.4-.2-3.5-.6-.3-.1-.7 0-1 .2l-2.2 2.2c-2.8-1.4-5.1-3.8-6.6-6.6l2.2-2.2c.3-.3.4-.7.2-1-.3-1.1-.5-2.3-.5-3.5 0-.6-.4-1-1-1H4c-.6 0-1 .4-1 1 0 9.4 7.6 17 17 17 .6 0 1-.4 1-1v-3.5c0-.6-.4-1-1-1z"
+                        />
+                      </svg>
+                    </div>
+                    <p class="text-white/90">+62 812 3456 7890</p>
+                  </div>
+                </div>
+
+                <div class="mt-8 flex items-center gap-4">
+                  <a
+                    href="#"
+                    class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="#"
+                    class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-3 gap-8">
+                <div>
+                  <h4 class="font-extrabold text-lg mb-4 text-white/80">
+                    Explore
+                  </h4>
+                  <ul class="space-y-3 text-white/80">
+                    <li>
+                      <a href="#home" class="hover:text-white transition"
+                        >Home</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#features" class="hover:text-white transition"
+                        >Features</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#about" class="hover:text-white transition"
+                        >About</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#faq" class="hover:text-white transition">FAQ</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-extrabold text-lg mb-4 text-white/80">
+                    Features
+                  </h4>
+                  <ul class="space-y-3 text-white/80">
+                    <li>
+                      <a
+                        href="component/Features/Explore.html"
+                        class="hover:text-white transition"
+                        >Explore</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="component/Features/learn-act.html"
+                        class="hover:text-white transition"
+                        >Learning & Act</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="component/Features/emergency-rescue.html"
+                        class="hover:text-white transition"
+                        >Emergency Rescue</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="component/Features/campaign-event.html"
+                        class="hover:text-white transition"
+                        >Campaign & Event</a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="component/dashboard-manager/dashboard-manager.html"
+                        class="hover:text-white transition"
+                        >Dashboard Manager</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 class="font-extrabold text-lg mb-4 text-white/80">
+                    Help & Guideline
+                  </h4>
+                  <ul class="space-y-3 text-white/80">
+                    <li>
+                      <a href="#" class="hover:text-white transition"
+                        >How to access Features</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#" class="hover:text-white transition"
+                        >Login and Account</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#" class="hover:text-white transition"
+                        >Guideline Book</a
+                      >
+                    </li>
+                    <li>
+                      <a href="#" class="hover:text-white transition"
+                        >More info</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="border-t border-white/10 pt-8 text-center text-white/60 text-sm"
+            >
+              © Coratuka 2025. All Rights Reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- ====== CONTINUOUS GRADIENT WRAPPER END ====== -->
+
+    <!-- ====== JAVASCRIPT ====== -->
+    <script>
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        mobileMenu.classList.toggle("active");
+      });
+
+      mobileLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          mobileMenu.classList.remove("active");
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+          hamburger.classList.remove("active");
+          mobileMenu.classList.remove("active");
+        }
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (href !== "#") {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+              const offsetTop =
+                target.getBoundingClientRect().top + window.pageYOffset - 100;
+              window.scrollTo({
+                top: offsetTop,
+                behavior: "smooth",
+              });
+            }
+          }
+        });
+      });
+
+      const navbar = document.querySelector(".navbar");
+      let lastScroll = 0;
+
+      window.addEventListener("scroll", () => {
+        const currentScroll = window.pageYOffset;
+
+        if (currentScroll > 50) {
+          navbar.style.backgroundColor = "rgba(254, 254, 254, 0.98)";
+          navbar.style.boxShadow = "0 4px 20px rgba(0,0,0,0.15)";
+        } else {
+          navbar.style.backgroundColor = "rgba(254, 254, 254, 0.95)";
+          navbar.style.boxShadow = "0 4px 4px rgba(0,0,0,0.25)";
+        }
+
+        lastScroll = currentScroll;
+      });
+    </script>
+  </body>
+</html>

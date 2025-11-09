@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Manager – CoraTuka</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-slate-50 font-inter text-ink">
+    <!-- Huge Sidebar (Full) will be loaded here dynamically -->
+
+    <!-- Mini Sidebar (Desktop Only - Icon Only) -->
+    <aside
+      id="miniSidebar"
+      class="fixed left-0 top-0 z-40 hidden h-full w-20 flex-col border-r border-slate-200 bg-white shadow-lg lg:flex"
+    >
+      <!-- Open Sidebar Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-20 items-center justify-center border-b border-slate-200 transition hover:bg-slate-50"
+        title="Open Menu"
+      >
+        <svg
+          class="h-8 w-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Nav Icons -->
+      <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+        <!-- Home -->
+        <a
+          href="../features/Home.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Home"
+          data-page="Home"
+        >
+          <img
+            src="../../img/icons/home.png"
+            alt="Home"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Explore -->
+        <a
+          href="Explore.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Explore"
+          data-page="Explore"
+        >
+          <img
+            src="../../img/icons/explore.png"
+            alt="Explore"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Learn & Act -->
+        <a
+          href="learn-act.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Learn & Act"
+          data-page="learn-act"
+        >
+          <img
+            src="../../img/icons/learn.png"
+            alt="Learn"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Emergency Rescue -->
+        <a
+          href="emergency-rescue.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-secondary-50"
+          title="Emergency Rescue"
+          data-page="emergency-rescue"
+        >
+          <img
+            src="../../img/icons/Reporting.png"
+            alt="Emergency"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Campaign & Event -->
+        <a
+          href="campaign-event.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-tertiary-50"
+          title="Campaign"
+          data-page="campaign-event"
+        >
+          <img
+            src="../../img/icons/campaign.png"
+            alt="Campaign"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Dashboard (Active) -->
+        <a
+          href="../dashboard-manager/dashboard-manager.html"
+          id="miniDashboard"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl bg-slate-200 transition hover:bg-slate-100"
+          title="Dashboard"
+          data-page="dashboard-manager"
+        >
+          <img
+            src="../../img/icons/dashboard.png"
+            alt="Dashboard"
+            class="h-6 w-6"
+            onerror="this.style.display='none';"
+          />
+        </a>
+      </nav>
+
+      <!-- User Profile at Bottom -->
+      <div class="border-t border-slate-200 p-3">
+        <button
+          onclick="alert('Profile settings')"
+          class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-200 text-primary-700 font-bold text-sm transition hover:bg-primary-300"
+          title="Profile"
+          id="miniUserAvatar"
+        >
+          U
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Navbar (Sticky) -->
+    <nav
+      id="mobileNavbar"
+      class="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-md lg:hidden"
+    >
+      <!-- Hamburger Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white transition hover:scale-105"
+      >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Logo (Center) -->
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka"
+        class="h-8 object-contain"
+        onerror="this.style.display='none';"
+      />
+
+      <!-- Back Button -->
+      <a
+        href="../../Index.html"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+        title="Back to Main"
+      >
+        <svg
+          class="h-5 w-5 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen lg:ml-20">
+      <!-- Desktop Top Bar - STICKY -->
+      <div
+        class="sticky top-0 z-30 hidden h-20 items-center justify-between border-b border-slate-200 bg-white px-8 shadow-sm lg:flex"
+      >
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">Dashboard Manager</h1>
+          <p class="text-xs text-slate-600">
+            Manage content & monitor activities
+          </p>
+        </div>
+        <a
+          href="../../Index.html"
+          class="inline-flex h-12 items-center gap-2 rounded-xl bg-tertiary px-6 font-extrabold text-slate-800 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-yellow-400"
+        >
+          <span>Back to Main</span>
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Content Container -->
+      <div class="container mx-auto px-4 py-32 md:px-8 lg:py-8">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-4xl font-extrabold text-slate-900 md:text-5xl">
+            Dashboard Manager
+          </h1>
+          <p class="mt-2 text-lg text-slate-600">
+            Kelola konten edukatif, monitor laporan, dan pantau aktivitas
+            komunitas
+          </p>
+        </div>
+
+        <!-- Overview Stats -->
+        <div class="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <!-- Stat Card 1 -->
+          <div
+            class="rounded-xl border-2 border-primary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Total Users</p>
+                <p class="text-3xl font-extrabold text-primary-600">512</p>
+                <p class="text-xs text-green-600">↑ 12% dari bulan lalu</p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 text-3xl"
+              >
+                👥
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat Card 2 -->
+          <div
+            class="rounded-xl border-2 border-secondary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Active Reports</p>
+                <p class="text-3xl font-extrabold text-secondary-600">2</p>
+                <p class="text-xs text-secondary-600">🚨 Perlu tindakan</p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-secondary-100 text-3xl"
+              >
+                📝
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat Card 3 -->
+          <div
+            class="rounded-xl border-2 border-tertiary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Completed Challenges</p>
+                <p class="text-3xl font-extrabold text-tertiary-600">64</p>
+                <p class="text-xs text-green-600">↑ 8% dari minggu lalu</p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-tertiary-100 text-3xl"
+              >
+                🏆
+              </div>
+            </div>
+          </div>
+
+          <!-- Stat Card 4 -->
+          <div
+            class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Active Campaigns</p>
+                <p class="text-3xl font-extrabold text-slate-700">4</p>
+                <p class="text-xs text-slate-600">📅 1 ending soon</p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-3xl"
+              >
+                📢
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Grid -->
+        <div class="grid gap-8 lg:grid-cols-3">
+          <!-- Left Column: Content Management -->
+          <div class="space-y-8 lg:col-span-2">
+            <!-- Manage Features -->
+            <div>
+              <h2 class="mb-4 text-2xl font-extrabold text-slate-900">
+                🎛️ Manage Features
+              </h2>
+
+              <!-- Tab Navigation -->
+              <div
+                class="mb-4 flex gap-2 overflow-x-auto border-b-2 border-slate-200 pb-2"
+              >
+                <button
+                  onclick="switchTab('classroom')"
+                  id="tab-classroom"
+                  class="tab-button active whitespace-nowrap rounded-t-lg px-4 py-2 font-semibold text-primary-600 border-b-2 border-primary-600"
+                >
+                  Ocean Classroom
+                </button>
+                <button
+                  onclick="switchTab('challenge')"
+                  id="tab-challenge"
+                  class="tab-button whitespace-nowrap rounded-t-lg px-4 py-2 font-semibold text-slate-600 hover:text-primary-600"
+                >
+                  Ocean Challenge
+                </button>
+                <button
+                  onclick="switchTab('rescue')"
+                  id="tab-rescue"
+                  class="tab-button whitespace-nowrap rounded-t-lg px-4 py-2 font-semibold text-slate-600 hover:text-primary-600"
+                >
+                  Rescue Reports
+                </button>
+                <button
+                  onclick="switchTab('campaign')"
+                  id="tab-campaign"
+                  class="tab-button whitespace-nowrap rounded-t-lg px-4 py-2 font-semibold text-slate-600 hover:text-primary-600"
+                >
+                  Campaigns
+                </button>
+              </div>
+
+              <!-- Tab Content: Ocean Classroom -->
+              <div id="content-classroom" class="tab-content">
+                <div
+                  class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+                >
+                  <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">
+                      📚 Materi Pembelajaran
+                    </h3>
+                    <button
+                      onclick="openAddMaterial()"
+                      class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-primary-700"
+                    >
+                      + Add Material
+                    </button>
+                  </div>
+
+                  <!-- Material List -->
+                  <div class="space-y-3">
+                    <!-- Material 1 -->
+                    <div
+                      class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4"
+                    >
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-100 text-lg"
+                        >
+                          🐢
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">
+                            Kehidupan Penyu Laut
+                          </p>
+                          <p class="text-xs text-slate-600">
+                            Level: Beginner • 12 slides • 234 views
+                          </p>
+                        </div>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editMaterial(1)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="toggleMaterial(1)"
+                          class="rounded-lg bg-green-100 px-3 py-1 text-sm font-semibold text-green-700 hover:bg-green-200"
+                        >
+                          Active
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Material 2 -->
+                    <div
+                      class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4"
+                    >
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-100 text-lg"
+                        >
+                          🪸
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">
+                            Terumbu Karang & Ekosistemnya
+                          </p>
+                          <p class="text-xs text-slate-600">
+                            Level: Intermediate • 18 slides • 456 views
+                          </p>
+                        </div>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editMaterial(2)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="toggleMaterial(2)"
+                          class="rounded-lg bg-green-100 px-3 py-1 text-sm font-semibold text-green-700 hover:bg-green-200"
+                        >
+                          Active
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Material 3 -->
+                    <div
+                      class="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-4 opacity-60"
+                    >
+                      <div class="flex items-center gap-3">
+                        <div
+                          class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-200 text-lg"
+                        >
+                          🦈
+                        </div>
+                        <div>
+                          <p class="font-semibold text-slate-900">
+                            Hiu: Predator Puncak Laut
+                          </p>
+                          <p class="text-xs text-slate-600">
+                            Level: Advanced • Draft • 0 views
+                          </p>
+                        </div>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editMaterial(3)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="toggleMaterial(3)"
+                          class="rounded-lg bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-700 hover:bg-slate-300"
+                        >
+                          Draft
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Content: Ocean Challenge -->
+              <div id="content-challenge" class="tab-content hidden">
+                <div
+                  class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+                >
+                  <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">
+                      🎯 Challenge Management
+                    </h3>
+                    <button
+                      onclick="openAddChallenge()"
+                      class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-primary-700"
+                    >
+                      + Add Challenge
+                    </button>
+                  </div>
+
+                  <!-- Challenge List -->
+                  <div class="space-y-3">
+                    <!-- Challenge 1 -->
+                    <div
+                      class="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between"
+                    >
+                      <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                          <span class="text-2xl">🌊</span>
+                          <div>
+                            <p class="font-semibold text-slate-900">
+                              Beach Cleanup Week
+                            </p>
+                            <p class="text-xs text-slate-600">
+                              Target: 100kg sampah • Progress: 75kg (75%)
+                            </p>
+                          </div>
+                        </div>
+                        <div
+                          class="h-2 overflow-hidden rounded-full bg-slate-200"
+                        >
+                          <div
+                            class="h-full w-3/4 rounded-full bg-primary-500"
+                          ></div>
+                        </div>
+                        <p class="mt-1 text-xs text-slate-500">
+                          📅 Ends in 5 days • 🏆 50 points
+                        </p>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editChallenge(1)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="endChallenge(1)"
+                          class="rounded-lg bg-secondary-100 px-3 py-1 text-sm font-semibold text-secondary-700 hover:bg-secondary-200"
+                        >
+                          End
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Challenge 2 -->
+                    <div
+                      class="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between"
+                    >
+                      <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                          <span class="text-2xl">📸</span>
+                          <div>
+                            <p class="font-semibold text-slate-900">
+                              Ocean Photography Contest
+                            </p>
+                            <p class="text-xs text-slate-600">
+                              Submissions: 87 photos • 234 participants
+                            </p>
+                          </div>
+                        </div>
+                        <div
+                          class="h-2 overflow-hidden rounded-full bg-slate-200"
+                        >
+                          <div
+                            class="h-full w-1/2 rounded-full bg-tertiary-500"
+                          ></div>
+                        </div>
+                        <p class="mt-1 text-xs text-slate-500">
+                          📅 Ends in 10 days • 🏆 100 points
+                        </p>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editChallenge(2)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="viewSubmissions(2)"
+                          class="rounded-lg bg-primary-100 px-3 py-1 text-sm font-semibold text-primary-700 hover:bg-primary-200"
+                        >
+                          View
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Challenge 3 -->
+                    <div
+                      class="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4 md:flex-row md:items-center md:justify-between"
+                    >
+                      <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                          <span class="text-2xl">🐢</span>
+                          <div>
+                            <p class="font-semibold text-slate-900">
+                              Turtle Watching Challenge
+                            </p>
+                            <p class="text-xs text-slate-600">
+                              Reports: 45 sightings • 12 locations
+                            </p>
+                          </div>
+                        </div>
+                        <div
+                          class="h-2 overflow-hidden rounded-full bg-slate-200"
+                        >
+                          <div
+                            class="h-full w-2/5 rounded-full bg-green-500"
+                          ></div>
+                        </div>
+                        <p class="mt-1 text-xs text-slate-500">
+                          📅 Ongoing • 🏆 30 points
+                        </p>
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          onclick="editChallenge(3)"
+                          class="rounded-lg bg-tertiary-100 px-3 py-1 text-sm font-semibold text-tertiary-700 hover:bg-tertiary-200"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onclick="viewMap(3)"
+                          class="rounded-lg bg-primary-100 px-3 py-1 text-sm font-semibold text-primary-700 hover:bg-primary-200"
+                        >
+                          Map
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Content: Rescue Reports -->
+              <div id="content-rescue" class="tab-content hidden">
+                <div
+                  class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+                >
+                  <h3 class="mb-4 text-lg font-bold text-slate-900">
+                    🚨 Emergency Reports Queue
+                  </h3>
+                  <div class="space-y-3">
+                    <!-- Report 1 - Urgent -->
+                    <div
+                      class="rounded-lg border-2 border-secondary-300 bg-secondary-50 p-4"
+                    >
+                      <div class="mb-2 flex items-start justify-between">
+                        <div class="flex gap-3">
+                          <span class="text-2xl">🐢</span>
+                          <div>
+                            <div class="flex items-center gap-2">
+                              <p class="font-bold text-slate-900">
+                                Penyu Terluka di Pantai Kuta
+                              </p>
+                              <span
+                                class="rounded-full bg-secondary-600 px-2 py-0.5 text-xs font-bold text-white"
+                                >URGENT</span
+                              >
+                            </div>
+                            <p class="text-xs text-slate-600">
+                              Reported by: Andi Pratama • 15 mins ago
+                            </p>
+                            <p class="mt-2 text-sm text-slate-700">
+                              Penyu hijau dengan luka di karapas bagian kiri,
+                              terjerat jaring ikan...
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-3 flex gap-2">
+                        <button
+                          onclick="assignReport(1)"
+                          class="flex-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-bold text-white hover:bg-primary-700"
+                        >
+                          Assign Team
+                        </button>
+                        <button
+                          onclick="viewReportDetail(1)"
+                          class="rounded-lg bg-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-300"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Report 2 - In Progress -->
+                    <div
+                      class="rounded-lg border border-slate-200 bg-slate-50 p-4"
+                    >
+                      <div class="mb-2 flex items-start justify-between">
+                        <div class="flex gap-3">
+                          <span class="text-2xl">🦈</span>
+                          <div>
+                            <div class="flex items-center gap-2">
+                              <p class="font-bold text-slate-900">
+                                Hiu Terdampar di Sanur
+                              </p>
+                              <span
+                                class="rounded-full bg-tertiary-600 px-2 py-0.5 text-xs font-bold text-white"
+                                >IN PROGRESS</span
+                              >
+                            </div>
+                            <p class="text-xs text-slate-600">
+                              Assigned to: Tim Rescue Bali • 2 hours ago
+                            </p>
+                            <p class="mt-2 text-sm text-slate-700">
+                              Hiu whitetip reef berukuran 1.5m, masih hidup
+                              namun lemah...
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-3 flex gap-2">
+                        <button
+                          onclick="updateStatus(2)"
+                          class="flex-1 rounded-lg bg-tertiary-600 px-4 py-2 text-sm font-bold text-white hover:bg-tertiary-700"
+                        >
+                          Update Status
+                        </button>
+                        <button
+                          onclick="viewReportDetail(2)"
+                          class="rounded-lg bg-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-300"
+                        >
+                          View Details
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Report 3 - Resolved -->
+                    <div
+                      class="rounded-lg border border-slate-200 bg-slate-50 p-4 opacity-75"
+                    >
+                      <div class="mb-2 flex items-start justify-between">
+                        <div class="flex gap-3">
+                          <span class="text-2xl">🐠</span>
+                          <div>
+                            <div class="flex items-center gap-2">
+                              <p class="font-bold text-slate-900">
+                                Ikan Karang Terjerat Plastik
+                              </p>
+                              <span
+                                class="rounded-full bg-green-600 px-2 py-0.5 text-xs font-bold text-white"
+                                >RESOLVED</span
+                              >
+                            </div>
+                            <p class="text-xs text-slate-600">
+                              Resolved by: Tim Rescue Nusa Dua • 1 day ago
+                            </p>
+                            <p class="mt-2 text-sm text-slate-700">
+                              Ikan berhasil dilepaskan, kondisi baik...
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mt-3">
+                        <button
+                          onclick="viewReportDetail(3)"
+                          class="w-full rounded-lg bg-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-300"
+                        >
+                          View Report Archive
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tab Content: Campaigns -->
+              <div id="content-campaign" class="tab-content hidden">
+                <div
+                  class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+                >
+                  <div class="mb-4 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-900">
+                      📢 Campaign Management
+                    </h3>
+                    <button
+                      onclick="openAddCampaign()"
+                      class="rounded-lg bg-primary-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-primary-700"
+                    >
+                      + Create Campaign
+                    </button>
+                  </div>
+                  <p class="text-sm text-slate-600">
+                    Manage campaigns from this section (coming soon)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Quick Info -->
+          <div class="space-y-6">
+            <!-- Nearby Reports Map -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-4 text-lg font-bold text-slate-900">
+                📍 Nearby Reports
+              </h3>
+              <div
+                class="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-slate-100"
+              >
+                <div
+                  class="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-slate-100"
+                >
+                  <img
+                    src="../../img/index/map.jpeg"
+                    alt="Map Placeholder"
+                    class="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-slate-700">⚠️ Urgent (0-5km)</span>
+                  <span class="font-bold text-secondary-600">1</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-slate-700">📍 Nearby (5-20km)</span>
+                  <span class="font-bold text-tertiary-600">1</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="text-slate-700">🔵 Region Wide</span>
+                  <span class="font-bold text-primary-600">13</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-4 text-lg font-bold text-slate-900">
+                🔔 Notifications
+              </h3>
+              <div class="space-y-3">
+                <div class="flex gap-3 rounded-lg bg-secondary-50 p-3">
+                  <div class="text-xl">🚨</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">
+                      New Emergency Report
+                    </p>
+                    <p class="text-xs text-slate-600">
+                      Penyu terluka di Kuta Beach
+                    </p>
+                    <p class="text-xs text-slate-500">15 mins ago</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 rounded-lg bg-primary-50 p-3">
+                  <div class="text-xl">👤</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">
+                      New User Registration
+                    </p>
+                    <p class="text-xs text-slate-600">
+                      12 new users joined today
+                    </p>
+                    <p class="text-xs text-slate-500">2 hours ago</p>
+                  </div>
+                </div>
+
+                <div class="flex gap-3 rounded-lg bg-tertiary-50 p-3">
+                  <div class="text-xl">🏆</div>
+                  <div>
+                    <p class="text-sm font-bold text-slate-900">
+                      Challenge Completed
+                    </p>
+                    <p class="text-xs text-slate-600">
+                      Beach Cleanup milestone reached
+                    </p>
+                    <p class="text-xs text-slate-500">5 hours ago</p>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="mt-4 w-full rounded-lg border-2 border-primary-600 py-2 text-sm font-bold text-primary-600 transition hover:bg-primary-50"
+              >
+                View All
+              </button>
+            </div>
+
+            <!-- Quick Stats -->
+            <div
+              class="rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <h3 class="mb-4 text-lg font-bold text-slate-900">
+                📊 Today's Stats
+              </h3>
+              <div class="space-y-3">
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">New Reports</span>
+                  <span class="font-bold text-slate-900">5</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Resolved</span>
+                  <span class="font-bold text-green-600">12</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Active Users</span>
+                  <span class="font-bold text-primary-600">342</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-slate-600">Content Views</span>
+                  <span class="font-bold text-tertiary-600">1,847</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar Script -->
+    <script src="../Features/sidebar.js"></script>
+
+    <script>
+      // Tab Switching
+      function switchTab(tabName) {
+        // Hide all tab contents
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.add("hidden");
+        });
+
+        // Remove active class from all tabs
+        document.querySelectorAll(".tab-button").forEach((button) => {
+          button.classList.remove(
+            "border-b-2",
+            "border-primary-600",
+            "text-primary-600"
+          );
+          button.classList.add("text-slate-600");
+        });
+
+        // Show selected tab content
+        document
+          .getElementById(`content-${tabName}`)
+          .classList.remove("hidden");
+
+        // Add active class to selected tab
+        const activeTab = document.getElementById(`tab-${tabName}`);
+        activeTab.classList.remove("text-slate-600");
+        activeTab.classList.add(
+          "border-b-2",
+          "border-primary-600",
+          "text-primary-600"
+        );
+      }
+
+      // Placeholder functions for buttons
+      function openAddMaterial() {
+        alert("Form tambah materi akan muncul di sini");
+      }
+
+      function editMaterial(id) {
+        alert(`Edit materi #${id}`);
+      }
+
+      function toggleMaterial(id) {
+        alert(`Toggle status materi #${id}`);
+      }
+
+      function openAddChallenge() {
+        alert("Form tambah challenge akan muncul di sini");
+      }
+
+      function editChallenge(id) {
+        alert(`Edit challenge #${id}`);
+      }
+
+      function endChallenge(id) {
+        if (confirm("End this challenge?")) {
+          alert(`Challenge #${id} ended`);
+        }
+      }
+
+      function viewSubmissions(id) {
+        alert(`View submissions for challenge #${id}`);
+      }
+
+      function viewMap(id) {
+        alert(`Open map view for challenge #${id}`);
+      }
+
+      function assignReport(id) {
+        alert(`Assign team for report #${id}`);
+      }
+
+      function updateStatus(id) {
+        alert(`Update status for report #${id}`);
+      }
+
+      function viewReportDetail(id) {
+        alert(`View full details for report #${id}`);
+      }
+
+      function openAddCampaign() {
+        alert("Form create campaign akan muncul di sini");
+      }
+
+      // Set active mini sidebar icon
+      function setActiveMiniNav() {
+        const currentPage =
+          window.location.pathname.split("/").pop().replace(".html", "") ||
+          "index";
+
+        document.querySelectorAll(".mini-nav-link").forEach((link) => {
+          const dataPage = link.getAttribute("data-page");
+          if (dataPage === currentPage) {
+            link.classList.add("bg-slate-200");
+            const img = link.querySelector("img");
+            if (img) img.classList.remove("opacity-60");
+          } else {
+            link.classList.remove("bg-slate-200");
+            const img = link.querySelector("img");
+            if (img) img.classList.add("opacity-60");
+          }
+        });
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", setActiveMiniNav);
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color, transform;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* Mini sidebar hover tooltips */
+      .mini-nav-link {
+        position: relative;
+      }
+
+      .mini-nav-link:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 12px;
+        padding: 6px 12px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        border-radius: 6px;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0;
+        animation: tooltipFade 0.2s ease-in forwards;
+      }
+
+      @keyframes tooltipFade {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Mobile navbar stays on top */
+      #mobileNavbar {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.95);
+      }
+    </style>
+  </body>
+</html>

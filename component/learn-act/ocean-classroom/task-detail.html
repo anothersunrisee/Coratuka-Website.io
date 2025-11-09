@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokumentasi Habitat Penyu - Ocean Classroom</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              btn: "#FFD166",
+              "btn-hover": "#d8b052",
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              info: { DEFAULT: "#3b82f6" },
+              danger: { DEFAULT: "#f64c4c" },
+              warning: { DEFAULT: "#ffad0d" },
+              success: { DEFAULT: "#47b881" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .ocean-pattern {
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      /* File upload drag & drop area */
+      .upload-area {
+        border: 2px dashed #15c5ce;
+        transition: all 0.3s ease;
+      }
+
+      .upload-area.dragover {
+        background-color: rgba(21, 197, 206, 0.1);
+        border-color: #119ea5;
+      }
+
+      /* Preview image styles */
+      .preview-item {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .preview-item img,
+      .preview-item video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Success animation */
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .success-message {
+        animation: slideDown 0.5s ease-out;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 ocean-pattern">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex items-center gap-4">
+          <button
+            onclick="goBack()"
+            class="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn-hover rounded-lg transition-all"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            <span class="font-medium">Back</span>
+          </button>
+
+          <div class="flex-1 text-center">
+            <h1 class="text-2xl font-bold text-ink">Task Detail</h1>
+            <p class="text-sm text-gray-600">Turtle Class - Batch #1</p>
+          </div>
+
+          <div class="w-24"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Task Header Card -->
+      <div class="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-6">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <span
+              class="inline-block px-3 py-1 bg-primary/20 text-primary text-sm font-semibold rounded-full mb-3"
+            >
+              Minggu 3 • Aktif
+            </span>
+            <h2 class="text-3xl font-bold text-ink mb-3">
+              Dokumentasi Habitat Penyu
+            </h2>
+            <div
+              class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4"
+            >
+              <div class="flex items-center gap-1">
+                <svg
+                  class="w-5 h-5 text-danger"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span class="font-semibold text-danger"
+                  >Deadline: 12 Nov 2025 (4 days to go)</span
+                >
+              </div>
+              <div class="flex items-center gap-1">
+                <svg
+                  class="w-5 h-5 text-warning"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                  />
+                </svg>
+                <span
+                  >Poin Reward:
+                  <strong class="text-warning">50 poin</strong></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Description -->
+        <div class="prose max-w-none mb-6">
+          <h3 class="text-lg font-bold text-ink mb-3">Task Description</h3>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            Pada tugas kali ini, kamu akan melakukan observasi dan dokumentasi
+            kondisi habitat penyu di pantai terdekat. Tujuannya adalah untuk
+            memahami karakteristik lingkungan yang mendukung kehidupan penyu dan
+            mengidentifikasi potensi ancaman terhadap habitat mereka.
+          </p>
+
+          <h4 class="font-bold text-ink mb-2">Step by Steps:</h4>
+          <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-4">
+            <li>
+              Kunjungi pantai tempat habitat penyu berada (bisa pantai terdekat
+              atau pantai tujuan konservasi)
+            </li>
+            <li>
+              Lakukan pengamatan kondisi pantai: kebersihan, vegetasi, aktivitas
+              manusia, dsb
+            </li>
+            <li>
+              Dokumentasikan dengan foto atau video minimal 3 aspek berbeda
+            </li>
+            <li>Catat observasi dan refleksi kamu tentang kondisi habitat</li>
+            <li>
+              Upload foto/video dan tulis jurnal refleksi di form submission
+            </li>
+          </ol>
+
+          <div class="bg-primary-50 border-l-4 border-primary p-4 rounded-lg">
+            <p class="text-sm text-primary-900">
+              <strong>💡 Tips:</strong> Dokumentasi yang baik mencakup
+              foto/video yang jelas, fokus pada detail penting, dan disertai
+              catatan singkat. Pastikan tidak mengganggu habitat penyu saat
+              melakukan observasi!
+            </p>
+          </div>
+        </div>
+
+        <!-- Video Tutorial (Optional) -->
+        <div class="mb-6">
+          <h3 class="text-lg font-bold text-ink mb-3">Guide Video</h3>
+          <div class="relative w-full" style="padding-bottom: 56.25%">
+            <iframe
+              class="absolute inset-0 w-full h-full rounded-xl"
+              src="../../../img/classroom/video-1.mp4"
+              title="Video Panduan"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            >
+            </iframe>
+          </div>
+          <p class="text-sm text-gray-500 mt-2">
+            Video tutorial tentang cara melakukan observasi habitat penyu yang
+            baik dan benar
+          </p>
+        </div>
+      </div>
+
+      <!-- Submission Form -->
+      <form
+        id="submission-form"
+        class="bg-white rounded-2xl shadow-sm p-6 md:p-8"
+      >
+        <h3 class="text-2xl font-bold text-ink mb-6">Submit Task</h3>
+
+        <!-- Upload Evidence Section -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-ink mb-3">
+            Upload Documentation Evidence
+            <span class="text-danger">*</span>
+          </label>
+          <p class="text-sm text-gray-600 mb-4">
+            Upload foto atau video hasil pengamatan kamu (maksimal 5 file,
+            setiap file maksimal 10MB)
+          </p>
+
+          <!-- Drag & Drop Area -->
+          <div
+            id="upload-area"
+            class="upload-area bg-gray-50 rounded-xl p-8 text-center cursor-pointer hover:bg-gray-100 transition-all"
+          >
+            <input
+              type="file"
+              id="file-input"
+              class="hidden"
+              multiple
+              accept="image/*,video/*"
+              onchange="handleFileSelect(event)"
+            />
+            <div class="flex flex-col items-center">
+              <svg
+                class="w-16 h-16 text-primary mb-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
+              <p class="text-gray-700 font-semibold mb-2">
+                Klik atau drag & drop file disini
+              </p>
+              <p class="text-sm text-gray-500">
+                JPG, PNG, MP4 (Max 10MB per file)
+              </p>
+            </div>
+          </div>
+
+          <!-- Preview Area -->
+          <div
+            id="preview-area"
+            class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4 hidden"
+          >
+            <!-- Preview items will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Reflection Journal Section -->
+        <div class="mb-8">
+          <label class="block text-lg font-bold text-ink mb-3" for="reflection">
+            reflection journal
+            <span class="text-danger">*</span>
+          </label>
+          <p class="text-sm text-gray-600 mb-4">
+            Ceritakan pengalaman dan pembelajaran kamu selama melakukan
+            observasi habitat penyu
+          </p>
+          <textarea
+            id="reflection"
+            name="reflection"
+            rows="8"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none resize-none"
+            placeholder="Tulis refleksi kamu di sini...
+
+Contoh:
+- Apa yang kamu amati di habitat penyu?
+- Kondisi apa yang mendukung/mengancam kehidupan penyu?
+- Apa pembelajaran yang kamu dapatkan dari observasi ini?
+- Aksi apa yang bisa kamu lakukan untuk membantu konservasi penyu?"
+            required
+          ></textarea>
+          <div class="flex justify-between items-center mt-2">
+            <p class="text-xs text-gray-500">Minimal 100 karakter</p>
+            <p class="text-xs text-gray-500">
+              <span id="char-count">0</span> karakter
+            </p>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <button
+            type="button"
+            onclick="saveDraft()"
+            class="flex-1 py-4 px-6 border-2 border-primary text-primary hover:bg-primary-50 rounded-xl font-semibold transition-all"
+          >
+            Save Draft
+          </button>
+          <button
+            type="submit"
+            class="flex-1 py-4 px-6 bg-tertiary hover:bg-tertiary-50 text-ink rounded-xl font-semibold transition-all"
+          >
+            Submit Task →
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- Success Modal -->
+    <div
+      id="success-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <div
+        class="success-message bg-white rounded-2xl max-w-md w-full p-8 text-center"
+      >
+        <!-- Success Icon -->
+        <div
+          class="w-20 h-20 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <svg
+            class="w-12 h-12 text-success"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </div>
+
+        <!-- Success Message -->
+        <h3 class="text-2xl font-bold text-ink mb-3">
+          Tugas Berhasil Dikirim! 🎉
+        </h3>
+        <p class="text-gray-600 mb-6">
+          Langkah kecilmu berarti besar bagi laut 🌊
+        </p>
+
+        <!-- Reward Info -->
+        <div
+          class="bg-gradient-to-r from-btn/20 to-warning/20 rounded-xl p-4 mb-6"
+        >
+          <p class="text-sm text-gray-600 mb-2">Kamu mendapatkan</p>
+          <p class="text-3xl font-bold text-warning">+50 Poin</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="space-y-3">
+          <button
+            onclick="backToClass()"
+            class="w-full py-3 bg-primary hover:bg-primary-700 text-white rounded-xl font-semibold transition-all"
+          >
+            Kembali ke Kelas
+          </button>
+          <button
+            onclick="viewNextTask()"
+            class="w-full py-3 border-2 border-gray-300 hover:bg-gray-50 text-gray-700 rounded-xl font-semibold transition-all"
+          >
+            Lihat Tugas Selanjutnya
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // ===== File Upload Management =====
+      let selectedFiles = [];
+      const MAX_FILES = 5;
+      const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+      const uploadArea = document.getElementById("upload-area");
+      const fileInput = document.getElementById("file-input");
+      const previewArea = document.getElementById("preview-area");
+
+      // Click to upload
+      uploadArea.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      // Drag & Drop handlers
+      uploadArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      });
+
+      uploadArea.addEventListener("dragleave", () => {
+        uploadArea.classList.remove("dragover");
+      });
+
+      uploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+
+        const files = Array.from(e.dataTransfer.files);
+        handleFiles(files);
+      });
+
+      // Handle file selection
+      function handleFileSelect(event) {
+        const files = Array.from(event.target.files);
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        // Validate file count
+        if (selectedFiles.length + files.length > MAX_FILES) {
+          alert(`Maksimal ${MAX_FILES} file yang dapat diupload!`);
+          return;
+        }
+
+        // Validate and add files
+        files.forEach((file) => {
+          // Validate file size
+          if (file.size > MAX_FILE_SIZE) {
+            alert(`File ${file.name} terlalu besar! Maksimal 10MB per file.`);
+            return;
+          }
+
+          // Validate file type
+          if (
+            !file.type.startsWith("image/") &&
+            !file.type.startsWith("video/")
+          ) {
+            alert(`File ${file.name} bukan format gambar atau video!`);
+            return;
+          }
+
+          selectedFiles.push(file);
+        });
+
+        updatePreview();
+      }
+
+      // Update preview area
+      function updatePreview() {
+        if (selectedFiles.length === 0) {
+          previewArea.classList.add("hidden");
+          return;
+        }
+
+        previewArea.classList.remove("hidden");
+        previewArea.innerHTML = "";
+
+        selectedFiles.forEach((file, index) => {
+          const previewItem = document.createElement("div");
+          previewItem.className =
+            "preview-item relative bg-gray-100 rounded-xl overflow-hidden aspect-square";
+
+          // Create preview based on file type
+          if (file.type.startsWith("image/")) {
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.alt = file.name;
+            previewItem.appendChild(img);
+          } else if (file.type.startsWith("video/")) {
+            const video = document.createElement("video");
+            video.src = URL.createObjectURL(file);
+            video.controls = false;
+            previewItem.appendChild(video);
+
+            // Add video icon overlay
+            const videoIcon = document.createElement("div");
+            videoIcon.className =
+              "absolute inset-0 flex items-center justify-center bg-black/30";
+            videoIcon.innerHTML =
+              '<svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>';
+            previewItem.appendChild(videoIcon);
+          }
+
+          // Add remove button
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className =
+            "absolute top-2 right-2 w-8 h-8 bg-danger hover:bg-danger/90 text-white rounded-full flex items-center justify-center transition-all";
+          removeBtn.innerHTML =
+            '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+          removeBtn.onclick = () => removeFile(index);
+          previewItem.appendChild(removeBtn);
+
+          // Add filename
+          const fileName = document.createElement("div");
+          fileName.className =
+            "absolute bottom-0 left-0 right-0 bg-black/70 text-white text-xs p-2 truncate";
+          fileName.textContent = file.name;
+          previewItem.appendChild(fileName);
+
+          previewArea.appendChild(previewItem);
+        });
+      }
+
+      // Remove file from selection
+      function removeFile(index) {
+        selectedFiles.splice(index, 1);
+        updatePreview();
+      }
+
+      // ===== Character Counter =====
+      const reflectionTextarea = document.getElementById("reflection");
+      const charCount = document.getElementById("char-count");
+
+      reflectionTextarea.addEventListener("input", () => {
+        charCount.textContent = reflectionTextarea.value.length;
+      });
+
+      // ===== Form Submission =====
+      document
+        .getElementById("submission-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Validation
+          if (selectedFiles.length === 0) {
+            alert("Harap upload minimal 1 file dokumentasi!");
+            return;
+          }
+
+          if (reflectionTextarea.value.length < 100) {
+            alert("Jurnal refleksi minimal 100 karakter!");
+            return;
+          }
+
+          // Simulate submission
+          console.log("Submitting task...");
+          console.log("Files:", selectedFiles);
+          console.log("Reflection:", reflectionTextarea.value);
+
+          // Show success modal
+          document.getElementById("success-modal").classList.remove("hidden");
+        });
+
+      // ===== Save Draft =====
+      function saveDraft() {
+        // Save to localStorage (simulation)
+        const draftData = {
+          reflection: reflectionTextarea.value,
+          fileCount: selectedFiles.length,
+          timestamp: new Date().toISOString(),
+        };
+
+        localStorage.setItem("task-draft", JSON.stringify(draftData));
+
+        // Show feedback
+        alert("Draft berhasil disimpan! ✅");
+      }
+
+      // ===== Load Draft on Page Load =====
+      window.addEventListener("DOMContentLoaded", () => {
+        const draft = localStorage.getItem("task-draft");
+        if (draft) {
+          const draftData = JSON.parse(draft);
+          if (confirm("Ada draft yang tersimpan. Muat draft?")) {
+            reflectionTextarea.value = draftData.reflection;
+            charCount.textContent = draftData.reflection.length;
+          }
+        }
+      });
+
+      // ===== Navigation Functions =====
+      function goBack() {
+        window.history.back();
+      }
+
+      function backToClass() {
+        window.location.href = "class-detail.html?class=turtle-batch-1";
+      }
+
+      function viewNextTask() {
+        window.location.href =
+          "task-detail.html?task=task-reflection&class=turtle-batch-1";
+      }
+
+      // ===== Close modal on outside click =====
+      document
+        .getElementById("success-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) {
+            backToClass();
+          }
+        });
+    </script>
+  </body>
+</html>

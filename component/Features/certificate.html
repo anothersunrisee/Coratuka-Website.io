@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Certificates – CoraTuka</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body
+    class="bg-gradient-to-br from-primary-50/30 via-white to-tertiary-50/30 font-inter text-ink"
+  >
+    <!-- Huge Sidebar (Full) will be loaded here dynamically -->
+
+    <!-- Mini Sidebar (Desktop Only - Icon Only) -->
+    <aside
+      id="miniSidebar"
+      class="fixed left-0 top-0 z-40 hidden h-full w-20 flex-col border-r border-slate-200 bg-white shadow-lg lg:flex"
+    >
+      <!-- Open Sidebar Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-20 items-center justify-center border-b border-slate-200 transition hover:bg-slate-50"
+        title="Open Menu"
+      >
+        <svg
+          class="h-8 w-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Nav Icons -->
+      <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+        <!-- Home -->
+        <a
+          href="../features/Home.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Home"
+          data-page="Home"
+        >
+          <img
+            src="../../img/icons/home.png"
+            alt="Home"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Explore -->
+        <a
+          href="Explore.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Explore"
+          data-page="Explore"
+        >
+          <img
+            src="../../img/icons/explore.png"
+            alt="Explore"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Learn & Act -->
+        <a
+          href="learn-act.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Learn & Act"
+          data-page="learn-act"
+        >
+          <img
+            src="../../img/icons/learn.png"
+            alt="Learn"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Emergency Rescue -->
+        <a
+          href="emergency-rescue.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-secondary-50"
+          title="Emergency Rescue"
+          data-page="emergency-rescue"
+        >
+          <img
+            src="../../img/icons/Reporting.png"
+            alt="Emergency"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Campaign & Event -->
+        <a
+          href="campaign-event.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-tertiary-50"
+          title="Campaign"
+          data-page="campaign-event"
+        >
+          <img
+            src="../../img/icons/campaign.png"
+            alt="Campaign"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Dashboard (Conservator Only) -->
+        <a
+          href="../dashboard-manager/dashboard-manager.html"
+          id="miniDashboard"
+          class="mini-nav-link group hidden h-14 w-14 items-center justify-center rounded-xl transition hover:bg-slate-100"
+          title="Dashboard"
+          data-page="dashboard-manager"
+        >
+          <img
+            src="../../img/icons/dashboard.png"
+            alt="Dashboard"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+      </nav>
+
+      <!-- User Profile at Bottom -->
+      <div class="border-t border-slate-200 p-3">
+        <button
+          onclick="alert('Profile settings')"
+          class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-200 text-primary-700 font-bold text-sm transition hover:bg-primary-300"
+          title="Profile"
+          id="miniUserAvatar"
+        >
+          U
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Navbar (Sticky) -->
+    <nav
+      id="mobileNavbar"
+      class="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-md lg:hidden"
+    >
+      <!-- Hamburger Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+      >
+        <svg
+          class="h-6 w-6 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Logo (Center) -->
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka"
+        class="h-8 object-contain"
+        onerror="this.style.display='none';"
+      />
+
+      <!-- Back Button -->
+      <a
+        href="Home.html"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+        title="Back to Home"
+      >
+        <svg
+          class="h-5 w-5 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen lg:ml-20">
+      <!-- Desktop Top Bar - STICKY -->
+      <div
+        class="sticky top-0 z-30 hidden h-20 items-center justify-between border-b border-slate-200 bg-white px-8 shadow-sm lg:flex"
+      >
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">My Certificates</h1>
+          <p class="text-xs text-slate-600">View all your achievements</p>
+        </div>
+        <a
+          href="Home.html"
+          class="inline-flex h-12 items-center gap-2 rounded-xl bg-tertiary px-6 font-extrabold text-slate-800 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-yellow-400"
+        >
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          <span>Back to Home</span>
+        </a>
+      </div>
+
+      <!-- Content Container -->
+      <div class="container mx-auto px-4 py-20 md:px-8 lg:py-8">
+        <!-- Header -->
+        <div class="mb-8">
+          <h1 class="text-4xl font-extrabold text-slate-900 md:text-5xl">
+            My Certificates
+          </h1>
+          <p class="mt-2 text-lg text-slate-600">
+            Koleksi sertifikat yang telah kamu raih dari berbagai program
+            konservasi laut
+          </p>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="mb-8 grid gap-6 md:grid-cols-3">
+          <div
+            class="rounded-xl border-2 border-primary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Total Certificates</p>
+                <p
+                  class="text-3xl font-extrabold text-primary-600"
+                  id="totalCerts"
+                >
+                  3
+                </p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-primary-100 text-3xl"
+              >
+                📜
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="rounded-xl border-2 border-tertiary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">Latest Achievement</p>
+                <p class="text-lg font-extrabold text-tertiary-700">
+                  Ocean Guardian
+                </p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-tertiary-100 text-3xl"
+              >
+                🏆
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="rounded-xl border-2 border-secondary-200 bg-white p-6 shadow-lg"
+          >
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-sm text-slate-600">In Progress</p>
+                <p class="text-3xl font-extrabold text-secondary-600">2</p>
+              </div>
+              <div
+                class="flex h-16 w-16 items-center justify-center rounded-full bg-secondary-100 text-3xl"
+              >
+                ⏳
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certificates Grid -->
+        <div class="mb-8">
+          <h2 class="mb-4 text-2xl font-extrabold text-slate-900">
+            ✅ Earned Certificates
+          </h2>
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Certificate 1 -->
+            <div
+              class="group overflow-hidden rounded-xl border-2 border-primary-200 bg-white shadow-lg transition hover:scale-105 hover:shadow-xl"
+            >
+              <div
+                class="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white"
+              >
+                <div class="mb-4 flex items-center justify-between">
+                  <div
+                    class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold"
+                  >
+                    CERTIFIED
+                  </div>
+                  <div class="text-4xl">🐢</div>
+                </div>
+                <h3 class="mb-2 text-xl font-extrabold">Ocean Guardian</h3>
+                <p class="text-sm text-primary-100">
+                  Menyelesaikan 10 challenge konservasi laut
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Issued:</span>
+                  <span class="font-semibold text-slate-900">15 Nov 2025</span>
+                </div>
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Certificate ID:</span>
+                  <span class="font-mono text-xs text-slate-900"
+                    >CERT-2025-001</span
+                  >
+                </div>
+                <button
+                  onclick="downloadCertificate(1)"
+                  class="w-full rounded-lg bg-tertiary py-2 text-sm font-bold text-ink transition hover:bg-tertiary"
+                >
+                  Download Certificate
+                </button>
+              </div>
+            </div>
+
+            <!-- Certificate 2 -->
+            <div
+              class="group overflow-hidden rounded-xl border-2 border-tertiary-200 bg-white shadow-lg transition hover:scale-105 hover:shadow-xl"
+            >
+              <div
+                class="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white"
+              >
+                <div class="mb-4 flex items-center justify-between">
+                  <div
+                    class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold"
+                  >
+                    CERTIFIED
+                  </div>
+                  <div class="text-4xl">📚</div>
+                </div>
+                <h3 class="mb-2 text-xl font-extrabold">Ocean Scholar</h3>
+                <p class="text-sm text-yellow-100">
+                  Menyelesaikan semua materi Ocean Classroom
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Issued:</span>
+                  <span class="font-semibold text-slate-900">10 Nov 2025</span>
+                </div>
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Certificate ID:</span>
+                  <span class="font-mono text-xs text-slate-900"
+                    >CERT-2025-002</span
+                  >
+                </div>
+                <button
+                  onclick="downloadCertificate(2)"
+                  class="w-full rounded-lg bg-tertiary py-2 text-sm font-bold text-ink transition hover:bg-tertiary"
+                >
+                  Download Certificate
+                </button>
+              </div>
+            </div>
+
+            <!-- Certificate 3 -->
+            <div
+              class="group overflow-hidden rounded-xl border-2 border-secondary-200 bg-white shadow-lg transition hover:scale-105 hover:shadow-xl"
+            >
+              <div
+                class="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white"
+              >
+                <div class="mb-4 flex items-center justify-between">
+                  <div
+                    class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold"
+                  >
+                    CERTIFIED
+                  </div>
+                  <div class="text-4xl">🚨</div>
+                </div>
+                <h3 class="mb-2 text-xl font-extrabold">First Responder</h3>
+                <p class="text-sm text-red-100">
+                  Melapor 5 kondisi darurat laut dengan cepat
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Issued:</span>
+                  <span class="font-semibold text-slate-900">5 Nov 2025</span>
+                </div>
+                <div class="mb-3 flex items-center justify-between text-sm">
+                  <span class="text-slate-600">Certificate ID:</span>
+                  <span class="font-mono text-xs text-slate-900"
+                    >CERT-2025-003</span
+                  >
+                </div>
+                <button
+                  onclick="downloadCertificate(3)"
+                  class="w-full rounded-lg bg-tertiary py-2 text-sm font-bold text-ink transition hover:bg-tertiary"
+                >
+                  Download Certificate
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- In Progress -->
+        <div>
+          <h2 class="mb-4 text-2xl font-extrabold text-slate-900">
+            ⏳ In Progress
+          </h2>
+          <div class="grid gap-6 md:grid-cols-2">
+            <!-- Progress 1 -->
+            <div
+              class="overflow-hidden rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <div class="mb-4 flex items-center gap-3">
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-2xl"
+                >
+                  🪸
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-bold text-slate-900">Coral Protector</h3>
+                  <p class="text-sm text-slate-600">
+                    Ikuti 3 event coral planting
+                  </p>
+                </div>
+              </div>
+              <div class="mb-2 flex justify-between text-sm">
+                <span class="text-slate-600">Progress</span>
+                <span class="font-semibold text-primary-600">1/3 events</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full bg-slate-200">
+                <div class="h-full w-1/3 rounded-full bg-primary-500"></div>
+              </div>
+            </div>
+
+            <!-- Progress 2 -->
+            <div
+              class="overflow-hidden rounded-xl border-2 border-slate-200 bg-white p-6 shadow-lg"
+            >
+              <div class="mb-4 flex items-center gap-3">
+                <div
+                  class="flex h-12 w-12 items-center justify-center rounded-full bg-tertiary-100 text-2xl"
+                >
+                  🎓
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-bold text-slate-900">Marine Expert</h3>
+                  <p class="text-sm text-slate-600">
+                    Complete advanced learning path
+                  </p>
+                </div>
+              </div>
+              <div class="mb-2 flex justify-between text-sm">
+                <span class="text-slate-600">Progress</span>
+                <span class="font-semibold text-tertiary-600"
+                  >7/10 modules</span
+                >
+              </div>
+              <div class="h-2 overflow-hidden rounded-full bg-slate-200">
+                <div class="h-full w-[70%] rounded-full bg-tertiary-500"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar Script -->
+    <script src="../Features/sidebar.js"></script>
+
+    <script>
+      // Load user data
+      document.addEventListener("DOMContentLoaded", () => {
+        const userDataStr =
+          sessionStorage.getItem("coratuka_user") ||
+          sessionStorage.getItem("new_user") ||
+          localStorage.getItem("coratuka_user");
+
+        if (userDataStr) {
+          try {
+            const userData = JSON.parse(userDataStr);
+
+            // Update mini profile avatar
+            const miniAvatar = document.getElementById("miniUserAvatar");
+            if (miniAvatar && userData.name) {
+              miniAvatar.textContent = userData.name.charAt(0).toUpperCase();
+            }
+
+            // Show mini dashboard icon if conservator
+            if (
+              userData.role === "Conservator" ||
+              userData.role === "Tim Konservator"
+            ) {
+              const miniDashboard = document.getElementById("miniDashboard");
+              if (miniDashboard) {
+                miniDashboard.classList.remove("hidden");
+                miniDashboard.classList.add("flex");
+              }
+            }
+          } catch (e) {
+            console.error("Error parsing user data:", e);
+          }
+        }
+      });
+
+      function downloadCertificate(id) {
+        alert(
+          `Downloading certificate #${id}...\n\nCertificate will be saved as PDF.`
+        );
+        // TODO: Implement actual download
+      }
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color, transform,
+          opacity;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* Mini sidebar hover tooltips */
+      .mini-nav-link {
+        position: relative;
+      }
+
+      .mini-nav-link:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 12px;
+        padding: 6px 12px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        border-radius: 6px;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0;
+        animation: tooltipFade 0.2s ease-in forwards;
+      }
+
+      @keyframes tooltipFade {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Mobile navbar stays on top */
+      #mobileNavbar {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.95);
+      }
+    </style>
+  </body>
+</html>

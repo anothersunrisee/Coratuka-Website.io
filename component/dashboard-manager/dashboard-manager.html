@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conservation Manager - CORATUKA</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Shared Manager Styles -->
+    <link rel="stylesheet" href="assets/css/manager-styles.css" />
+
+    <style>
+      /* Additional dashboard-specific styles */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .notification-badge {
+        position: absolute;
+        top: -0.25rem; /* -top-1 */
+        right: -0.25rem; /* -right-1 */
+        background-color: #ef4444; /* bg-red-500 */
+        color: #ffffff; /* text-white */
+        font-size: 0.75rem; /* text-xs */
+        font-weight: 700; /* font-bold */
+        border-radius: 9999px; /* rounded-full */
+        width: 1.25rem; /* w-5 */
+        height: 1.25rem; /* h-5 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 1.5s infinite; /* animate-pulse */
+      }
+
+      /* Tailwind's animate-pulse keyframes */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Quick Action Button */
+      .quick-action-btn {
+        background-color: #ffffff;
+        border: 2px solid #e2e8f0; /* border-slate-200 */
+        color: #0f172a; /* text-slate-900 */
+        font-weight: 600; /* font-semibold */
+        padding: 1rem 1.5rem; /* py-4 px-6 */
+        border-radius: 0.75rem; /* rounded-xl */
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .quick-action-btn:hover {
+        border-color: #0284c7; /* hover:border-primary-600 */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05); /* hover:shadow-lg */
+        transform: translateY(-4px);
+      }
+
+      /* Activity Item */
+      .activity-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem; /* gap-3 */
+        padding: 0.75rem; /* p-3 */
+        border-radius: 0.5rem; /* rounded-lg */
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .activity-item:hover {
+        background-color: #f8fafc; /* hover:bg-slate-50 */
+      }
+
+      /* Activity Icon */
+      .activity-icon {
+        width: 2rem; /* w-8 */
+        height: 2rem; /* h-8 */
+        border-radius: 9999px; /* rounded-full */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-gradient-to-br from-sky-50 to-blue-50 min-h-screen font-inter"
+  >
+    <!-- Huge Sidebar (Full Menu - Desktop & Mobile) -->
+    <aside
+      id="hugeSidebar"
+      class="fixed left-0 top-0 z-50 h-full w-80 -translate-x-full transform border-r border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-in-out"
+    >
+      <div class="flex h-full flex-col">
+        <!-- Header -->
+        <div
+          class="flex h-20 items-center justify-between border-b border-slate-200 px-6"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-600"
+            >
+              <span class="text-2xl">🌊</span>
+            </div>
+            <div>
+              <h1 class="text-lg font-bold text-slate-900">CORATUKA</h1>
+              <p class="text-xs text-slate-500">Conservation Platform</p>
+            </div>
+          </div>
+          <button
+            onclick="closeSidebar()"
+            class="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-slate-200"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="flex-1 space-y-2 overflow-y-auto p-4">
+          <!-- Home -->
+          <a
+            href="../features/Home.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-primary-50 hover:text-primary-600"
+            data-page="Home"
+          >
+            <img
+              src="../../img/icons/home.png"
+              alt="Home"
+              class="h-6 w-6 opacity-60"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-medium">Home</span>
+          </a>
+
+          <!-- Explore -->
+          <a
+            href="../features/Explore.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-primary-50 hover:text-primary-600"
+            data-page="Explore"
+          >
+            <img
+              src="../../img/icons/explore.png"
+              alt="Explore"
+              class="h-6 w-6 opacity-60"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-medium">Explore</span>
+          </a>
+
+          <!-- Learn & Act -->
+          <a
+            href="../features/learn-act.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-primary-50 hover:text-primary-600"
+            data-page="learn-act"
+          >
+            <img
+              src="../../img/icons/learn.png"
+              alt="Learn"
+              class="h-6 w-6 opacity-60"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-medium">Learn & Act</span>
+          </a>
+
+          <!-- Emergency Rescue -->
+          <a
+            href="../features/emergency-rescue.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-secondary-50 hover:text-secondary"
+            data-page="emergency-rescue"
+          >
+            <img
+              src="../../img/icons/Reporting.png"
+              alt="Emergency"
+              class="h-6 w-6 opacity-60"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-medium">Emergency Rescue</span>
+          </a>
+
+          <!-- Campaign & Event -->
+          <a
+            href="../features/campaign-event.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl px-4 py-3 text-slate-700 transition hover:bg-tertiary-50 hover:text-yellow-700"
+            data-page="campaign-event"
+          >
+            <img
+              src="../../img/icons/campaign.png"
+              alt="Campaign"
+              class="h-6 w-6 opacity-60"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-medium">Campaign & Event</span>
+          </a>
+
+          <!-- Dashboard Manager (Active) -->
+          <a
+            href="dashboard-manager.html"
+            class="huge-nav-link flex items-center gap-3 rounded-xl bg-slate-200 px-4 py-3 text-slate-900 transition hover:bg-slate-300"
+            data-page="dashboard-manager"
+          >
+            <img
+              src="../../img/icons/dashboard.png"
+              alt="Dashboard"
+              class="h-6 w-6"
+              onerror="this.style.display='none';"
+            />
+            <span class="font-semibold">Dashboard Manager</span>
+          </a>
+        </nav>
+
+        <!-- User Info & Logout -->
+        <div class="border-t border-slate-200 p-4">
+          <div class="mb-3 flex items-center gap-3">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-100 text-primary-600"
+            >
+              <span class="text-lg font-bold" id="sidebar-user-initial">C</span>
+            </div>
+            <div class="flex-1">
+              <p
+                class="text-sm font-semibold text-slate-900"
+                id="sidebar-user-name"
+              >
+                Conservator
+              </p>
+              <p class="text-xs text-slate-500">Manager Role</p>
+            </div>
+          </div>
+          <button
+            onclick="logout()"
+            class="w-full rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-100"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sidebar Overlay (for mobile) -->
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 z-40 hidden bg-black bg-opacity-50 backdrop-blur-sm"
+      onclick="closeSidebar()"
+    ></div>
+
+    <!-- Mini Sidebar (Desktop Only - Icon Only) -->
+    <aside
+      id="miniSidebar"
+      class="fixed left-0 top-0 z-40 hidden h-full w-20 flex-col border-r border-slate-200 bg-white shadow-lg lg:flex"
+    >
+      <!-- Open Sidebar Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-20 items-center justify-center border-b border-slate-200 transition hover:bg-slate-50"
+        title="Open Menu"
+      >
+        <svg
+          class="h-8 w-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Nav Icons -->
+      <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+        <!-- Home -->
+        <a
+          href="../features/Home.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Home"
+          data-page="Home"
+        >
+          <img
+            src="../../img/icons/home.png"
+            alt="Home"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Explore -->
+        <a
+          href="../features/Explore.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Explore"
+          data-page="Explore"
+        >
+          <img
+            src="../../img/icons/explore.png"
+            alt="Explore"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Learn & Act -->
+        <a
+          href="../features/learn-act.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Learn & Act"
+          data-page="learn-act"
+        >
+          <img
+            src="../../img/icons/learn.png"
+            alt="Learn"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Emergency Rescue -->
+        <a
+          href="../features/emergency-rescue.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-secondary-50"
+          title="Emergency Rescue"
+          data-page="emergency-rescue"
+        >
+          <img
+            src="../../img/icons/Reporting.png"
+            alt="Emergency"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Campaign & Event -->
+        <a
+          href="../features/campaign-event.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-tertiary-50"
+          title="Campaign"
+          data-page="campaign-event"
+        >
+          <img
+            src="../../img/icons/campaign.png"
+            alt="Campaign"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Dashboard Manager (Active) -->
+        <a
+          href="dashboard-manager.html"
+          id="miniDashboard"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl bg-slate-200 transition hover:bg-slate-100"
+          title="Dashboard Manager"
+          data-page="dashboard-manager"
+        >
+          <img
+            src="../../img/icons/dashboard.png"
+            alt="Dashboard"
+            class="h-6 w-6"
+            onerror="this.style.display='none';"
+          />
+        </a>
+      </nav>
+
+      <!-- User Profile at Bottom -->
+      <div class="border-t border-slate-200 p-3">
+        <button
+          onclick="alert('Profile settings')"
+          class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-200 text-primary-700 font-bold text-sm transition hover:bg-primary-300"
+          title="Profile"
+          id="miniUserAvatar"
+        >
+          U
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Navbar (Sticky) -->
+    <nav
+      id="mobileNavbar"
+      class="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-md lg:hidden"
+    >
+      <!-- Hamburger Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-600 text-white transition hover:scale-105"
+      >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Logo (Center) -->
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka"
+        class="h-8 object-contain"
+        onerror="this.style.display='none';"
+      />
+
+      <!-- Back Button -->
+      <a
+        href="/test/index_revisi_nav.html"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+        title="Back to Main"
+      >
+        <svg
+          class="h-5 w-5 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen lg:ml-20">
+      <!-- Desktop Top Bar - STICKY -->
+      <div
+        class="sticky top-0 z-30 hidden h-20 items-center justify-between border-b border-slate-200 bg-white px-8 shadow-sm lg:flex"
+      >
+        <div>
+          <h1 class="text-xl font-bold text-slate-900">Dashboard Manager</h1>
+          <p class="text-xs text-slate-600">Kelola konten & pantau aktivitas</p>
+        </div>
+        <a
+          href="/test/index_revisi_nav.html"
+          class="inline-flex h-12 items-center gap-2 rounded-xl bg-tertiary px-6 font-extrabold text-slate-800 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-yellow-400"
+        >
+          <span>Back to Main</span>
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Dashboard Content -->
+      <div class="p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
+        <!-- Welcome Section -->
+        <div class="mb-8 fade-in">
+          <h1 class="text-4xl font-extrabold text-slate-900 mb-2">
+            Welcome back, <span id="welcome-name">Conservator</span>!
+          </h1>
+          <p class="text-slate-600">
+            Here's an overview of your conservation management activities.
+          </p>
+        </div>
+
+        <!-- Statistics Overview Cards -->
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 fade-in"
+        >
+          <!-- Emergency Reports Card -->
+          <div class="stat-card bg-white-50 border-l-4 border-primary">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-bold text-slate-600">Emergency Reports</p>
+              <span class="text-3xl">🚨</span>
+            </div>
+            <h3
+              class="text-3xl font-bold text-ink mb-1"
+              id="stat-emergency-total"
+            >
+              0
+            </h3>
+            <div class="flex items-center gap-2 text-xs">
+              <span
+                class="bg-red-500 text-white px-2 py-1 rounded-full font-bold"
+                id="stat-emergency-urgent"
+              >
+                0 urgent
+              </span>
+              <span class="text-ink font-medium" id="stat-emergency-pending">
+                0 pending
+              </span>
+            </div>
+          </div>
+
+          <!-- Ocean Classroom Card -->
+          <div class="stat-card bg-white-50 border-l-4 border-primary">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-bold text-slate-600">Ocean Classroom</p>
+              <span class="text-3xl">🎓</span>
+            </div>
+            <h3
+              class="text-3xl font-bold text-ink mb-1"
+              id="stat-classroom-total"
+            >
+              0
+            </h3>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-ink font-medium" id="stat-classroom-active">
+                0 active classes
+              </span>
+              <span class="text-slate-500">|</span>
+              <span class="text-ink font-medium" id="stat-classroom-grading">
+                0 to grade
+              </span>
+            </div>
+          </div>
+
+          <!-- Ocean Challenge Card -->
+          <div class="stat-card bg-white-50 border-l-4 border-primary">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-bold text-slate-600">Ocean Challenge</p>
+              <span class="text-3xl">🏆</span>
+            </div>
+            <h3
+              class="text-3xl font-bold text-ink mb-1"
+              id="stat-challenge-total"
+            >
+              0
+            </h3>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-ink font-medium" id="stat-challenge-active">
+                0 active
+              </span>
+              <span class="text-slate-500">|</span>
+              <span class="text-ink font-medium" id="stat-challenge-pending">
+                0 to validate
+              </span>
+            </div>
+          </div>
+
+          <!-- Campaign & Event Card -->
+          <div class="stat-card bg-white-50 border-l-4 border-primary">
+            <div class="flex items-center justify-between mb-2">
+              <p class="text-sm font-bold text-slate-600">Campaign & Event</p>
+              <span class="text-3xl">📅</span>
+            </div>
+            <h3
+              class="text-3xl font-bold text-ink mb-1"
+              id="stat-campaign-total"
+            >
+              0
+            </h3>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-ink font-medium" id="stat-campaign-upcoming">
+                0 upcoming
+              </span>
+              <span class="text-slate-500">|</span>
+              <span
+                class="text-slate-600 font-medium"
+                id="stat-campaign-registrants"
+              >
+                0 registrants
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Manager Modules Section -->
+        <div class="mb-8 fade-in">
+          <h2 class="text-xl font-bold text-slate-900 mb-4">Manager Modules</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Beach QR Guide Module -->
+            <a
+              href="modules/beach-guide-manager.html"
+              class="group bg-white hover:shadow-lg border-2 border-slate-200 hover:border-primary-600 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center text-2xl"
+                >
+                  🏖️
+                </div>
+                <div class="flex-1">
+                  <h3
+                    class="font-bold text-slate-900 group-hover:text-primary-600"
+                  >
+                    Beach QR Guide
+                  </h3>
+                  <p class="text-xs text-slate-500">
+                    Manage locations & content
+                  </p>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600">
+                Tambahkan lokasi pantai baru, edit kartu konten, dan lihat
+                statistik pemindaian.
+              </p>
+            </a>
+
+            <!-- Ocean Classroom Module -->
+            <a
+              href="modules/classroom-manager.html"
+              class="group bg-white hover:shadow-lg border-2 border-slate-200 hover:border-primary-600 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 relative"
+            >
+              <span
+                id="classroom-module-badge"
+                class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden"
+                >0</span
+              >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl"
+                >
+                  🎓
+                </div>
+                <div class="flex-1">
+                  <h3
+                    class="font-bold text-slate-900 group-hover:text-primary-600"
+                  >
+                    Ocean Classroom
+                  </h3>
+                  <p class="text-xs text-slate-500">Manage classes & tasks</p>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600">
+                Buat kelas, kelola forum, nilai tugas, dan terbitkan sertifikat.
+              </p>
+            </a>
+
+            <!-- Ocean Challenge Module -->
+            <a
+              href="modules/challenge-manager.html"
+              class="group bg-white hover:shadow-lg border-2 border-slate-200 hover:borderprimary-600 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 relative"
+            >
+              <span
+                id="challenge-module-badge"
+                class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center hidden"
+                >0</span
+              >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl"
+                >
+                  🏆
+                </div>
+                <div class="flex-1">
+                  <h3
+                    class="font-bold text-slate-900 group-hover:text-primary-600"
+                  >
+                    Ocean Challenge
+                  </h3>
+                  <p class="text-xs text-slate-500">Challenges & rewards</p>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600">
+                Mengelola tantangan, memverifikasi pengajuan, dan menangani
+                penukaran hadiah.
+              </p>
+            </a>
+
+            <!-- Emergency Rescue Module -->
+            <a
+              href="modules/emergency-manager.html"
+              class="group bg-white hover:shadow-lg border-2 border-slate-200 hover:border-primary-600 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1 relative"
+            >
+              <span
+                id="emergency-module-badge"
+                class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center animate-pulse hidden"
+                >0</span
+              >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-2xl"
+                >
+                  🚨
+                </div>
+                <div class="flex-1">
+                  <h3
+                    class="font-bold text-slate-900 group-hover:text-primary-600"
+                  >
+                    Emergency Rescue
+                  </h3>
+                  <p class="text-xs text-slate-500">Handle urgent reports</p>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600">
+                Lihat laporan, perbarui status, prioritaskan kasus, dan lacak
+                waktu respons.
+              </p>
+            </a>
+
+            <!-- Campaign & Event Module -->
+            <a
+              href="modules/campaign-manager.html"
+              class="group bg-white hover:shadow-lg border-2 border-slate-200 hover:border-primary-600 rounded-xl p-6 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div class="flex items-center gap-4 mb-3">
+                <div
+                  class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl"
+                >
+                  📅
+                </div>
+                <div class="flex-1">
+                  <h3
+                    class="font-bold text-slate-900 group-hover:text-primary-600"
+                  >
+                    Campaign & Event
+                  </h3>
+                  <p class="text-xs text-slate-500">Events & registrations</p>
+                </div>
+              </div>
+              <p class="text-sm text-slate-600">
+                Buat acara, kelola pendaftar, lacak kehadiran, dan ekspor data.
+              </p>
+            </a>
+          </div>
+        </div>
+
+        <!-- Recent Activities Feed -->
+        <div class="bg-white rounded-2xl shadow-sm p-6 fade-in">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-xl font-bold text-ink">Recent Activities</h2>
+            <button
+              onclick="refreshActivities()"
+              class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+            >
+              Refresh
+            </button>
+          </div>
+
+          <div id="activities-container" class="space-y-2">
+            <!-- Activities will be dynamically loaded -->
+            <div class="text-center py-8 text-gray-400">
+              <p class="text-sm">Loading activities...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="assets/js/manager-core.js"></script>
+    <script src="assets/js/modal-fix.js"></script>
+    <script>
+      // ========================================
+      // SIDEBAR TOGGLE FUNCTIONS
+      // ========================================
+      function openSidebar() {
+        const hugeSidebar = document.getElementById("hugeSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        hugeSidebar.classList.remove("-translate-x-full");
+        overlay.classList.remove("hidden");
+        document.body.style.overflow = "hidden"; // Prevent body scroll
+      }
+
+      function closeSidebar() {
+        const hugeSidebar = document.getElementById("hugeSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+
+        hugeSidebar.classList.add("-translate-x-full");
+        overlay.classList.add("hidden");
+        document.body.style.overflow = ""; // Restore body scroll
+      }
+
+      // ========================================
+      // DASHBOARD MANAGER MAIN SCRIPT
+      // ========================================
+
+      // Check conservator access on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        if (!checkConservatorAccess()) {
+          return; // manager-core.js will redirect if not authorized
+        }
+
+        initDashboard();
+      });
+
+      // ========================================
+      // INITIALIZE DASHBOARD
+      // ========================================
+      function initDashboard() {
+        loadUserInfo();
+        loadStatistics();
+        loadRecentActivities();
+        updateNotificationBadges();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+          loadStatistics();
+          loadRecentActivities();
+          updateNotificationBadges();
+        }, 30000);
+      }
+
+      // ========================================
+      // LOAD USER INFO
+      // ========================================
+      function loadUserInfo() {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (user) {
+          const userName = user.name || "Conservator";
+          const userInitial = userName.charAt(0).toUpperCase();
+
+          // Update all user name displays
+          document.getElementById("sidebar-user-name").textContent = userName;
+          document.getElementById("sidebar-user-initial").textContent =
+            userInitial;
+          document.getElementById("welcome-name").textContent = userName;
+          document.getElementById("miniUserAvatar").textContent = userInitial;
+        }
+      }
+
+      // ========================================
+      // LOAD STATISTICS
+      // ========================================
+      function loadStatistics() {
+        // Emergency Reports Stats
+        const emergencyReports = loadFromLocalStorage("emergencyReports");
+        const urgentReports = emergencyReports.filter(
+          (r) => r.priority === "urgent"
+        );
+        const pendingReports = emergencyReports.filter(
+          (r) => r.status === "pending"
+        );
+
+        document.getElementById("stat-emergency-total").textContent =
+          emergencyReports.length;
+        document.getElementById(
+          "stat-emergency-urgent"
+        ).textContent = `${urgentReports.length} urgent`;
+        document.getElementById(
+          "stat-emergency-pending"
+        ).textContent = `${pendingReports.length} pending`;
+
+        // Ocean Classroom Stats
+        const classrooms = loadFromLocalStorage("oceanClassrooms");
+        const activeClasses = classrooms.filter((c) => c.status === "open");
+        let pendingGrading = 0;
+        classrooms.forEach((cls) => {
+          if (cls.tasks) {
+            cls.tasks.forEach((task) => {
+              if (task.submissions) {
+                pendingGrading += task.submissions.filter(
+                  (s) => s.status === "pending"
+                ).length;
+              }
+            });
+          }
+        });
+
+        document.getElementById("stat-classroom-total").textContent =
+          classrooms.length;
+        document.getElementById(
+          "stat-classroom-active"
+        ).textContent = `${activeClasses.length} active classes`;
+        document.getElementById(
+          "stat-classroom-grading"
+        ).textContent = `${pendingGrading} to grade`;
+
+        // Ocean Challenge Stats
+        const challenges = loadFromLocalStorage("oceanChallenges");
+        const activeChallenges = challenges.filter((c) => c.status === "open");
+        let pendingValidations = 0;
+        challenges.forEach((ch) => {
+          if (ch.submissions) {
+            pendingValidations += ch.submissions.filter(
+              (s) => s.status === "pending"
+            ).length;
+          }
+        });
+
+        document.getElementById("stat-challenge-total").textContent =
+          challenges.length;
+        document.getElementById(
+          "stat-challenge-active"
+        ).textContent = `${activeChallenges.length} active`;
+        document.getElementById(
+          "stat-challenge-pending"
+        ).textContent = `${pendingValidations} to validate`;
+
+        // Campaign & Event Stats
+        const campaigns = loadFromLocalStorage("campaignEvents");
+        const upcomingEvents = campaigns.filter((e) => {
+          if (!e.date) return false;
+          const eventDate = new Date(e.date);
+          const today = new Date();
+          return eventDate >= today && e.status === "open";
+        });
+        let totalRegistrants = 0;
+        campaigns.forEach((camp) => {
+          if (camp.registrants) {
+            totalRegistrants += camp.registrants.length;
+          }
+        });
+
+        document.getElementById("stat-campaign-total").textContent =
+          campaigns.length;
+        document.getElementById(
+          "stat-campaign-upcoming"
+        ).textContent = `${upcomingEvents.length} upcoming`;
+        document.getElementById(
+          "stat-campaign-registrants"
+        ).textContent = `${totalRegistrants} registrants`;
+      }
+
+      // ========================================
+      // UPDATE NOTIFICATION BADGES
+      // ========================================
+      function updateNotificationBadges() {
+        // Classroom badge (pending grading)
+        const classrooms = loadFromLocalStorage("oceanClassrooms");
+        let pendingGrading = 0;
+        classrooms.forEach((cls) => {
+          if (cls.tasks) {
+            cls.tasks.forEach((task) => {
+              if (task.submissions) {
+                pendingGrading += task.submissions.filter(
+                  (s) => s.status === "pending"
+                ).length;
+              }
+            });
+          }
+        });
+        updateBadge("classroom-badge", pendingGrading);
+        updateBadge("classroom-module-badge", pendingGrading);
+
+        // Challenge badge (pending validations)
+        const challenges = loadFromLocalStorage("oceanChallenges");
+        let pendingValidations = 0;
+        challenges.forEach((ch) => {
+          if (ch.submissions) {
+            pendingValidations += ch.submissions.filter(
+              (s) => s.status === "pending"
+            ).length;
+          }
+        });
+        updateBadge("challenge-badge", pendingValidations);
+        updateBadge("challenge-module-badge", pendingValidations);
+
+        // Emergency badge (urgent + pending)
+        const emergencyReports = loadFromLocalStorage("emergencyReports");
+        const urgentCount = emergencyReports.filter(
+          (r) => r.priority === "urgent" || r.status === "pending"
+        ).length;
+        updateBadge("emergency-badge", urgentCount);
+        updateBadge("emergency-module-badge", urgentCount);
+      }
+
+      function updateBadge(badgeId, count) {
+        const badge = document.getElementById(badgeId);
+        if (badge) {
+          if (count > 0) {
+            badge.textContent = count > 99 ? "99+" : count;
+            badge.classList.remove("hidden");
+          } else {
+            badge.classList.add("hidden");
+          }
+        }
+      }
+
+      // ========================================
+      // LOAD RECENT ACTIVITIES
+      // ========================================
+      function loadRecentActivities() {
+        const container = document.getElementById("activities-container");
+        const activities = [];
+
+        // Collect recent emergency reports (last 5)
+        const emergencyReports = loadFromLocalStorage("emergencyReports");
+        emergencyReports
+          .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+          .slice(0, 3)
+          .forEach((report) => {
+            activities.push({
+              type: "emergency",
+              icon: "🚨",
+              iconBg: "bg-red-100",
+              iconText: "text-red-600",
+              title: `New emergency report: ${report.animalTypeLabel}`,
+              description: `${report.location.address} • ${report.conditionLabel}`,
+              timestamp: report.timestamp,
+              link: `modules/emergency-manager.html?view=${report.id}`,
+            });
+          });
+
+        // Collect recent challenge submissions (last 3)
+        const challenges = loadFromLocalStorage("oceanChallenges");
+        challenges.forEach((ch) => {
+          if (ch.submissions) {
+            ch.submissions
+              .filter((s) => s.status === "pending")
+              .slice(0, 2)
+              .forEach((sub) => {
+                activities.push({
+                  type: "challenge",
+                  icon: "✅",
+                  iconBg: "bg-green-100",
+                  iconText: "text-green-600",
+                  title: `Challenge submission: ${ch.title}`,
+                  description: `${sub.userName} submitted for validation`,
+                  timestamp: sub.submittedAt,
+                  link: `modules/challenge-manager.html?tab=validation`,
+                });
+              });
+          }
+        });
+
+        // Collect recent campaign registrations (last 3)
+        const campaigns = loadFromLocalStorage("campaignEvents");
+        campaigns.forEach((camp) => {
+          if (camp.registrants) {
+            camp.registrants
+              .sort(
+                (a, b) => new Date(b.registeredAt) - new Date(a.registeredAt)
+              )
+              .slice(0, 2)
+              .forEach((reg) => {
+                activities.push({
+                  type: "campaign",
+                  icon: "📅",
+                  iconBg: "bg-purple-100",
+                  iconText: "text-purple-600",
+                  title: `New registration: ${camp.title}`,
+                  description: `${reg.userName} registered`,
+                  timestamp: reg.registeredAt,
+                  link: `modules/campaign-manager.html?view=${camp.id}`,
+                });
+              });
+          }
+        });
+
+        // Sort by timestamp (most recent first)
+        activities.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+
+        // Take only the 10 most recent
+        const recentActivities = activities.slice(0, 10);
+
+        // Render activities
+        if (recentActivities.length === 0) {
+          container.innerHTML = `
+            <div class="text-center py-8 text-slate-400">
+              <p class="text-sm">No recent activities</p>
+            </div>
+          `;
+        } else {
+          container.innerHTML = recentActivities
+            .map(
+              (activity) => `
+            <a href="${activity.link}" class="activity-item block">
+              <div class="activity-icon ${activity.iconBg} ${
+                activity.iconText
+              }">
+                <span>${activity.icon}</span>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-slate-900">${
+                  activity.title
+                }</p>
+                <p class="text-xs text-slate-500">${activity.description}</p>
+                <p class="text-xs text-slate-400 mt-1">${timeAgo(
+                  activity.timestamp
+                )}</p>
+              </div>
+            </a>
+          `
+            )
+            .join("");
+        }
+      }
+
+      // ========================================
+      // REFRESH ACTIVITIES
+      // ========================================
+      function refreshActivities() {
+        showNotification("Refreshing activities...", "info");
+        loadRecentActivities();
+        updateNotificationBadges();
+        showNotification("Activities refreshed!", "success");
+      }
+    </script>
+  </body>
+</html>

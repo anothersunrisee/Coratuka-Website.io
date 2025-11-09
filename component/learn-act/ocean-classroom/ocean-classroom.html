@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ocean Classroom - CORATUKA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Tailwind Config -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "sans-serif"],
+            },
+            colors: {
+              btn: "#FFD166",
+              "btn-hover": "#d8b052",
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              info: { DEFAULT: "#3b82f6" },
+              danger: { DEFAULT: "#f64c4c" },
+              warning: { DEFAULT: "#ffad0d" },
+              success: { DEFAULT: "#47b881" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .ocean-pattern {
+        background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 80%,
+            rgba(21, 197, 206, 0.05) 0%,
+            transparent 50%
+          );
+      }
+
+      .tab-active {
+        border-bottom: 3px solid #15c5ce;
+        color: #15c5ce;
+        font-weight: 600;
+      }
+
+      .class-card {
+        transition: all 0.3s ease;
+      }
+
+      .class-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(21, 197, 206, 0.15);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 ocean-pattern">
+    <!-- Navbar -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <button
+            onclick="goBack()"
+            class="flex items-center gap-2 px-4 py-2 bg-btn hover:bg-btn-hover rounded-lg transition-all"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            <span class="font-medium">Back</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <img
+              src="../../../img/index/logo coratuka.png"
+              class="h-12"
+              alt=""
+            />
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              onclick="toggleNotification()"
+              class="relative p-2 hover:bg-gray-100 rounded-lg transition-all"
+            >
+              <svg
+                class="w-6 h-6 text-gray-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                />
+              </svg>
+              <span
+                class="absolute top-1 right-1 w-2 h-2 bg-danger rounded-full"
+              ></span>
+            </button>
+            <div
+              class="w-8 h-8 bg-primary-200 rounded-full flex items-center justify-center"
+            >
+              <span class="text-primary-700 font-bold text-sm">D</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="bg-gradient-to-r from-primary-50 to-white border-b">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex items-center gap-4">
+          <div class="flex-1">
+            <h1 class="text-3xl font-bold text-ink">Ocean Classroom</h1>
+            <p class="text-gray-600 text-sm mt-1">
+              Selamat datang di fitur Learning, disini kalian bisa bermain
+              sekaligus belajar
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Notification Overlay -->
+    <div
+      id="notification-overlay"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-start justify-end p-4"
+      onclick="toggleNotification()"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-xl max-w-sm w-full mt-16 mr-4"
+        onclick="event.stopPropagation()"
+      >
+        <div class="p-4 border-b">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-ink">Notifications</h3>
+            <button
+              onclick="toggleNotification()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="max-h-96 overflow-y-auto">
+          <div class="p-4 border-b hover:bg-gray-50 cursor-pointer">
+            <div class="flex gap-3">
+              <div
+                class="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"
+              ></div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-ink">
+                  Tugas Baru Tersedia
+                </p>
+                <p class="text-xs text-gray-600 mt-1">
+                  Dokumentasi Habitat Penyu - Deadline 12 Nov
+                </p>
+                <p class="text-xs text-gray-400 mt-1">2 jam yang lalu</p>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 border-b hover:bg-gray-50 cursor-pointer">
+            <div class="flex gap-3">
+              <div
+                class="w-2 h-2 bg-gray-300 rounded-full mt-2 flex-shrink-0"
+              ></div>
+              <div class="flex-1">
+                <p class="text-sm font-semibold text-ink">
+                  Mentor memberikan feedback
+                </p>
+                <p class="text-xs text-gray-600 mt-1">
+                  Tugas Minggu 2 - Pengamatan Sarang Penyu
+                </p>
+                <p class="text-xs text-gray-400 mt-1">1 hari yang lalu</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="p-3 border-t text-center">
+          <button
+            class="text-sm text-primary hover:text-primary-700 font-medium"
+          >
+            See More ->
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Tab Navigation & Join Class Button -->
+      <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div class="flex gap-8">
+            <button
+              onclick="switchTab('your-class')"
+              id="tab-your-class"
+              class="tab-active pb-2 text-lg font-medium transition-all"
+            >
+              Your Class
+            </button>
+            <button
+              onclick="switchTab('your-certificate')"
+              id="tab-your-certificate"
+              class="pb-2 text-lg font-medium text-gray-500 hover:text-primary transition-all"
+            >
+              Your Certificate
+            </button>
+          </div>
+
+          <button
+            onclick="openJoinClassModal()"
+            class="flex items-center gap-2 px-6 py-3 bg-btn hover:bg-btn-hover rounded-xl font-semibold text-ink transition-all"
+          >
+            <span>Join Class</span>
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div id="content-area">
+        <!-- Your Class Tab Content -->
+        <div
+          id="your-class-content"
+          class="grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <!-- Class Card 1 - Turtle Conservation -->
+          <div
+            class="class-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <!-- Customizable Image Background -->
+            <div
+              class="relative h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center overflow-hidden"
+            >
+              <!-- Replace src with actual image -->
+              <img
+                src="../../../img/classroom/turtle.png"
+                alt="Turtle Class"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <!-- Fallback Icon -->
+              <div
+                class="absolute inset-0 hidden items-center justify-center bg-gradient-to-br from-primary-100 to-primary-200"
+              >
+                <span class="text-6xl">🐢</span>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="mb-4">
+                <h3 class="text-xl font-bold text-ink mb-2">
+                  Turtle Class - Batch #1
+                </h3>
+                <p class="text-sm font-semibold text-ink mb-1">
+                  Konservasi Penyu - Pantai Pelangi
+                </p>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Jelajahi keindahan terumbu karang dalam tur 3D interaktif dan
+                  temukan beragam biota laut.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                <div class="flex items-center gap-1">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                  </svg>
+                  <span>24 peserta</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>5/8 tugas selesai</span>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-medium text-gray-600"
+                    >Progress</span
+                  >
+                  <span class="text-xs font-bold text-ink">62%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    class="bg-ink h-2 rounded-full transition-all"
+                    style="width: 62%"
+                  ></div>
+                </div>
+              </div>
+
+              <button
+                onclick="goToClassDetail('turtle-batch-1')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Explore →
+              </button>
+            </div>
+          </div>
+
+          <!-- Class Card 2 - Coral Conservation -->
+          <div
+            class="class-card bg-white rounded-2xl shadow-sm overflow-hidden"
+          >
+            <div
+              class="relative h-48 bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center overflow-hidden"
+            >
+              <img
+                src="../../../img/classroom/coral.png"
+                alt="Coral Class"
+                class="w-full h-full object-cover"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div
+                class="absolute inset-0 hidden items-center justify-center bg-gradient-to-br from-secondary/20 to-secondary/40"
+              >
+                <span class="text-6xl">🪸</span>
+              </div>
+            </div>
+
+            <div class="p-6">
+              <div class="mb-4">
+                <h3 class="text-xl font-bold text-ink mb-2">
+                  Coral Class - Batch #2
+                </h3>
+                <p class="text-sm font-semibold text-ink mb-1">
+                  Konservasi Terumbu Karang - Pantai Wediombo
+                </p>
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  Jelajahi keindahan terumbu karang dalam tur 3D interaktif dan
+                  temukan beragam biota laut.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                <div class="flex items-center gap-1">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                  </svg>
+                  <span>18 peserta</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>3/8 tugas selesai</span>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-xs font-medium text-gray-600"
+                    >Progress</span
+                  >
+                  <span class="text-xs font-bold text-ink">37%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    class="bg-ink h-2 rounded-full transition-all"
+                    style="width: 37%"
+                  ></div>
+                </div>
+              </div>
+
+              <button
+                onclick="goToClassDetail('coral-batch-2')"
+                class="w-full py-3 bg-tertiary hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+              >
+                Explore →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Your Certificate Tab Content -->
+        <div id="your-certificate-content" class="hidden">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Certificate Card 1 -->
+            <div
+              class="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition-all"
+            >
+              <div
+                class="relative h-48 bg-gradient-to-br from-success/20 to-success/40 flex items-center justify-center"
+              >
+                <div class="text-center">
+                  <div class="text-5xl mb-2">🏆</div>
+                  <p class="text-sm font-semibold text-success">Completed</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <h4 class="font-bold text-ink mb-1">Ocean Guardian</h4>
+                <p class="text-xs text-gray-500 mb-3">
+                  Turtle Class - Batch #1
+                </p>
+                <button
+                  onclick="viewCertificate('cert-1')"
+                  class="text-sm text-primary hover:text-primary-700 font-medium"
+                >
+                  View Certificate →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Join Class Modal with Dummy Code -->
+    <div
+      id="join-class-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-md w-full p-6 relative">
+        <button
+          onclick="closeJoinClassModal()"
+          class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <h3 class="text-2xl font-bold text-ink mb-4">Join Class</h3>
+        <p class="text-gray-600 mb-6">Masukkan kode kelas untuk bergabung</p>
+
+        <form id="join-class-form" onsubmit="joinClassSubmit(event)">
+          <input
+            type="text"
+            id="class-code-input"
+            placeholder="Masukkan kode kelas"
+            class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary focus:outline-none mb-4"
+            required
+          />
+          <button
+            type="submit"
+            class="w-full py-3 bg-btn hover:bg-btn-hover rounded-xl font-semibold text-ink transition-all"
+          >
+            Join
+          </button>
+        </form>
+
+        <p class="text-xs text-gray-500 mt-4 text-center">
+          Dummy code: <strong>ECO-VISITOR</strong> (akan menambah kelas Eco
+          Visitor - Wisatawan Ramah Lingkungan)
+        </p>
+      </div>
+    </div>
+
+    <!-- Coming Soon Modal -->
+    <div
+      id="coming-soon-modal"
+      class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    >
+      <div class="bg-white rounded-2xl max-w-lg w-full p-8 text-center">
+        <div class="text-6xl mb-4">🚧</div>
+        <h3 class="text-2xl font-bold text-ink mb-3">Kelas Akan Datang!</h3>
+        <p class="text-gray-700 mb-6 leading-relaxed">
+          <strong class="text-primary"
+            >Eco Visitor - Wisatawan Ramah Lingkungan</strong
+          ><br />
+          Batch #3 • Konservasi Penyu - Pantai Pelangi
+        </p>
+        <p class="text-gray-600 mb-6">
+          Kelas ini akan segera dibuka! Pelajari cara menjadi wisatawan yang
+          bertanggung jawab dan ramah lingkungan saat berkunjung ke habitat
+          penyu.
+        </p>
+        <div class="bg-primary-50 rounded-xl p-4 mb-6">
+          <p class="text-sm text-primary-900">
+            <strong>🗓️ Tanggal Pembukaan:</strong> 15 November 2025<br />
+            <strong>👥 Mentor:</strong> Tim Konservasi Pantai Pelangi
+          </p>
+        </div>
+        <button
+          onclick="closeComingSoonModal()"
+          class="px-8 py-3 bg-btn hover:bg-btn-hover text-ink font-semibold rounded-xl transition-all"
+        >
+          Mengerti
+        </button>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Toggle Notification
+      function toggleNotification() {
+        const overlay = document.getElementById("notification-overlay");
+        overlay.classList.toggle("hidden");
+      }
+
+      // Tab Switching
+      function switchTab(tabName) {
+        const tabs = ["your-class", "your-certificate"];
+        tabs.forEach((tab) => {
+          const button = document.getElementById(`tab-${tab}`);
+          if (tab === tabName) {
+            button.classList.add("tab-active", "text-primary");
+            button.classList.remove("text-gray-500");
+          } else {
+            button.classList.remove("tab-active", "text-primary");
+            button.classList.add("text-gray-500");
+          }
+        });
+
+        document
+          .getElementById("your-class-content")
+          .classList.toggle("hidden", tabName !== "your-class");
+        document
+          .getElementById("your-certificate-content")
+          .classList.toggle("hidden", tabName !== "your-certificate");
+      }
+
+      // Modal Functions
+      function openJoinClassModal() {
+        document.getElementById("join-class-modal").classList.remove("hidden");
+      }
+
+      function closeJoinClassModal() {
+        document.getElementById("join-class-modal").classList.add("hidden");
+        document.getElementById("class-code-input").value = "";
+      }
+
+      function closeComingSoonModal() {
+        document.getElementById("coming-soon-modal").classList.add("hidden");
+      }
+
+      function joinClassSubmit(event) {
+        event.preventDefault();
+        const classCode = document
+          .getElementById("class-code-input")
+          .value.toUpperCase();
+
+        if (classCode === "ECO-VISITOR") {
+          closeJoinClassModal();
+          document
+            .getElementById("coming-soon-modal")
+            .classList.remove("hidden");
+        } else {
+          alert(
+            `Kode kelas "${classCode}" tidak valid. Coba gunakan: ECO-VISITOR`
+          );
+        }
+      }
+
+      // Navigation Functions
+      function goBack() {
+        window.location.href = "../../Features/learn-act.html";
+      }
+
+      function goToClassDetail(classId) {
+        window.location.href = `class-detail.html?class=${classId}`;
+      }
+
+      function viewCertificate(certId) {
+        window.location.href = `certificate.html?cert=${certId}`;
+      }
+
+      // Close modals on outside click
+      document
+        .getElementById("join-class-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) {
+            closeJoinClassModal();
+          }
+        });
+
+      document
+        .getElementById("coming-soon-modal")
+        .addEventListener("click", function (event) {
+          if (event.target === this) {
+            closeComingSoonModal();
+          }
+        });
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        console.log("Ocean Classroom initialized");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+{
+  "sampah": {
+    "title": "Tempat Sampah Pantai",
+    "icon": "🗑️",
+    "mascot": "coco",
+    "cardImage": "/img/QR/thumb-sampah.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-sampah.png"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Sampah plastik di pantai dapat terbawa arus ke laut dan merusak ekosistem. Setiap tahun, jutaan ton sampah berakhir di lautan, membahayakan kehidupan laut seperti penyu dan ikan. Dengan memilah sampah dengan benar, kita membantu proses daur ulang dan mengurangi polusi laut."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Pisahkan sampah organik (sisa makanan, daun) dan anorganik (plastik, botol, kaleng)",
+        "Buang sampah di tempat yang telah disediakan, jangan tinggalkan di pasir",
+        "Bawa kantong sendiri untuk membawa pulang sampahmu jika tempat sampah penuh",
+        "Ajak teman atau keluarga untuk ikut menjaga kebersihan pantai"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Pantai di Indonesia menghasilkan rata-rata 20-50 kg sampah per hari. Dengan memilah sampah, volume yang masuk ke TPA bisa berkurang hingga 40%!"
+    },
+    "appreciation": "Terima kasih sudah peduli! Setiap aksi kecilmu membantu pantai tetap bersih dan aman untuk semua makhluk hidup. 🌊"
+  },
+
+  "penyu": {
+    "title": "Konservasi Penyu Laut",
+    "icon": "🐢",
+    "mascot": "tuka",
+    "cardImage": "/img/QR/thumb-penyu.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-penyu.png"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Penyu laut adalah spesies yang terancam punah. Mereka berperan penting dalam menjaga keseimbangan ekosistem laut, seperti mengendalikan populasi ubur-ubur dan menjaga kesehatan padang lamun. Area peneluran penyu harus dilindungi agar generasi penyu masa depan tetap bisa hidup."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Jangan menyentuh, mengangkat, atau mengganggu penyu dan sarangnya",
+        "Matikan lampu atau flash kamera di malam hari — cahaya membingungkan tukik (bayi penyu)",
+        "Jaga jarak minimal 3 meter saat mengamati penyu",
+        "Laporkan jika menemukan sarang penyu atau penyu yang terluka kepada petugas konservasi"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Indonesia adalah rumah bagi 6 dari 7 spesies penyu di dunia! Namun, hanya 1 dari 1.000 tukik yang berhasil bertahan hingga dewasa karena ancaman sampah plastik dan predator."
+    },
+    "appreciation": "Hebat! Dengan menjaga penyu, kamu juga melindungi lautan untuk masa depan. Tuka berterima kasih! 🐢💚"
+  },
+
+  "terumbu": {
+    "title": "Ekosistem Terumbu Karang",
+    "icon": "🪸",
+    "mascot": "cora",
+    "cardImage": "/img/QR/thumb-coral.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-ekosistem.png"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Terumbu karang adalah 'hutan hujan' dari lautan. Mereka menyediakan rumah bagi 25% kehidupan laut meski hanya menutupi 0,1% dasar laut. Terumbu karang juga melindungi pantai dari erosi dan ombak besar. Namun, terumbu sangat rapuh dan butuh puluhan tahun untuk tumbuh."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Jangan berdiri, menyentuh, atau menginjak terumbu karang saat snorkeling atau diving",
+        "Jaga jarak aman minimal 1 meter dari karang",
+        "Gunakan sunscreen ramah karang (reef-safe) tanpa bahan kimia berbahaya",
+        "Jangan mengambil atau membeli souvenir dari karang, cangkang, atau biota laut lainnya"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Indonesia memiliki 18% terumbu karang dunia, yang terluas kedua setelah Australia. Sayangnya, 30% terumbu karang kita dalam kondisi rusak akibat aktivitas manusia."
+    },
+    "appreciation": "Keren! Dengan menjaga terumbu karang, kamu melindungi rumah ribuan makhluk laut. Cora bangga padamu! 🪸✨"
+  },
+
+  "bleaching": {
+    "title": "Pemutihan Karang (Coral Bleaching)",
+    "icon": "🌡️",
+    "mascot": "cora",
+    "cardImage": "/img/QR/thumb-bleaching.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-bleaching.png",
+      "note": "Replace with actual video URL or use image type"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Coral bleaching terjadi ketika suhu air laut meningkat akibat perubahan iklim. Karang yang stres akan mengeluarkan alga simbiotik (zooxanthellae) yang memberikan warna dan makanan, sehingga karang terlihat putih atau 'bleached'. Jika kondisi ini berlangsung lama, karang bisa mati dan ekosistem laut runtuh."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Kurangi jejak karbon: gunakan transportasi ramah lingkungan, hemat energi",
+        "Dukung program restorasi terumbu karang lokal atau transplantasi karang",
+        "Edukasi orang lain tentang bahaya perubahan iklim terhadap laut",
+        "Hindari aktivitas yang merusak karang seperti buang jangkar sembarangan"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Pada tahun 2016, peristiwa bleaching global menyebabkan 50% terumbu karang dunia memutih. Di Indonesia, beberapa kawasan seperti Raja Ampat juga terdampak, meski kemudian pulih secara perlahan."
+    },
+    "appreciation": "Luar biasa! Aksi kecilmu membantu memperlambat perubahan iklim dan melindungi karang. Setiap usaha berarti! 🌡️💙"
+  },
+
+  "rambu": {
+    "title": "Rambu & Zona Pantai",
+    "icon": "⚠️",
+    "mascot": "coco",
+    "cardImage": "/img/QR/thumb-rambu.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-rambu.png"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Rambu pantai dipasang untuk menjaga keselamatan pengunjung dan melindungi area konservasi. Zona tertentu seperti area peneluran penyu atau terumbu karang rapuh harus dilindungi dari aktivitas manusia. Mengikuti rambu juga membantu menghindari bahaya seperti arus kuat, zona berbahaya, atau area dengan biota beracun."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Baca dan patuhi semua rambu yang terpasang di area pantai",
+        "Jangan memasuki zona larangan seperti area konservasi atau zona bahaya",
+        "Ikuti jalur yang telah ditentukan untuk berjalan atau beraktivitas",
+        "Tanyakan kepada petugas pantai atau lifeguard jika ada yang kurang jelas"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Banyak pantai di Indonesia memiliki arus bawah (rip current) yang berbahaya. Mengikuti rambu keselamatan bisa menyelamatkan nyawamu!"
+    },
+    "appreciation": "Pintar! Dengan mengikuti rambu, kamu menjaga diri sendiri dan melindungi alam sekitar. Tetap aman ya! ⚠️🌊"
+  },
+
+  "jajan": {
+    "title": "Area Jajanan Pantai",
+    "icon": "🍴",
+    "mascot": "coco",
+    "cardImage": "/img/QR/thumb-jajan.png",
+    "media": {
+      "type": "image",
+      "url": "/img/QR/materi-jajan.png"
+    },
+    "why": {
+      "title": "Mengapa Penting?",
+      "content": "Area jajanan di pantai sering menjadi titik awal sampah berserakan. Kemasan makanan dan minuman yang tidak dibuang dengan benar akan terbawa angin atau ombak ke laut. Menjaga kebersihan area jajanan berarti menjaga pantai tetap indah dan aman bagi kehidupan laut."
+    },
+    "actions": {
+      "title": "Apa yang Bisa Kamu Lakukan?",
+      "list": [
+        "Setelah jajan, buang semua sampah (plastik, sedotan, bungkus) di tempat sampah",
+        "Bawa wadah atau botol sendiri untuk mengurangi sampah plastik sekali pakai",
+        "Dukung UMKM lokal yang menggunakan kemasan ramah lingkungan",
+        "Jangan tinggalkan sisa makanan di pasir — bawa pulang atau buang di tempat organik"
+      ]
+    },
+    "fact": {
+      "title": "Fakta Lokal",
+      "content": "Plastik sekali pakai seperti sedotan dan kantong kresek menjadi penyumbang terbesar sampah pantai di Indonesia. Satu sedotan plastik butuh 200 tahun untuk terurai!"
+    },
+    "appreciation": "Mantap! Kebiasaan kecilmu membawa dampak besar bagi kebersihan pantai. Pantai berterima kasih! 🍴🌊"
+  }
+}

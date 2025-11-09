@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Learn & Act – CoraTuka</title>
+
+    <!-- Inter font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              inter: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                DEFAULT: "#15C5CE",
+                50: "#E8F9FA",
+                100: "#D0F3F5",
+                200: "#B9EEF0",
+                300: "#A1E8EB",
+                400: "#73DCE2",
+                500: "#44D1D8",
+                600: "#15C5CE",
+                700: "#119EA5",
+              },
+              secondary: { DEFAULT: "#FF8156" },
+              tertiary: { DEFAULT: "#FFD166" },
+              ink: "#4B4B4B",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-white font-inter text-ink">
+    <!-- Huge Sidebar (Full) will be loaded here dynamically -->
+
+    <!-- Mini Sidebar (Desktop Only - Icon Only) -->
+    <aside
+      id="miniSidebar"
+      class="fixed left-0 top-0 z-40 hidden h-full w-20 flex-col border-r border-slate-200 bg-white shadow-lg lg:flex"
+    >
+      <!-- Open Sidebar Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-20 items-center justify-center border-b border-slate-200 transition hover:bg-slate-50"
+        title="Open Menu"
+      >
+        <svg
+          class="h-8 w-8 text-primary-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Nav Icons -->
+      <nav class="flex-1 space-y-2 overflow-y-auto p-3">
+        <!-- Home -->
+        <a
+          href="../features/Home.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Home"
+          data-page="Home"
+        >
+          <img
+            src="../../img/icons/home.png"
+            alt="Home"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Explore -->
+        <a
+          href="Explore.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-primary-50"
+          title="Explore"
+          data-page="Explore"
+        >
+          <img
+            src="../../img/icons/explore.png"
+            alt="Explore"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Learn & Act (Active) -->
+        <a
+          href="learn-act.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 transition hover:bg-primary-50"
+          title="Learn & Act"
+          data-page="learn-act"
+        >
+          <img
+            src="../../img/icons/learn.png"
+            alt="Learn"
+            class="h-6 w-6"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Emergency Rescue -->
+        <a
+          href="emergency-rescue.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-secondary-50"
+          title="Emergency Rescue"
+          data-page="emergency-rescue"
+        >
+          <img
+            src="../../img/icons/Reporting.png"
+            alt="Emergency"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Campaign & Event -->
+        <a
+          href="campaign-event.html"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-tertiary-50"
+          title="Campaign"
+          data-page="campaign-event"
+        >
+          <img
+            src="../../img/icons/campaign.png"
+            alt="Campaign"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+
+        <!-- Dashboard (Conservator Only) -->
+        <a
+          href="../dashboard-manager/dashboard-manager.html"
+          id="miniDashboard"
+          class="mini-nav-link group flex h-14 w-14 items-center justify-center rounded-xl transition hover:bg-slate-100"
+          title="Dashboard"
+          data-page="dashboard-manager"
+        >
+          <img
+            src="../../img/icons/dashboard.png"
+            alt="Dashboard"
+            class="h-6 w-6 opacity-60 group-hover:opacity-100"
+            onerror="this.style.display='none';"
+          />
+        </a>
+      </nav>
+
+      <!-- User Profile at Bottom -->
+      <div class="border-t border-slate-200 p-3">
+        <button
+          onclick="alert('Profile settings')"
+          class="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-200 text-primary-700 font-bold text-sm transition hover:bg-primary-300"
+          title="Profile"
+          id="miniUserAvatar"
+        >
+          U
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile Navbar (Sticky) -->
+    <nav
+      id="mobileNavbar"
+      class="fixed left-0 right-0 top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-md lg:hidden"
+    >
+      <!-- Hamburger Button -->
+      <button
+        onclick="openSidebar()"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+      >
+        <svg
+          class="h-6 w-6 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+
+      <!-- Logo (Center) -->
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka"
+        class="h-8 object-contain"
+        onerror="this.style.display='none';"
+      />
+
+      <!-- Back Button -->
+      <a
+        href="../../Index.html"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-tertiary transition hover:scale-105"
+        title="Back to Main"
+      >
+        <svg
+          class="h-5 w-5 text-slate-800"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2.5"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen lg:ml-20">
+      <!-- Desktop Top Bar (with Back Button) - STICKY -->
+      <div
+        class="sticky top-0 z-30 hidden h-20 items-center justify-end border-b border-slate-200 bg-white px-8 shadow-sm lg:flex"
+      >
+        <a
+          href="../../Index.html"
+          class="inline-flex h-12 items-center gap-2 rounded-xl bg-tertiary px-6 font-extrabold text-slate-800 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-yellow-400"
+        >
+          <span>Back to Main Page</span>
+          <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Content Container with Ocean Pattern Background -->
+      <div class="relative min-h-screen bg-white pt-16 lg:pt-0">
+        <!-- Ocean Pattern Overlay -->
+        <div
+          class="pointer-events-none absolute inset-0 opacity-5"
+          style="
+            background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M30 45c8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15-8.284 0-15 6.716-15 15 0 8.284 6.716 15 15 15zm0-5c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z\' fill=\'%2315C5CE\' fill-opacity=\'1\' fill-rule=\'evenodd\'/%3E%3C/svg%3E');
+          "
+        ></div>
+
+        <!-- Content Wrapper -->
+        <div class="relative px-4 py-12 md:px-8 lg:px-16">
+          <!-- Page Content Grid -->
+          <div class="mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 gap-12 lg:grid-cols-2">
+              <!-- Left: Header + Image -->
+              <div class="space-y-8">
+                <!-- Header -->
+                <div>
+                  <h1
+                    class="mb-3 text-5xl font-extrabold leading-tight text-slate-900 md:text-6xl"
+                  >
+                    Learn & Act
+                  </h1>
+                  <p class="text-lg text-slate-700">
+                    Belajar tentang ekosistem laut dan ambil aksi nyata untuk
+                    melindungi lautan kita
+                  </p>
+                </div>
+
+                <!-- Decorative Image -->
+                <div class="hidden lg:block">
+                  <img
+                    src="../../img/Features/learnact.png"
+                    alt="Learn & Act Mascot"
+                    class="h-auto w-full max-w-md rounded-2xl object-contain"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                  />
+                  <!-- Fallback -->
+                  <div
+                    class="hidden h-96 w-full items-center justify-center rounded-2xl bg-gradient-to-br from-primary-100 to-primary-200"
+                  >
+                    <div class="text-center">
+                      <div class="mb-4 text-8xl">📚</div>
+                      <p class="text-xl font-bold text-primary-700">
+                        Learn with Cora!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Cards (aligned with subtitle, not title) -->
+              <div class="space-y-6 lg:pt-20">
+                <!-- Card 1: Ocean Classroom -->
+                <div
+                  class="overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-lg transition hover:shadow-xl"
+                >
+                  <div
+                    class="flex flex-col gap-4 p-6 md:flex-row md:items-center"
+                  >
+                    <img
+                      src="../../img/Features/Ocean Classroom.png"
+                      alt="Ocean Classroom"
+                      class="h-32 w-32 flex-shrink-0 rounded-xl object-cover"
+                      onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'128\' height=\'128\'%3E%3Crect fill=\'%2315C5CE\' width=\'128\' height=\'128\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'48\'%3E📖%3C/text%3E%3C/svg%3E';"
+                    />
+                    <div class="flex-1 space-y-3">
+                      <h3 class="text-xl font-extrabold text-slate-900">
+                        Ocean Classroom
+                      </h3>
+                      <p class="text-sm text-slate-600">
+                        Pelajari materi edukatif tentang terumbu karang, penyu,
+                        dan kehidupan laut lainnya dengan cara yang
+                        menyenangkan.
+                      </p>
+                      <button
+                        onclick="window.location.href='../learn-act/ocean-classroom/ocean-classroom.html'"
+                        class="inline-flex items-center gap-2 rounded-lg bg-tertiary px-4 py-2 text-sm font-bold text-slate-800 transition hover:scale-105 hover:bg-yellow-400"
+                      >
+                        <span>Start Learning</span>
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2.5"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2: Ocean Challenge -->
+                <div
+                  class="overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-lg transition hover:shadow-xl"
+                >
+                  <div
+                    class="flex flex-col gap-4 p-6 md:flex-row md:items-center"
+                  >
+                    <img
+                      src="../../img/Features/Ocean Challenge.png"
+                      alt="Ocean Challenge"
+                      class="h-32 w-32 flex-shrink-0 rounded-xl object-cover"
+                      onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'128\' height=\'128\'%3E%3Crect fill=\'%23FFD166\' width=\'128\' height=\'128\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'48\'%3E🏆%3C/text%3E%3C/svg%3E';"
+                    />
+                    <div class="flex-1 space-y-3">
+                      <h3 class="text-xl font-extrabold text-slate-900">
+                        Ocean Challenge
+                      </h3>
+                      <p class="text-sm text-slate-600">
+                        Ikuti tantangan harian dan mingguan untuk mengambil aksi
+                        nyata dalam melindungi lingkungan laut. Dapatkan badge!
+                      </p>
+                      <button
+                        onclick="window.location.href='../learn-act/ocean-challenge/ocean-challenge.html'"
+                        class="inline-flex items-center gap-2 rounded-lg bg-tertiary px-4 py-2 text-sm font-bold text-slate-800 transition hover:scale-105 hover:bg-yellow-400"
+                      >
+                        <span>Take Challenge</span>
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2.5"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Coming Soon Text -->
+                <div class="pt-6 text-center">
+                  <p class="text-lg font-bold text-slate-600">
+Let's learn and take action for our oceans! 🌊
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar Script -->
+    <script src="../Features/sidebar.js"></script>
+
+    <script>
+      // Load user data and update mini profile avatar
+      document.addEventListener("DOMContentLoaded", () => {
+        const userDataStr =
+          sessionStorage.getItem("coratuka_user") ||
+          sessionStorage.getItem("new_user") ||
+          localStorage.getItem("coratuka_user");
+
+        if (userDataStr) {
+          try {
+            const userData = JSON.parse(userDataStr);
+
+            // Update mini profile avatar
+            const miniAvatar = document.getElementById("miniUserAvatar");
+            if (miniAvatar && userData.name) {
+              miniAvatar.textContent = userData.name.charAt(0).toUpperCase();
+            }
+
+            // Show mini dashboard icon if conservator
+            if (
+              userData.role === "Conservator" ||
+              userData.role === "Tim Konservator"
+            ) {
+              const miniDashboard = document.getElementById("miniDashboard");
+              if (miniDashboard) {
+                miniDashboard.classList.remove("hidden");
+                miniDashboard.classList.add("flex");
+              }
+            }
+          } catch (e) {
+            console.error("Error parsing user data:", e);
+          }
+        }
+      });
+
+      // Set active mini sidebar icon based on current page
+      function setActiveMiniNav() {
+        const currentPage =
+          window.location.pathname.split("/").pop().replace(".html", "") ||
+          "index";
+
+        document.querySelectorAll(".mini-nav-link").forEach((link) => {
+          const dataPage = link.getAttribute("data-page");
+          if (dataPage === currentPage) {
+            link.classList.add("bg-primary-100");
+            const img = link.querySelector("img");
+            if (img) img.classList.remove("opacity-60");
+          } else {
+            link.classList.remove("bg-primary-100");
+            const img = link.querySelector("img");
+            if (img) img.classList.add("opacity-60");
+          }
+        });
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", setActiveMiniNav);
+    </script>
+
+    <style>
+      * {
+        transition-property: color, background-color, border-color, transform,
+          opacity;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      *:focus-visible {
+        outline: 2px solid #15c5ce;
+        outline-offset: 2px;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        overflow-x: hidden;
+        overflow-y: auto;
+      }
+
+      /* Mini sidebar hover tooltips */
+      .mini-nav-link {
+        position: relative;
+      }
+
+      .mini-nav-link:hover::after {
+        content: attr(title);
+        position: absolute;
+        left: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-left: 12px;
+        padding: 6px 12px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        border-radius: 6px;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0;
+        animation: tooltipFade 0.2s ease-in forwards;
+      }
+
+      @keyframes tooltipFade {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Mobile navbar stays on top */
+      #mobileNavbar {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.95);
+      }
+    </style>
+  </body>
+</html>

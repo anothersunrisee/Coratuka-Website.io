@@ -1,0 +1,207 @@
+<!-- Sidebar Component for CoraTuka | FIXED version -->
+
+<!-- Sidebar Overlay Backdrop -->
+<div
+  id="sidebarBackdrop"
+  class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+  onclick="closeSidebar()"
+></div>
+
+<!-- Sidebar -->
+<aside
+  id="sidebar"
+  class="fixed inset-y-0 left-0 z-50 w-80 -translate-x-full transform bg-white shadow-2xl transition-transform duration-300 ease-in-out flex flex-col"
+>
+  <!-- Sidebar Header -->
+  <div class="flex items-center justify-between border-b border-slate-200 p-6">
+    <div class="flex items-center gap-3">
+      <img
+        src="../../img/index/logo coratuka.png"
+        alt="CoraTuka Logo"
+        class="h-12 w-auto object-contain"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <div class="hidden h-12 items-center justify-center">
+        <span class="text-lg font-extrabold text-primary-700">CoraTuka</span>
+      </div>
+    </div>
+
+    <button
+      onclick="closeSidebar()"
+      class="flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+    >
+      <img
+        src="../../img/icons/close.png"
+        alt="Close"
+        class="h-6 w-6"
+        onerror="this.style.display='none';"
+      />
+    </button>
+  </div>
+
+  <!-- Sidebar Navigation (Scrollable) -->
+  <nav class="flex-1 space-y-1 overflow-y-auto p-4 min-h-0">
+    <!-- Home -->
+    <a
+      href="../features/Home.html"
+      data-page="index"
+      class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+    >
+      <img
+        src="../../img/icons/home.png"
+        alt="Home"
+        class="h-6 w-6"
+        onerror="this.style.display='none';"
+      />
+      <span class="font-semibold">Home</span>
+    </a>
+
+    <!-- Explore -->
+    <div class="space-y-1">
+      <a
+        href="Explore.html"
+        data-page="Explore"
+        class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+      >
+        <img
+          src="../../img/icons/explore.png"
+          alt="Explore"
+          class="h-6 w-6"
+          onerror="this.style.display='none';"
+        />
+        <span class="font-semibold">Explore</span>
+      </a>
+      <div class="ml-9 space-y-1 text-sm">
+        <a
+          href="ocean-odyssey.html"
+          class="block rounded px-4 py-2 text-slate-600 hover:bg-slate-200"
+          >Ocean Odyssey</a
+        >
+        <a
+          href="beach-qr.html"
+          class="block rounded px-4 py-2 text-slate-600 hover:bg-slate-200"
+          >Beach QR Guide</a
+        >
+      </div>
+    </div>
+
+    <!-- Learn & Act -->
+    <div class="space-y-1">
+      <a
+        href="learn-act.html"
+        data-page="learn-act"
+        class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+      >
+        <img
+          src="../../img/icons/learn.png"
+          alt="Learn & Act"
+          class="h-6 w-6"
+          onerror="this.style.display='none';"
+        />
+        <span class="font-semibold">Learn & Act</span>
+      </a>
+      <div class="ml-9 space-y-1 text-sm">
+        <a
+          href="ocean-classroom.html"
+          class="block rounded px-4 py-2 text-slate-600 hover:bg-slate-200"
+          >Ocean Classroom</a
+        >
+        <a
+          href="ocean-challenge.html"
+          class="block rounded px-4 py-2 text-slate-600 hover:bg-slate-200"
+          >Ocean Challenge</a
+        >
+      </div>
+    </div>
+
+    <!-- Emergency Rescue -->
+    <a
+      href="emergency-rescue.html"
+      data-page="emergency-rescue"
+      class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+    >
+      <img
+        src="../../img/icons/Reporting.png"
+        alt="Emergency Rescue"
+        class="h-6 w-6"
+        onerror="this.style.display='none';"
+      />
+      <span class="font-semibold">Emergency Rescue</span>
+    </a>
+
+    <!-- Campaign & Event -->
+    <a
+      href="campaign-event.html"
+      data-page="campaign-event"
+      class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+    >
+      <img
+        src="../../img/icons/campaign.png"
+        alt="Campaign & Event"
+        class="h-6 w-6"
+        onerror="this.style.display='none';"
+      />
+      <span class="font-semibold">Campaign & Event</span>
+    </a>
+
+    <!-- Dashboard Manager (conditional for Conservator) -->
+    <a
+      href="../dashboard-manager/dashboard-manager.html"
+      id="dashboardLink"
+      data-page="dashboard-manager"
+      class="nav-link flex items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100 hover:text-slate-900"
+    >
+      <img
+        src="../../img/icons/dashboard.png"
+        alt="Dashboard Manager"
+        class="h-6 w-6"
+        onerror="this.style.display='none';"
+      />
+      <span class="font-semibold">Dashboard Manager</span>
+    </a>
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="border-t border-slate-200 p-4 bg-white">
+    <div class="space-y-2">
+      <div
+        class="flex items-center gap-3 rounded-lg px-4 py-3 hover:bg-slate-100"
+      >
+        <div
+          id="userAvatar"
+          class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary-200 text-primary-700 font-bold text-sm"
+        >
+          U
+        </div>
+        <div class="flex-1 overflow-hidden">
+          <p
+            class="truncate text-sm font-semibold text-slate-900"
+            id="sidebarUserName"
+          >
+            User
+          </p>
+          <p class="truncate text-xs text-slate-600" id="sidebarUserRole">
+            Learner
+          </p>
+        </div>
+      </div>
+
+      <a
+        href="certificate.html"
+        class="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-200"
+        >📜 Sertifikat</a
+      >
+      <a
+        href="profile.html"
+        class="block rounded-lg px-4 py-2 text-sm text-slate-700 hover:bg-slate-200"
+        >⚙️ Settings</a
+      >
+      <button
+        onclick="handleLogout()"
+        class="w-full rounded-lg px-4 py-2 text-left text-sm text-red-600 hover:bg-red-100"
+      >
+        🚪 Logout
+      </button>
+    </div>
+  </div>
+</aside>
