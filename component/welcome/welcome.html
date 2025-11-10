@@ -146,24 +146,24 @@
       });
 
       // ========================================
-      // Go to Index/Dashboard
+      // Go to index/Dashboard
       // ========================================
-      function goToIndex() {
+      function goToindex() {
         // Clear registration session if exists
         sessionStorage.removeItem("new_user");
 
         // Redirect to index.html
         console.log("Redirecting to index.html");
-        window.location.href = "../../Index.html";
+        window.location.href = "../../index.html";
       }
 
       // ========================================
       // Button Handlers
       // ========================================
-      document.getElementById("btnClose")?.addEventListener("click", goToIndex);
+      document.getElementById("btnClose")?.addEventListener("click", goToindex);
       document
         .getElementById("btnLewati")
-        ?.addEventListener("click", goToIndex);
+        ?.addEventListener("click", goToindex);
 
       // ========================================
       // YouTube Video URL Guide
